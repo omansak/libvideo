@@ -1,0 +1,11 @@
+C:\Users\James\dotnet\libvideo\libvideo\bin\Release\libvideo.dll
+C:\Users\James\dotnet\libvideo\libvideo\bin\Release\libvideo.pdb
+C:\Users\James\dotnet\libvideo\libvideo\bin\Release\nunit.core.dll
+C:\Users\James\dotnet\libvideo\libvideo\bin\Release\nunit.core.interfaces.dll
+C:\Users\James\dotnet\libvideo\libvideo\bin\Release\nunit.framework.dll
+C:\Users\James\dotnet\libvideo\libvideo\bin\Release\nunit.util.dll
+C:\Users\James\dotnet\libvideo\libvideo\bin\Release\NUnit.VisualStudio.TestAdapter.dll
+C:\Users\James\dotnet\libvideo\libvideo\bin\Release\nunit.framework.xml
+C:\Users\James\dotnet\libvideo\libvideo\obj\Release\libvideo.csprojResolveAssemblyReference.cache
+C:\Users\James\dotnet\libvideo\libvideo\obj\Release\libvideo.dll
+C:\Users\James\dotnet\libvideo\libvideo\obj\Release\libvideo.pdb
