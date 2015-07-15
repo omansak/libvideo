@@ -35,6 +35,15 @@ IEnumerable<string> downloadUris = service.GetAllUris(videoUri);
 
 ## Advanced
 
+libvideo has full support for async callers; if you need the asynchronous version of a method, just append `Async` to the name. For example:
+
+```csharp
+byte[] bytes = await service.DownloadAsync(videoUri);
+string downloadUri = await service.GetUriAsync(videoUri);
+```
+
+---
+
 If you need more information about the video, such as bitrate or resolution, you can use the following methods:
 
 ```csharp
@@ -43,15 +52,6 @@ IEnumerable<Video> videos = service.GetAllVideos(videoUri);
 ```
 
 The `Video` class enscapulates more detailed information about the video, and includes a `GetBytes()` method for convenience.
-
----
-
-libvideo has full support for async callers; if you need the asynchronous version of a method, just append `Async` to the name. For example:
-
-```csharp
-byte[] bytes = service.DownloadAsync(videoUri);
-string downloadUri = service.GetUriAsync(videoUri);
-```
 
 ---
 
