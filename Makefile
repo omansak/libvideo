@@ -11,12 +11,18 @@ dll = $(proj)/bin/Release/libvideo.dll
 template = $(packages)/Template.nuspec
 spec = $(packages)/$(name).nuspec
 
+copy = true
+build = true
+test = true
+
 .PHONY: build build-nocopy nuget nuget-nobuild
-build: build-nocopy
-	cp $(dll) .
-build-nocopy:
+build:
 	$(msbuild) $(sln)
-nuget: build-nocopy nuget-nobuild
+	if [ "$(copy)" == "true" ]
+	then
+	    cp $(dll) .
+	fi
+nuget: build nuget-nobuild
 nuget-nobuild:
 	cp $(dll) $(packages)/lib
 	cat $(template) > $(spec)

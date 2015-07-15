@@ -1,0 +1,11 @@
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\bin\Release\SpeedTest.exe.config
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\bin\Release\SpeedTest.exe
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\bin\Release\SpeedTest.pdb
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\bin\Release\libvideo.dll
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\bin\Release\Newtonsoft.Json.dll
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\bin\Release\YoutubeExtractor.dll
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\bin\Release\libvideo.pdb
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\bin\Release\Newtonsoft.Json.xml
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\bin\Release\YoutubeExtractor.xml
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\obj\Release\SpeedTest.exe
+C:\Users\James\libvideo\tests\SpeedTest\SpeedTest\obj\Release\SpeedTest.pdb
