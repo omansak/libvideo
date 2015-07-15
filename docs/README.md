@@ -77,3 +77,5 @@ If you want to download a video from another site, like **Vimeo** (more are comi
 ```csharp
 var service = new VimeoService();
 ```
+
+You can call the same methods on this that you can for YouTube.
