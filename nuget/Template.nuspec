@@ -9,17 +9,9 @@
     <projectUrl>https://github.com/James-Ko/libvideo</projectUrl>
     <iconUrl>https://github.com/James-Ko/libvideo/raw/master/icons/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>The cleaner way to download a YouTube video.</summary>
-    <description>libvideo is a .NET library that provides a fast, concise way to download YouTube videos. It has NO external dependencies, and full support for both async and synchronous callers.
-    
-    libvideo runs about 25% faster than the main alternative, YoutubeExtractor. This is mainly due to its substitution of optimized string code in place of YoutubeExtractor's use of full-fledged JSON and query parsers; libvideo also avoids regex where possible.
-    
-    More features:
-    
-    - simple, easy-to-use API
-    - supports Vimeo in addition to YouTube (contact us on GitHub if you'd like more)
-    - supports reuse of existing HttpClients, WebClients, and HttpWebRequests</description>
-    <releaseNotes>Initial release</releaseNotes>
+    <summary>The cleaner way to download from YouTube.</summary>
+    <description>libvideo is a performant .NET library for downloading videos from YouTube.</description>
+    <releaseNotes></releaseNotes>
     <copyright>Copyright (c) 2015</copyright>
     <tags>youtube youtubeextractor libvideo download video videos extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library</tags>
     <dependencies/>

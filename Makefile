@@ -1,30 +1,63 @@
-nuget = ./nuget.exe
-msbuild = ./msbuild.exe
-root = ./src
-packages = ./nuget
+.ONESHELL:
+	SHELL = /bin/bash
+
+nuget = $(shell pwd)/nuget.exe
+msbuild = $(shell pwd)/msbuild.exe
+root = $(shell pwd)/src
+packages = $(shell pwd)/nuget
+tdir = $(shell pwd)/tests
 name = VideoLibrary
 
 sln = $(root)/libvideo.sln
 proj = $(root)/libvideo
 csproj = $(proj)/libvideo.csproj
-dll = $(proj)/bin/Release/libvideo.dll
+dll = $(proj)/bin/$(config)/libvideo.dll
 template = $(packages)/Template.nuspec
 spec = $(packages)/$(name).nuspec
 
 copy = true
 build = true
 test = true
+config = Release
 
-.PHONY: build build-nocopy nuget nuget-nobuild
+.PHONY: build nuget
 build:
-	$(msbuild) $(sln)
-	if [ "$(copy)" == "true" ]
+	if [[ $(build) != "false" ]]
 	then
-	    cp $(dll) .
+		$(msbuild) $(sln) /property:Configuration=$(config)
+		
+		if [[ $(test) != "false" ]]
+		then
+			cd $(tdir)
+			for dir in $$(echo */)
+			do
+				cd $$dir
+				pattern="*.sln"
+				all=($$pattern)
+				target="$${all[0]}"
+				$(msbuild) $$target /property:Configuration=Release
+
+				name=$${target:0:$${#target} - 4}
+				cd $$name/bin/Release
+				./"$$name".exe
+				
+				code=$$?
+				if [[ $$code != 0 ]]
+				then
+					echo "Test [$$name] has failed!"
+					exit $$code
+				fi
+				cd ..
+			done
+			cd ..
+		fi
 	fi
-nuget: build nuget-nobuild
-nuget-nobuild:
-	cp $(dll) $(packages)/lib
+	if [[ $(copy) != "false" ]]
+	then
+		cp $(dll) .
+	fi
+nuget: build
+	cp libvideo.dll $(packages)/lib
 	cat $(template) > $(spec)
 	$(nuget) pack $(spec)
-	mv $(name)*.nupkg $(packages)
+	mv *.nupkg $(packages)

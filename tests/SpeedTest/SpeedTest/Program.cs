@@ -11,16 +11,19 @@ namespace SpeedTest
 {
     class Program
     {
-        const int Times = 10;
         const string Uri = "https://www.youtube.com/watch?v=NLddPakLF1I";
 
         static void Main(string[] args)
         {
-            int iterations = 10; // prevents exceptions from resetting the entire test
+            int times = 5; // prevent exceptions from resetting the entire test
             if (args.Length != 0)
-                iterations = Int32.Parse(args[0]);
+                times = Int32.Parse(args[0]);
+            int iterations = 5;
+            if (args.Length > 1)
+                iterations = Int32.Parse(args[1]);
 
             Console.WriteLine("Starting...");
+            Console.WriteLine($"Times: {times}.");
             Console.WriteLine($"Iterations: {iterations}.");
             Console.WriteLine();
 
@@ -28,13 +31,13 @@ namespace SpeedTest
 
             var elapsed = TimeSpan.Zero;
 
-            for (int i = 0; i < iterations; i++)
+            for (int i = 0; i < times; i++)
             {
                 RunChecked(() =>
                 {
                     var watch = Stopwatch.StartNew();
 
-                    for (int j = 0; j < Times; j++)
+                    for (int j = 0; j < iterations; j++)
                         DownloadUrlResolver.GetDownloadUrls(Uri);
 
                     watch.Stop();
@@ -52,13 +55,13 @@ namespace SpeedTest
             using (var service =
                 new SingleClientService(new YouTubeService()))
             {
-                for (int i = 0; i < iterations; i++)
+                for (int i = 0; i < times; i++)
                 {
                     RunChecked(() =>
                     {
                         var watch = Stopwatch.StartNew();
 
-                        for (int j = 0; j < Times; j++)
+                        for (int j = 0; j < iterations; j++)
                             service.GetAllUris(Uri);
 
                         watch.Stop();
