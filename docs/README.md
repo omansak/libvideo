@@ -66,10 +66,10 @@ using (var client = new HttpClient())
 }
 ```
 
-If you want to download a video from another site, like **Vimeo** (more are coming), libvideo supports that as well:
+If you want to download a video from another site, like Vimeo, libvideo supports that as well:
 
 ```csharp
 var service = new VimeoService();
 ```
 
-You can call the same methods on this that you can for YouTube.
+Because `VimeoService` and `YouTubeService` share a common ancestor, `ServiceBase`, you can call the same methods as you would for YouTube.
