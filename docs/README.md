@@ -37,8 +37,6 @@ byte[] bytes = await service.DownloadAsync(videoUri);
 string downloadUri = await service.GetUriAsync(videoUri);
 ```
 
----
-
 If you need more information about the video, such as bitrate or resolution, you can use the following methods:
 
 ```csharp
@@ -47,8 +45,6 @@ IEnumerable<Video> videos = service.GetAllVideos(videoUri);
 ```
 
 The `Video` class enscapulates more detailed information about the video, and includes a `GetBytes()` method for convenience.
-
----
 
 If you already have an `HttpClient`, `WebClient`, or `HttpWebRequest` in use and you don't want libvideo to create a new one every time it visits YouTube, don't worry! Just pass in a delegate describing how to download the page:
 
@@ -70,12 +66,10 @@ using (var client = new HttpClient())
 }
 ```
 
----
-
-If you want to download a video from another site, like **Vimeo** (more are coming), libvideo supports that as well:
+If you want to download a video from another site, like Vimeo, libvideo supports that as well:
 
 ```csharp
 var service = new VimeoService();
 ```
 
-You can call the same methods on this that you can for YouTube.
+Because `VimeoService` and `YouTubeService` share a common ancestor, `ServiceBase`, you can call the same methods as you would for YouTube.
