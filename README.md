@@ -25,4 +25,4 @@ libvideo supports the following platforms:
 
 ## Donations
 
-libvideo does not accept donations, but please [help out]((https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=daume%2edennis%40gmail%2ecom&lc=US&item_name=YoutubeExtractor&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest) the creator of the original library, YoutubeExtractor. His project was an essential part in creating libvideo, and I don't want to cut off his funds.
+libvideo does not accept donations, but please [help out](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=daume%2edennis%40gmail%2ecom&lc=US&item_name=YoutubeExtractor&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest) the creator of the original library, YoutubeExtractor. His project was an essential part in creating libvideo, and I don't want to cut off his funds.
