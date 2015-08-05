@@ -57,7 +57,7 @@ namespace Valks
             string result = video.Title + video.Extension;
 
             foreach (char bad in Path.GetInvalidFileNameChars())
-                result = result.Replace(bad, String.Empty);
+                result = result.Replace(bad.ToString(), String.Empty);
 
             return result;
         }
