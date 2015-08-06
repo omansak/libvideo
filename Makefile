@@ -20,8 +20,15 @@ build = true
 test = true
 config = Release
 
-.PHONY: build nuget
-build:
+.PHONY: build nuget ucheck
+ucheck:
+	ARCH=$(uname -m)
+	if [[ ${ARCH#arm} != $ARCH ]]
+	then
+		echo "Building libvideo is not supported on ARM devices."
+		exit 1
+	fi
+build: ucheck
 	if [[ $(build) != "false" ]]
 	then
 		$(msbuild) $(sln) /property:Configuration=$(config)
