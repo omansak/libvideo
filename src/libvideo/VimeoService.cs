@@ -10,8 +10,8 @@ namespace VideoLibrary
 {
     public class VimeoService : ServiceBase
     {
-        protected override Func<IEnumerable<Video>, Video> VideoSelector =>
-            videos => videos.Last(); // The first video for Vimeo is for mobile, which is tiny. This is standard definition.
+        protected override Video VideoSelector(IEnumerable<Video> videos) =>
+            videos.Last(); // The first video for Vimeo is for mobile, which is tiny. This is standard definition.
 
         public async override Task<IEnumerable<Video>> GetAllVideosAsync(
             string videoUri, Func<string, Task<string>> sourceFactory)

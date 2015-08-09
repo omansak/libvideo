@@ -9,8 +9,8 @@ namespace VideoLibrary
 {
     public abstract class ServiceBase : IService, IAsyncService
     {
-        protected virtual Func<IEnumerable<Video>, Video> VideoSelector =>
-            videos => videos.First();
+        protected virtual Video VideoSelector(IEnumerable<Video> videos) =>
+            videos.First();
 
         #region Synchronous wrappers
         public byte[] Download(string videoUri) =>
