@@ -1,6 +1,6 @@
 # libvideo
 
-![icon](icons/icon_200.png)
+![icon](icons/icon_200.png) [![Join the chat at https://gitter.im/James-Ko/libvideo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/James-Ko/libvideo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 libvideo is a .NET library that lets you download YouTube videos in a fast, clean way.
 
