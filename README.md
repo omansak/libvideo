@@ -47,7 +47,8 @@ File.WriteAllBytes(@"C:\video.mp4", bytes);
 Here's how you do it with YoutubeExtractor (copied from [here](https://github.com/flagbug/YoutubeExtractor)):
 
 ```csharp
-IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls("https://www.youtube.com/watch?v=vPto6XpRq-U");
+string link = "https://www.youtube.com/watch?v=vPto6XpRq-U";
+IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(link);
 VideoInfo video = videoInfos.First();
 
 if (video.RequiresDecryption)
