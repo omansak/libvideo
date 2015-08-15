@@ -1,5 +1,7 @@
 # libvideo
 
+[![Join the chat at https://gitter.im/James-Ko/libvideo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/James-Ko/libvideo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 libvideo is a .NET library that provides a fast, succinct way to download YouTube videos. It has **NO** external dependencies, and full support for both async and synchronous callers.
 
 libvideo runs about 25% to 75% faster than the main alternative, [YoutubeExtractor](https://github.com/flagbug/YoutubeExtractor). This is mainly due to its substitution of optimized string code in place of YoutubeExtractor's use of full-fledged JSON and query parsers; libvideo also avoids regex for simple string operations.
