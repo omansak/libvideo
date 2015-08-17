@@ -9,6 +9,6 @@ namespace VideoLibrary
     public static class WebSites
     {
         public const string YouTube = "YouTube";
-        public const string Vimeo = "Vimeo";
+        // public const string Vimeo = "Vimeo";
     }
 }

@@ -13,7 +13,7 @@ namespace VideoLibrary.Tests
     public class Tests
     {
         private const string YouTubeUri = "https://www.youtube.com/watch?v=JjCaRS-CABk";
-        private const string VimeoUri = "https://vimeo.com/131417856";
+        // private const string VimeoUri = "https://vimeo.com/131417856";
 
         [TestCase]
         public void YouTube_Download()
@@ -23,6 +23,7 @@ namespace VideoLibrary.Tests
             byte[] bytes = service.Download(YouTubeUri);
         }
 
+        /*
         [TestCase]
         public void Vimeo_Download()
         {
@@ -30,6 +31,7 @@ namespace VideoLibrary.Tests
 
             byte[] bytes = service.Download(VimeoUri);
         }
+        */
 
         // [TestCase]
         public void YouTube_DownloadMany()
@@ -43,6 +45,7 @@ namespace VideoLibrary.Tests
             foreach (var array in arrays); // synchronous DownloadMany may use yield
         }
 
+        /*
         // [TestCase]
         public void Vimeo_DownloadMany()
         {
@@ -54,6 +57,7 @@ namespace VideoLibrary.Tests
 
             foreach (var array in byteArrays);
         }
+        */
 
         // [TestCase]
         public void SingleClientService_SpeedTest()
@@ -61,20 +65,20 @@ namespace VideoLibrary.Tests
             // DISABLE THIS TEST IF YOU DON'T NEED IT.
 
             byte[] bytes;
-            var rawService = new VimeoService();
+            var rawService = new YouTubeService();
 
             using (var managedService = new SingleClientService(rawService))
             {
                 var watch = Stopwatch.StartNew();
 
                 for (int i = 0; i < 5; i++)
-                    bytes = rawService.Download(VimeoUri);
+                    bytes = rawService.Download(YouTubeUri);
 
                 var rawTime = watch.Elapsed;
                 watch.Restart();
 
                 for (int i = 0; i < 5; i++)
-                    bytes = managedService.Download(VimeoUri);
+                    bytes = managedService.Download(YouTubeUri);
 
                 var managedTime = watch.Elapsed;
                 watch.Stop();

@@ -2,4 +2,9 @@ bin/
 obj/
 .vs/
 
+*.exe
+!nuget.exe
+!MSBuild.exe
+*.nupkg
+*.dll
 Thumbs.db
