@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>VideoLibrary</id>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
     <authors>James Ko</authors>
     <owners>James Ko</owners>
     <licenseUrl>https://github.com/James-Ko/libvideo/blob/master/license.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>https://github.com/James-Ko/libvideo/raw/master/icons/icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>The cleaner way to download from YouTube.</summary>
-    <description>libvideo is a performant .NET library for downloading videos from YouTube.</description>
+    <description>libvideo is a fast, clean way to download YouTube videos. It is fully portable and has no dependencies.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright (c) 2015</copyright>
     <tags>youtube youtubeextractor libvideo download video videos extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core</tags>

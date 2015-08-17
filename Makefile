@@ -57,6 +57,7 @@ build:
 		cp $(dll) .
 	fi
 nuget: build
+	mkdir $(packages)/lib
 	cp libvideo.dll $(packages)/lib
 	cat $(template) > $(spec)
 	$(nuget) pack $(spec)
