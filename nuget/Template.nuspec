@@ -13,7 +13,7 @@
     <description>libvideo is a performant .NET library for downloading videos from YouTube.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright (c) 2015</copyright>
-    <tags>youtube youtubeextractor libvideo download video videos extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library</tags>
+    <tags>youtube youtubeextractor libvideo download video videos extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core</tags>
     <dependencies/>
   </metadata>
 </package>
