@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
+    <title>libvideo</title>
     <id>VideoLibrary</id>
-    <version>0.3.2</version>
+    <version>0.3.3</version>
     <authors>James Ko</authors>
     <owners>James Ko</owners>
-    <licenseUrl>https://github.com/James-Ko/libvideo/blob/master/license.txt</licenseUrl>
+    <licenseUrl>https://raw.githubusercontent.com/James-Ko/libvideo/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/James-Ko/libvideo</projectUrl>
-    <iconUrl>https://github.com/James-Ko/libvideo/raw/master/icons/icon.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>https://github.com/James-Ko/libvideo/raw/master/icons/icon_128.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <summary>The cleaner way to download from YouTube.</summary>
     <description>libvideo is a fast, clean way to download YouTube videos. It is fully portable and has no dependencies.</description>
     <releaseNotes></releaseNotes>
