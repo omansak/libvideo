@@ -3,10 +3,10 @@
   <metadata>
     <title>libvideo</title>
     <id>VideoLibrary</id>
-    <version>0.3.3</version>
+    <version>0.3.4</version>
     <authors>James Ko</authors>
     <owners>James Ko</owners>
-    <licenseUrl>https://raw.githubusercontent.com/James-Ko/libvideo/master/license.txt</licenseUrl>
+    <licenseUrl>http://opensource.org/licenses/BSD-2-Clause</licenseUrl>
     <projectUrl>https://github.com/James-Ko/libvideo</projectUrl>
     <iconUrl>https://github.com/James-Ko/libvideo/raw/master/icons/icon_128.png</iconUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -14,7 +14,7 @@
     <description>libvideo is a fast, clean way to download YouTube videos. It is fully portable and has no dependencies.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright (c) 2015</copyright>
-    <tags>youtube youtubeextractor libvideo download video videos extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core</tags>
+    <tags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core</tags>
     <dependencies/>
   </metadata>
 </package>
