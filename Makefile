@@ -12,7 +12,6 @@ sln = $(root)/libvideo.sln
 proj = $(root)/libvideo
 csproj = $(proj)/libvideo.csproj
 dll = $(proj)/bin/$(config)/libvideo.dll
-template = $(packages)/Template.nuspec
 spec = $(packages)/$(name).nuspec
 
 copy = true
@@ -59,6 +58,5 @@ build:
 nuget: build
 	mkdir $(packages)/lib
 	cp libvideo.dll $(packages)/lib
-	cat $(template) > $(spec)
 	$(nuget) pack $(spec)
 	mv *.nupkg $(packages)
