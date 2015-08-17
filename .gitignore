@@ -8,4 +8,5 @@ packages/
 !MSBuild.exe
 *.nupkg
 *.dll
+*.userprefs
 Thumbs.db
