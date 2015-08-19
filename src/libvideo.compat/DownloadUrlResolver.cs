@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VideoLibrary;
 using VideoLibrary.Helpers;
 
-namespace VideoLibrary.Compat
+namespace YoutubeExtractor
 {
     public static class DownloadUrlResolver
     {

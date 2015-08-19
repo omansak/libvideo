@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VideoLibrary.Compat
+namespace YoutubeExtractor
 {
     public enum AudioType
     {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VideoLibrary;
 
-namespace VideoLibrary.Compat
+namespace YoutubeExtractor
 {
     public class VideoInfo
     {
