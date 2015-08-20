@@ -4,11 +4,12 @@ lib/
 packages/
 .vs/
 
-*.exe
-!nuget.exe
-!MSBuild.exe
-*.nupkg
 *.dll
+*.exe
+!NuGet.exe
+!MSBuild.exe
+Thumbs.db
+
+*.nupkg
 *.user
 *.userprefs
-Thumbs.db
