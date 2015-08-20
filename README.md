@@ -21,11 +21,13 @@ Here's a small sample to help you get familiar with libvideo:
 ```csharp
 using VideoLibrary;
 
-var service = new YouTubeService(); // this is the starting point for all of our download actions
-
-Video video = service.GetVideo("https://www.youtube.com/watch?v=vPto6XpRq-U"); // gets a Video object containing information about the video
-string fileName = video.Title + video.Extension;
-File.WriteAllBytes(fileName, video.GetBytes()); // saves it to disk
+void SaveVideoToDisk(string link)
+{
+    var service = new YouTubeService(); // this is the starting point for all of our download actions
+    var video = service.GetVideo("https://www.youtube.com/watch?v=vPto6XpRq-U"); // gets a Video object containing information about the video
+    string fileExtension = video.Extension; // e.g. ".mp4", ".webm"
+    File.WriteAllBytes(@"C:\myvideo" + fileExtension, video.GetBytes());
+}
 ```
 
 If you'd like to check out some more of our features, take a look at our [docs](docs/README.md). You can also refer to our [example application](samples/Valks/Valks/Program.cs) (named Valks, yes, I know, it's a sily name) if you're looking for a more comprehensive sample.
