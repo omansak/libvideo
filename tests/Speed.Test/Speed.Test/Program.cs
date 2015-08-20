@@ -15,18 +15,12 @@ namespace Speed.Test
 
         static void Main(string[] args)
         {
-            int times = 5; // prevent exceptions from resetting the entire test
-            if (args.Length != 0)
-                times = Int32.Parse(args[0]);
-            int iterations = 5;
-            if (args.Length > 1)
-                iterations = Int32.Parse(args[1]);
+            int times = args.Length == 0 ? 5 : int.Parse(args[0]);
+            int iterations = args.Length <= 1 ? 5 : int.Parse(args[1]);
 
             Console.WriteLine("Starting...");
             Console.WriteLine($"Times: {times}.");
             Console.WriteLine($"Iterations: {iterations}.");
-            Console.WriteLine();
-
             Console.WriteLine("Getting results for YoutubeExtractor...");
 
             var elapsed = TimeSpan.Zero;
@@ -38,7 +32,7 @@ namespace Speed.Test
                     var watch = Stopwatch.StartNew();
 
                     for (int j = 0; j < iterations; j++)
-                        DownloadUrlResolver.GetDownloadUrls(Uri);
+                        GC.KeepAlive(DownloadUrlResolver.GetDownloadUrls(Uri));
 
                     watch.Stop();
                     elapsed += watch.Elapsed;
@@ -46,9 +40,7 @@ namespace Speed.Test
             }
 
             Console.WriteLine($"YoutubeExtractor: took {elapsed}.");
-            Console.WriteLine();
-
-            Console.WriteLine("Getting results for Livid...");
+            Console.WriteLine("Getting results for libvideo...");
 
             elapsed = TimeSpan.Zero;
 
@@ -62,7 +54,7 @@ namespace Speed.Test
                         var watch = Stopwatch.StartNew();
 
                         for (int j = 0; j < iterations; j++)
-                            service.GetAllUris(Uri);
+                            GC.KeepAlive(service.GetAllUris(Uri));
 
                         watch.Stop();
                         elapsed += watch.Elapsed;
@@ -70,7 +62,7 @@ namespace Speed.Test
                 }
             }
 
-            Console.WriteLine($"Livid: took {elapsed}.");
+            Console.WriteLine($"libvideo: took {elapsed}.");
         }
 
         static void RunChecked(Action action)
@@ -81,12 +73,18 @@ namespace Speed.Test
             }
             catch (Exception e)
             {
-                Console.WriteLine($@"
-A {e.GetType()} was thrown!
-Message:
-{e}
-
-Restarting... (PLEASE PLEASE quit if this is an OOME or something bad!)");
+                string[] lines =
+                {
+                    $"A {e.GetType()} was thrown!",
+                    "Message:",
+                    String.Empty,
+                    e.ToString(),
+                    String.Empty,
+                    "Restarting..."
+                };
+                
+                Console.WriteLine(string.Join(Environment.NewLine, lines));
+                
                 RunChecked(action);
             }
         }
