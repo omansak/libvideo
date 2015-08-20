@@ -38,7 +38,7 @@ Video video = service.GetVideo(videoUri);
 IEnumerable<Video> videos = service.GetAllVideos(videoUri);
 ```
 
-The `Video` class enscapulates more detailed information about the video, and includes a `GetBytes()` method for convenience.
+The `Video` class enscapulates more detailed information about the video (e.g. the title), and includes a `GetBytes()` method for convenience.
 
 If you already have an `HttpClient`, `WebClient`, or `HttpWebRequest` in use and you don't want libvideo to create a new one every time it visits YouTube, don't worry! Just pass in a delegate describing how to download the page:
 
