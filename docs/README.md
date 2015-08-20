@@ -2,7 +2,7 @@
 
 Looking for more a in-depth explanation on libvideo? You've come to the right place.
 
-The entry point for most of the API is in `YouTubeService`:
+As always, the entry point for most of the API is in `YouTubeService`:
 
 ```csharp
 var service = new YouTubeService();
