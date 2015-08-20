@@ -6,15 +6,29 @@
 
 libvideo is a .NET library that lets you download YouTube videos in a fast, clean way.
 
-## How do I get started?
+## Where can I install libvideo?
 
-See our [docs](docs/README.md) for instructions.
-
-## Do you have a NuGet package?
-
-[Yes, we do.](https://www.nuget.org/packages/VideoLibrary) You can install it with this command:
+You can grab a copy of the library [on NuGet](https://www.nuget.org/packages/VideoLibrary) by running:
 
     Install-Package VideoLibrary
+
+Alternatively, you can try building the repo if you like your assemblies extra-fresh.
+
+## How do I get started?
+
+Here's a small sample to help you get familiar with libvideo:
+
+```csharp
+using VideoLibrary;
+
+var service = new YouTubeService(); // this is the starting point for all of our download actions
+
+Video video = service.GetVideo("https://www.youtube.com/watch?v=vPto6XpRq-U"); // gets a Video object containing information about the video
+string fileName = video.Title + video.Extension;
+File.WriteAllBytes(fileName, video.GetBytes()); // saves it to disk
+```
+
+If you'd like to check out some more of our features, take a look at our [docs](docs/README.md). You can also refer to our [example application](samples/Valks/Valks/Program.cs) (named Valks, yes, I know, it's a sily name) if you're looking for a more comprehensive sample.
 
 ## What platforms do you support?
 
