@@ -117,24 +117,25 @@ then
 
     for projdir in $scriptroot/src/*
     do
-        if project "$projdir"
+        baseproj="$(basename $projdir)"
+        if project "$baseproj"
         then
             echo "Getting assemblies from $projdir..."
             cd $projdir/bin/$config
             mkdir $scriptroot/nuget/lib 2> /dev/null
-            cp $projdir.dll $scriptroot/nuget/lib
-            
-            echo "Cleaning existing packages..."
-            cd $scriptroot/nuget
-            rm *.nupkg
-            
-            for spec in *.nuspec
-            do
-                echo "Packing $spec..."
-                ./NuGet pack $spec
-                
-                failerr "Packing $spec failed! Exiting..."
-            done
+            cp $baseproj.dll $scriptroot/nuget/lib
         fi
+    done
+            
+    echo "Cleaning existing packages..."
+    cd $scriptroot/nuget
+    rm *.nupkg
+    
+    for spec in *.nuspec
+    do
+        echo "Packing $spec..."
+        ./NuGet pack $spec
+        
+        failerr "Packing $spec failed! Exiting..."
     done
 fi
