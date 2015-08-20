@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using YoutubeExtractor;
 
-namespace SpeedTest
+namespace Speed.Test
 {
     class Program
     {
