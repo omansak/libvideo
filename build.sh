@@ -28,6 +28,15 @@ failerr() {
     fi
 }
 
+project() {
+    if [ "$1" != "packages" ] && [ "$1" != ".vs" ] && [ "${1##*.}" != "sln" ]
+    then
+        return 0
+    fi
+    
+    return 1
+}
+
 while [[ "$#" > 0 ]]
 do
     case "$1" in
@@ -90,7 +99,7 @@ then
         
         for subtest in *
         do
-            if [ "$subtest" != "packages" ] && [ "$subtest" != ".vs" ] && [ "${projdir##*.}" != "sln" ]
+            if project "$subtest"
             then
                 echo "Running subtest $subtest..."
                 cd $subtest/bin/$config
@@ -108,10 +117,11 @@ then
 
     for projdir in $scriptroot/src/*
     do
-        if [ "$projdir" != "packages" ] && [ "$projdir" != ".vs" ] && [ "${projdir##*.}" != "sln" ]
+        if project "$projdir"
         then
             echo "Getting assemblies from $projdir..."
             cd $projdir/bin/$config
+            mkdir $scriptroot/nuget/lib 2> /dev/null
             cp $projdir.dll $scriptroot/nuget/lib
             
             echo "Cleaning existing packages..."
