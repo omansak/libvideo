@@ -6,7 +6,7 @@
 
 libvideo is a .NET library that lets you download YouTube videos in a fast, clean way.
 
-## Where can I install libvideo?
+## Where can I install it?
 
 You can grab a copy of the library [on NuGet](https://www.nuget.org/packages/VideoLibrary) by running:
 
