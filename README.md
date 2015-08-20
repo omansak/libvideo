@@ -24,7 +24,7 @@ using VideoLibrary;
 void SaveVideoToDisk(string link)
 {
     var service = new YouTubeService(); // this is the starting point for all of our download actions
-    var video = service.GetVideo("https://www.youtube.com/watch?v=vPto6XpRq-U"); // gets a Video object containing information about the video
+    var video = service.GetVideo(link); // gets a Video object containing information about the video
     string fileExtension = video.Extension; // e.g. ".mp4", ".webm"
     File.WriteAllBytes(@"C:\myvideo" + fileExtension, video.GetBytes());
 }
