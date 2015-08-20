@@ -1,12 +1,6 @@
-# Usage
+# Documentation
 
-libvideo has a very simple API. First, make sure you have the appropriate statement at the top of your file.
-
-```csharp
-using VideoLibrary;
-```
-
-Great! Now let's get started.
+Looking for more a in-depth explanation on libvideo? You've come to the right place.
 
 The entry point for most of the API is in `YouTubeService`:
 
@@ -14,7 +8,7 @@ The entry point for most of the API is in `YouTubeService`:
 var service = new YouTubeService();
 ```
 
-To download a video or get a URI for download, simply type this:
+To download a video or get a URI for download:
 
 ```csharp
 byte[] bytes = service.Download(videoUri);
