@@ -12,7 +12,7 @@ You can grab a copy of the library [on NuGet](https://www.nuget.org/packages/Vid
 
     Install-Package VideoLibrary
 
-Alternatively, you can try building the repo if you like your assemblies extra-fresh.
+Alternatively, you can try [building the repo](docs/building.md) if you like your assemblies extra-fresh.
 
 ## How do I get started?
 
