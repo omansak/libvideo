@@ -55,27 +55,24 @@ A lot. libvideo:
 
 ### Is libvideo *that* much easier to use?
 
-Yes. Here's how you download a video with libvideo:
+Yes. Here is the previous example rewritten using YoutubeExtractor's API:
 
 ```csharp
-byte[] bytes = new YouTubeService().Download("https://www.youtube.com/watch?v=vPto6XpRq-U");
-File.WriteAllBytes(@"C:\video.mp4", bytes);
-```
+using YoutubeExtractor;
 
-Here's how you do it with YoutubeExtractor (copied from [here](https://github.com/flagbug/YoutubeExtractor)):
-
-```csharp
-string link = "https://www.youtube.com/watch?v=vPto6XpRq-U";
-IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(link);
-VideoInfo video = videoInfos.First();
-
-if (video.RequiresDecryption)
+void SaveFileToDisk(string link)
 {
-    DownloadUrlResolver.DecryptDownloadUrl(video);
+    var videoInfos = DownloadUrlResolver.GetDownloadUrls(link);
+    var video = videoInfos.First();
+    
+    if (video.RequiresDecryption)
+    {
+        DownloadUrlResolver.DecryptDownloadUrl(video);
+    }
+    
+    var videoDownloader = new VideoDownloader(video, @"C:\myvideo" + video.VideoExtension);
+    videoDownloader.Execute();
 }
-
-var videoDownloader = new VideoDownloader(video, Path.Combine("D:/Downloads", video.Title + video.VideoExtension));
-videoDownloader.Execute();
 ```
 
 ### Is libvideo *that* much faster than YoutubeExtractor?
