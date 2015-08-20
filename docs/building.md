@@ -22,6 +22,6 @@ To run the build script:
 
 Once this is done, you'll find a fresh batch of the core DLLs in `src/libvideo/bin/Release/` as well as the other projects in the solution.
 
-## Passing options to the build script
+### Passing options to the build script
 
 By default, the script will only build the solution in `src/` as part of the build process. If you'd like to e.g. run tests or set the configuration to Debug during the build, run `./build.sh --help` to see a list of options.
