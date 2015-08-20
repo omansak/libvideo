@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-libvideo requires a working copy of Bash to build. This means that if you are on Windows (like I am) and you're somehow using GitHub without having installed Git Bash (dear God why), you will have to grab the latest version of it from [here](http://www.git-scm.com/downloads). You should also be able to do this on Cygwin and msys as well, but those options haven't been tested.
+libvideo requires a working copy of Bash to build. This means that if you are on Windows (like I am) and you're somehow using GitHub without having installed Git Bash (dear God why), you will have to grab the latest version of it from [here](http://www.git-scm.com/downloads). You should also be able to do this on Cygwin and MSYS as well, but those options haven't been tested.
 
 You should also be able to build this from Linux or OS X as long as you have a working installation of Mono, but this hasn't been tested as of yet.
 
