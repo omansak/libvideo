@@ -75,6 +75,8 @@ namespace VideoLibrary
             }
         }
 
-        // TODO: Consider overriding ToString().
+        public string FullName => Title + FileExtension;
+
+        public override string ToString() => FullName;
     }
 }

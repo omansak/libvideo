@@ -275,7 +275,7 @@ namespace VideoLibrary
             }
         }
 
-        public string Extension
+        public string FileExtension
         {
             get
             {
@@ -289,23 +289,6 @@ namespace VideoLibrary
                     default:
                         // TODO: Consider var format = Format; at beginning of getter to dereference property only once.
                         throw new NotImplementedException($"Format {Format} is unrecognized! Please file an issue at libvideo on GitHub.");
-                }
-            }
-        }
-
-        public string AudioExtension
-        {
-            get
-            {
-                switch (AudioFormat)
-                {
-                    case AudioFormat.Aac: return ".aac";
-                    case AudioFormat.Mp3: return ".mp3";
-                    case AudioFormat.Vorbis: return ".ogg";
-                    case AudioFormat.Unknown: return String.Empty;
-                    default:
-                        // TODO: Consider a var format = AudioFormat; statement at beginning of getter.
-                        throw new NotImplementedException($"Audio format {AudioFormat} is unrecognized! Please file an issue at libvideo on GitHub.");
                 }
             }
         }

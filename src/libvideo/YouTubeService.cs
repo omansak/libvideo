@@ -20,6 +20,32 @@ namespace VideoLibrary
             return ParseVideos(source);
         }
 
+        private bool TryNormalize(string videoUri, out string normalized)
+        {
+            // If you fix something in here, please be sure to fix in 
+            // DownloadUrlResolver.TryNormalizeYoutubeUrl as well.
+
+            normalized = null;
+
+            var builder = new StringBuilder(videoUri);
+
+            videoUri = builder.Replace(" ", string.Empty)
+                .Replace("youtu.be/", "youtube.com/watch?v=")
+                .Replace("www.youtube", "youtube")
+                .Replace("youtube.com/embed/", "youtube.com/watch?v=")
+                .Replace("/v/", "/watch?v=")
+                .Replace("/watch#", "/watch?")
+                .ToString();
+
+            string value;
+
+            if (!Query.TryGetParamValue("v", videoUri, out value))
+                return false;
+
+            normalized = "http://youtube.com/watch?v=" + value;
+            return true;
+        }
+
         private IEnumerable<Video> ParseVideos(string source)
         {
             string title = Html.GetNodeValue("title", source);
@@ -47,12 +73,12 @@ namespace VideoLibrary
         {
             string uri = query.Substring(
                 query.IndexOf("https%3A%2F%2F"));
-            bool encrypted = false; // TODO: Use this.
+            // bool encrypted = false; // TODO: Use this.
             string signature;
 
             if (Query.TryGetParamValue("s", query, out signature))
             {
-                encrypted = true;
+                // encrypted = true;
                 uri += Query.ParamsFor(signature, query);
             }
             else if (Query.TryGetParamValue("sig", query, out signature))

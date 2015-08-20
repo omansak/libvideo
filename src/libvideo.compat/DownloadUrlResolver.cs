@@ -33,14 +33,20 @@ namespace YoutubeExtractor
 
         public static bool TryNormalizeYoutubeUrl(string url, out string normalizedUrl)
         {
+            // If you fix something in here, please be sure to fix in 
+            // YouTubeService.TryNormalize as well.
+
             normalizedUrl = null;
 
-            url = url.Trim();
-            url = url.Replace("youtu.be/", "youtube.com/watch?v=");
-            url = url.Replace("www.youtube", "youtube");
-            url = url.Replace("youtube.com/embed/", "youtube.com/watch?v=");
-            url = url.Replace("/v/", "/watch?v=");
-            url = url.Replace("/watch#", "/watch?");
+            var builder = new StringBuilder(url);
+
+            url = builder.Replace(" ", string.Empty)
+                .Replace("youtu.be/", "youtube.com/watch?v=")
+                .Replace("www.youtube", "youtube")
+                .Replace("youtube.com/embed/", "youtube.com/watch?v=")
+                .Replace("/v/", "/watch?v=")
+                .Replace("/watch#", "/watch?")
+                .ToString();
 
             string value;
 
