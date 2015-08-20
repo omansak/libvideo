@@ -80,7 +80,7 @@ if [ "$test" -eq 0 ]
 then
     echo "Running tests..."
 
-    for test in $scriptroot/tests
+    for test in $scriptroot/tests/*
     do
         echo "Building test $test..."
         cd $test
@@ -88,9 +88,9 @@ then
         
         failerr "MSBuild failed on $test.sln! Exiting..."
         
-        for subtest in .
+        for subtest in *
         do
-            if [ "$subtest" != "packages" ] && [ "$subtest" != ".vs" ]
+            if [ "$subtest" != "packages" ] && [ "$subtest" != ".vs" ] && [ "${projdir##*.}" != "sln" ]
             then
                 echo "Running subtest $subtest..."
                 cd $subtest/bin/$config
@@ -106,9 +106,9 @@ if [ "$nuget" -eq 0 ]
 then
     echo "Creating NuGet packages..."
 
-    for projdir in $scriptroot/src
+    for projdir in $scriptroot/src/*
     do
-        if [ "$projdir" != "packages" ] && [ "$projdir" != ".vs" ]
+        if [ "$projdir" != "packages" ] && [ "$projdir" != ".vs" ] && [ "${projdir##*.}" != "sln" ]
         then
             echo "Getting assemblies from $projdir..."
             cd $projdir/bin/$config
