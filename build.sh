@@ -69,6 +69,7 @@ done
 
 if [ "$run" -eq 0 ]
 then
+    echo "Building src..."
     cd $scriptroot/src
     $scriptroot/MSBuild /property:Configuration=$config
     
@@ -77,21 +78,25 @@ fi
 
 if [ "$test" -eq 0 ]
 then
+    echo "Running tests..."
+
     for test in $scriptroot/tests
     do
+        echo "Building test $test..."
         cd $test
         $scriptroot/MSBuild /property:Configuration=$config
         
         failerr "MSBuild failed on $test.sln! Exiting..."
         
-        for subdir in .
+        for subtest in .
         do
-            if [ "$subdir" != "packages" ] && [ "$subdir" != ".vs" ]
+            if [ "$subtest" != "packages" ] && [ "$subtest" != ".vs" ]
             then
-                cd $subdir/bin/$config
-                ./$subdir.exe
+                echo "Running subtest $subtest..."
+                cd $subtest/bin/$config
+                ./$subtest.exe
                 
-                failerr "Test $subdir failed! Exiting..."
+                failerr "Subtest $subtest failed! Exiting..."
             fi
         done
     done
@@ -99,18 +104,26 @@ fi
 
 if [ "$nuget" -eq 0 ]
 then
+    echo "Creating NuGet packages..."
+
     for projdir in $scriptroot/src
     do
         if [ "$projdir" != "packages" ] && [ "$projdir" != ".vs" ]
         then
+            echo "Getting assemblies from $projdir..."
             cd $projdir/bin/$config
             cp $projdir.dll $scriptroot/nuget/lib
+            
+            echo "Cleaning existing packages..."
             cd $scriptroot/nuget
             rm *.nupkg
             
             for spec in *.nuspec
             do
+                echo "Packing $spec..."
                 ./NuGet pack $spec
+                
+                failerr "Packing $spec failed! Exiting..."
             done
         fi
     done
