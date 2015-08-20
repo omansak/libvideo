@@ -49,7 +49,7 @@ A lot. libvideo:
 - can be used in Portable Class Libraries
 - supports Windows Runtime projects (Windows 10, Windows 8.1, Windows Phone 8.1, etc.)
 - is easier to use (see below)
-- is much much faster (see below)
+- is much, much faster (see below)
 - does not support Silverlight
 - does not support FLV audio extraction
 
