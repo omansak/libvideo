@@ -13,6 +13,9 @@ namespace VideoLibrary
         public async override Task<IEnumerable<Video>> GetAllVideosAsync(
             string videoUri, Func<string, Task<string>> sourceFactory)
         {
+            if (!TryNormalize(videoUri, out videoUri))
+                throw new ArgumentException("URL is not a valid YouTube URL!");
+
             string source = await
                 sourceFactory(videoUri)
                 .ConfigureAwait(false);

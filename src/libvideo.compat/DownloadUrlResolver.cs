@@ -21,8 +21,8 @@ namespace YoutubeExtractor
             if (videoUrl == null)
                 throw new ArgumentNullException(nameof(videoUrl));
 
-            if (!TryNormalizeYoutubeUrl(videoUrl, out videoUrl))
-                throw new ArgumentException("URL is not a valid youtube URL!");
+            // GetAllVideos normalizes the URL as of libvideo v0.4.1, 
+            // don't call TryNormalizeYoutubeUrl here.
 
             return Service.GetAllVideos(videoUrl).Select(v => new VideoInfo(v));
         }
