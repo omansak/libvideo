@@ -43,7 +43,7 @@ namespace VideoLibrary
             if (!Query.TryGetParamValue("v", videoUri, out value))
                 return false;
 
-            normalized = "http://youtube.com/watch?v=" + value;
+            normalized = "https://youtube.com/watch?v=" + value;
             return true;
         }
 
