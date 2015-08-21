@@ -6,10 +6,14 @@ packages/
 
 *.dll
 *.exe
-!NuGet.exe
 !MSBuild.exe
+!NuGet.exe
 Thumbs.db
 
 *.nupkg
 *.user
 *.userprefs
+
+*.suo
+*.vspx
+*.psess
