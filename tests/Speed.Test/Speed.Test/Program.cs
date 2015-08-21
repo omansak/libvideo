@@ -15,8 +15,8 @@ namespace Speed.Test
 
         static void Main(string[] args)
         {
-            int times = args.Length == 0 ? 5 : int.Parse(args[0]);
-            int iterations = args.Length <= 1 ? 5 : int.Parse(args[1]);
+            int times = args.Length == 0 ? 3 : int.Parse(args[0]);
+            int iterations = args.Length <= 1 ? 2 : int.Parse(args[1]);
 
             Console.WriteLine("Starting...");
             Console.WriteLine($"Times: {times}.");
