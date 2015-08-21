@@ -51,7 +51,7 @@ namespace YoutubeExtractor
             if (!Query.TryGetParamValue("v", url, out value))
                 return false;
 
-            normalizedUrl = "http://youtube.com/watch?v=" + value;
+            normalizedUrl = "https://youtube.com/watch?v=" + value;
             return true;
         }
     }
