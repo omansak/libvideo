@@ -25,8 +25,7 @@ void SaveVideoToDisk(string link)
 {
     var service = new YouTubeService(); // this is the starting point for all of our download actions
     var video = service.GetVideo(link); // gets a Video object containing information about the video
-    string fileExtension = video.Extension; // e.g. ".mp4", ".webm"
-    File.WriteAllBytes(@"C:\myvideo" + fileExtension, video.GetBytes());
+    File.WriteAllBytes(@"C:\" + video.FullName, video.GetBytes());
 }
 ```
 
@@ -70,7 +69,7 @@ void SaveFileToDisk(string link)
         DownloadUrlResolver.DecryptDownloadUrl(video);
     }
     
-    var videoDownloader = new VideoDownloader(video, @"C:\myvideo" + video.VideoExtension);
+    var videoDownloader = new VideoDownloader(video, @"C:\" + video.Title + video.VideoExtension);
     videoDownloader.Execute();
 }
 ```
