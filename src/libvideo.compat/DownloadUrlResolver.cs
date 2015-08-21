@@ -40,9 +40,7 @@ namespace YoutubeExtractor
 
             var builder = new StringBuilder(url);
 
-            url = builder.Replace(" ", string.Empty)
-                .Replace("youtu.be/", "youtube.com/watch?v=")
-                .Replace("www.youtube", "youtube")
+            url = builder.Replace("youtu.be/", "youtube.com/watch?v=")
                 .Replace("youtube.com/embed/", "youtube.com/watch?v=")
                 .Replace("/v/", "/watch?v=")
                 .Replace("/watch#", "/watch?")

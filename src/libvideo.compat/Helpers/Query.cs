@@ -33,7 +33,7 @@ namespace VideoLibrary.Helpers
 
         public static bool TryGetParamValue(string param, string query, out string value)
         {
-            value = String.Empty;
+            value = null;
 
             int start = query.IndexOf('&' + param + '=');
             if (start == -1)

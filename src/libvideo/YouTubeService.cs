@@ -32,9 +32,7 @@ namespace VideoLibrary
 
             var builder = new StringBuilder(videoUri);
 
-            videoUri = builder.Replace(" ", string.Empty)
-                .Replace("youtu.be/", "youtube.com/watch?v=")
-                .Replace("www.youtube", "youtube")
+            videoUri = builder.Replace("youtu.be/", "youtube.com/watch?v=")
                 .Replace("youtube.com/embed/", "youtube.com/watch?v=")
                 .Replace("/v/", "/watch?v=")
                 .Replace("/watch#", "/watch?")
@@ -101,6 +99,6 @@ namespace VideoLibrary
         }
 
         private static int GetFormatCode(string uri) =>
-            Int32.Parse(Query.GetParamValue("itag", uri));
+            int.Parse(Query.GetParamValue("itag", uri));
     }
 }
