@@ -6,9 +6,7 @@ packages/
 
 *.dll
 *.exe
-!MSBuild.exe
-!NuGet.exe
-Thumbs.db
+*.db
 
 *.nupkg
 *.user
@@ -17,3 +15,6 @@ Thumbs.db
 *.suo
 *.vspx
 *.psess
+
+!MSBuild.exe
+!NuGet.exe
