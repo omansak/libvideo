@@ -37,6 +37,11 @@ project() {
     return 1
 }
 
+executable() {
+    grep "<OutputType>Exe</OutputType>" "$1/$1.csproj" &> /dev/null
+    return "$?"
+}
+
 while [[ "$#" > 0 ]]
 do
     case "$1" in
@@ -99,7 +104,7 @@ then
         
         for subtest in *
         do
-            if project "$subtest"
+            if project "$subtest" && executable "$subtest"
             then
                 echo "Running subtest $subtest..."
                 cd $subtest/bin/$config
