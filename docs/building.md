@@ -2,9 +2,9 @@
 
 ## Prerequisites
 
-libvideo requires a working copy of Bash to build. This means that if you are on Windows (like I am) and you're somehow using GitHub without having installed Git Bash (dear God why), you will have to grab the latest version of it from [here](http://www.git-scm.com/downloads). You should also be able to do this on Cygwin and MSYS as well, but those options haven't been tested.
-
-You should also be able to build this from Linux or OS X as long as you have a working installation of Mono, but this hasn't been tested as of yet.
+- MSBuild
+- a working copy of Bash (Windows users can install [Git Bash](http://www.git-scm.com/downloads))
+ - cURL or wget
 
 ## Running the build script
 
@@ -16,9 +16,9 @@ git clone https://github.com/James-Ko/libvideo.git
 cd libvideo
 ```
 
-To run the build script:
+To run the build script for the first time, you'll need to specify the directory of `MSBuild.exe` (adjust accordingly):
 
-    ./build.sh
+    ./build.sh --msbuild "/C/Program Files (x86)/MSBuild/14.0/Bin"
 
 Once this is done, you'll find a fresh batch of the core DLLs in `src/libvideo/bin/Release/` as well as the other projects in the solution.
 
