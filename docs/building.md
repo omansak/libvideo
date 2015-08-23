@@ -6,6 +6,8 @@
 - a working copy of Bash (Windows users can install [Git Bash](http://www.git-scm.com/downloads))
  - cURL or wget
 
+You should be able to build the repo from any OS as long as it meets the above requirements.
+
 ## Running the build script
 
 First, make sure you've cloned the repoistory:
