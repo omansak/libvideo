@@ -11,7 +11,7 @@ nugetpath="$scriptroot/nuget/NuGet.exe"
 cachefile="$scriptroot/$(basename $0).cache"
 
 msbuildprompt="Please specify the directory where MSBuild is installed.
-Example: ./build.sh \"/C/Program Files (x86)/MSBuild/14.0/Bin\""
+Example: ./build.sh --msbuild \"/C/Program Files (x86)/MSBuild/14.0/Bin\""
 
 usage="Usage: ./build.sh [OPTION]...
 
