@@ -118,7 +118,7 @@ then
 else
     if [ ! -e "$msbuildpath" ]
     then
-        echo "$msbuildpath does not exist." 1>&2
+        echo "\"$msbuildpath\" does not exist." 1>&2
         exit 1
     fi
 
