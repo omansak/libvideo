@@ -3,17 +3,23 @@
 test=1
 nuget=1
 run=0
+cache=0
 config="Release"
 
-scriptroot=$(cd "$(dirname $0)" && pwd -P)
+scriptroot="$(cd "$(dirname $0)" && pwd -P)"
+nugetpath="$scriptroot/nuget/NuGet.exe"
+cachefile="$scriptroot/$(basename $0).cache"
+
 usage="Usage: ./build.sh [OPTION]...
 
 Options:
 
 -c, --config [DEBUG|RELEASE]   set build configuration to Debug or Release
 -h, --help                     display this help text and exit
--n, --nuget                    create NuGet package post-build
---norun                        build nothing unless specified by other options"
+-m, --msbuild                  specify path to MSBuild.exe (required on first run)
+--nocache                      do not cache the path to MSBuild.exe if specified
+--norun                        build nothing unless specified by other options
+-n, --nuget                    create NuGet package post-build"
 
 usage() {
     echo "$usage" 1>&2
@@ -33,7 +39,7 @@ project() {
     then
         return 0
     fi
-    
+
     return 1
 }
 
@@ -42,6 +48,7 @@ executable() {
     return "$?"
 }
 
+# get options
 while [[ "$#" > 0 ]]
 do
     case "$1" in
@@ -73,6 +80,15 @@ do
             usage
             exit 0
             ;;
+        -m|--msbuild)
+            # IMPORTANT: all reads/writes to $msbuildpath MUST be quoted
+            # because the typical path for Windows users is in Program Files (x86).
+            msbuildpath="$2/MSBuild.exe"
+            shift
+            ;;
+        --nocache)
+            cache=1
+            ;;
         *)
             usage
             exit 1
@@ -81,12 +97,35 @@ do
     shift
 done
 
+# determine path to MSBuild.exe
+if [ -z "$msbuildpath" ]
+then
+    msbuildpath="$(cat $cachefile 2> /dev/null)"
+
+    if [ ! -e "$msbuildpath" ]
+    then
+        echo "$msbuildpath does not exist. Please specify the directory where it is installed."
+        exit 1
+    fi
+else
+    if [ ! -e "$msbuildpath" ]
+    then
+        echo "$msbuildpath does not exist."
+        exit 1
+    fi
+
+    if [ $cache -eq 0 ]
+    then
+        echo "$msbuildpath" > $cachefile
+    fi
+fi
+
 if [ "$run" -eq 0 ]
 then
     echo "Building src..."
     cd $scriptroot/src
-    $scriptroot/MSBuild /property:Configuration=$config
-    
+    "$msbuildpath" /property:Configuration=$config
+
     failerr "MSBuild failed on libvideo.sln! Exiting..."
 fi
 
@@ -98,10 +137,10 @@ then
     do
         echo "Building test $test..."
         cd $test
-        $scriptroot/MSBuild /property:Configuration=$config
-        
+        "$msbuildpath" /property:Configuration=$config
+
         failerr "MSBuild failed on $test.sln! Exiting..."
-        
+
         for subtest in *
         do
             if project "$subtest" && executable "$subtest"
@@ -109,7 +148,7 @@ then
                 echo "Running subtest $subtest..."
                 cd $subtest/bin/$config
                 ./$subtest.exe
-                
+
                 failerr "Subtest $subtest failed! Exiting..."
             fi
         done
@@ -131,16 +170,34 @@ then
             cp $baseproj.dll $scriptroot/nuget/lib
         fi
     done
-            
+
     echo "Cleaning existing packages..."
     cd $scriptroot/nuget
     rm *.nupkg
-    
+
+    # stole a few of these lines from the CoreFX build.sh
+    if [ ! -e $nugetpath ]
+    then
+        echo "Restoring NuGet.exe..."
+
+        # curl has HTTPS CA trust-issues less often than wget, so try that first
+        which curl &> /dev/null
+        if [ $? -eq 0 ]; then
+           curl -sSL --create-dirs -o $nugetpath https://api.nuget.org/downloads/nuget.exe
+       else
+           which wget &> /dev/null
+           failerr "cURL or wget is required to build libvideo."
+           wget -q -O $nugetpath https://api.nuget.org/downloads/nuget.exe
+        fi
+
+        failerr "Failed to restore NuGet.exe."
+    fi
+
     for spec in *.nuspec
     do
         echo "Packing $spec..."
-        ./NuGet pack $spec
-        
+        $nugetpath pack $spec
+
         failerr "Packing $spec failed! Exiting..."
     done
 fi

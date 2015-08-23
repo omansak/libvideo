@@ -23,3 +23,6 @@ lib/
 # Profiling sessions
 *.vspx
 *.psess
+
+# Miscellaneous
+*.cache
