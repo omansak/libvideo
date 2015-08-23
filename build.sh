@@ -10,6 +10,9 @@ scriptroot="$(cd "$(dirname $0)" && pwd -P)"
 nugetpath="$scriptroot/nuget/NuGet.exe"
 cachefile="$scriptroot/$(basename $0).cache"
 
+msbuildprompt="Please specify the directory where MSBuild is installed.
+Example: ./build.sh \"/C/Program Files (x86)/MSBuild/14.0/Bin\""
+
 usage="Usage: ./build.sh [OPTION]...
 
 Options:
@@ -102,7 +105,11 @@ if [ -z "$msbuildpath" ]
 then
     msbuildpath="$(cat $cachefile 2> /dev/null)"
 
-    if [ ! -e "$msbuildpath" ]
+    if [ -z "$msbuildpath" ]
+    then
+        echo "$msbuildprompt"
+        exit 1
+    elif [ ! -e "$msbuildpath" ]
     then
         echo "$msbuildpath does not exist. Please specify the directory where it is installed."
         exit 1
