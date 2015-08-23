@@ -1,20 +1,25 @@
+# Binary storage
 bin/
 obj/
 lib/
-packages/
-.vs/
 
+# Binary files
+*.db
 *.dll
 *.exe
-*.db
 
+# NuGet packages
 *.nupkg
+**/packages/*
+!**/packages/build/
+#!**/packages/repositories.config
+
+# IDE clutter
+.vs/
+*.suo
 *.user
 *.userprefs
 
-*.suo
+# Profiling sessions
 *.vspx
 *.psess
-
-!MSBuild.exe
-!NuGet.exe

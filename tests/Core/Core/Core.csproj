@@ -80,4 +80,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="Test">
+    <xunit Assemblies="bin\$(Configuration)\Core.dll"/>
+  </Target>
 </Project>
