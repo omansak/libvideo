@@ -105,25 +105,6 @@ do
     shift
 done
 
-# restore NuGet.exe if not yet installed
-# will admit I stole a few of these lines from the CoreFX build.sh...
-if [ ! -e $nugetpath ]
-then
-    echo "Restoring NuGet.exe..."
-
-    # curl has HTTPS CA trust-issues less often than wget, so try that first
-    which curl &> /dev/null
-    if [ $? -eq 0 ]; then
-       curl -sSL --create-dirs -o $nugetpath https://api.nuget.org/downloads/nuget.exe
-   else
-       which wget &> /dev/null
-       failerr "cURL or wget is required to build libvideo."
-       wget -q -O $nugetpath https://api.nuget.org/downloads/nuget.exe
-    fi
-
-    failerr "Failed to restore NuGet.exe."
-fi
-
 # determine path to MSBuild.exe
 if [ -z "$msbuildpath" ]
 then
@@ -151,6 +132,27 @@ else
         echo "$msbuildpath" > $cachefile
     fi
 fi
+
+# restore NuGet.exe if not yet installed
+# will admit I stole a few of these lines from the CoreFX build.sh...
+if [ ! -e $nugetpath ]
+then
+    echo "Restoring NuGet.exe..."
+
+    # curl has HTTPS CA trust-issues less often than wget, so try that first
+    which curl &> /dev/null
+    if [ $? -eq 0 ]; then
+       curl -sSL --create-dirs -o $nugetpath https://api.nuget.org/downloads/nuget.exe
+   else
+       which wget &> /dev/null
+       failerr "cURL or wget is required to build libvideo."
+       wget -q -O $nugetpath https://api.nuget.org/downloads/nuget.exe
+    fi
+
+    failerr "Failed to restore NuGet.exe."
+fi
+
+# start the actual build
 
 if [ "$run" -eq 0 ]
 then
