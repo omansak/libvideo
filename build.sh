@@ -105,13 +105,14 @@ if [ -z "$msbuildpath" ]
 then
     msbuildpath="$(cat $cachefile 2> /dev/null)"
 
-    if [ -z "$msbuildpath" ]
+    if [ $? -ne 0 ]
     then
         echo "$msbuildprompt" 1>&2
         exit 1
     elif [ ! -e "$msbuildpath" ]
     then
-        echo "$msbuildpath does not exist. Please specify the directory where it is installed." 1>&2
+        echo "\"$msbuildpath\" was read from the cache, but it does not exist." 1>&2
+        echo "$msbuildprompt" 1>&2
         exit 1
     fi
 else
