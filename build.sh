@@ -32,7 +32,7 @@ failerr() {
     exitcode=$?
     if [ "$exitcode" -ne 0 ]
     then
-        echo "$1"
+        echo "$1" 1>&2
         exit $exitcode
     fi
 }
@@ -107,17 +107,17 @@ then
 
     if [ -z "$msbuildpath" ]
     then
-        echo "$msbuildprompt"
+        echo "$msbuildprompt" 1>&2
         exit 1
     elif [ ! -e "$msbuildpath" ]
     then
-        echo "$msbuildpath does not exist. Please specify the directory where it is installed."
+        echo "$msbuildpath does not exist. Please specify the directory where it is installed." 1>&2
         exit 1
     fi
 else
     if [ ! -e "$msbuildpath" ]
     then
-        echo "$msbuildpath does not exist."
+        echo "$msbuildpath does not exist." 1>&2
         exit 1
     fi
 
