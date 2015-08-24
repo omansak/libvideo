@@ -11,25 +11,37 @@ namespace Core
 {
     public class UnitTests
     {
+        private const string YouTubeInvalidUriOne = "https://wikipedia.com";
+        private const string YouTubeInvalidUriTwo = "123ABC!@#";
         private const string YouTubeUri = "https://www.youtube.com/watch?v=JjCaRS-CABk";
         // private const string VimeoUri = "https://vimeo.com/131417856";
 
         [Fact]
-        public void YouTube_Download()
+        public void YouTube_GetVideo()
         {
-            var service = new YouTubeService();
+            var video = YouTubeService.Default.GetVideo(YouTubeUri);
 
-            byte[] bytes = service.Download(YouTubeUri);
+            Assert.NotNull(video.Uri);
+            Assert.NotEqual(video.FormatCode, -1);
+            Assert.Equal(video.WebSite, WebSites.YouTube);
         }
 
         [Fact]
-        public void YouTube_DownloadMany()
+        public void YouTube_GetAllVideos()
         {
-            var service = new YouTubeService();
+            var videos = YouTubeService.Default.GetAllVideos(YouTubeUri);
 
-            var arrays = service.DownloadMany(YouTubeUri);
+            Assert.NotNull(videos);
+            Assert.DoesNotContain(null, videos);
+        }
 
-            foreach (var array in arrays); // synchronous DownloadMany may use yield
+        [Fact]
+        public void YouTube_ThrowOnInvalidUri()
+        {
+            // Assert.Throws<ArgumentException>(
+            //     () => YouTubeService.Default.GetVideo(YouTubeInvalidUriOne));
+            // Assert.Throws<ArgumentException>(
+            //     () => YouTubeService.Default.GetVideo(YouTubeInvalidUriTwo));
         }
     }
 }

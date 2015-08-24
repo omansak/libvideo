@@ -54,7 +54,7 @@ namespace Speed.Test
                         var watch = Stopwatch.StartNew();
 
                         for (int j = 0; j < iterations; j++)
-                            GC.KeepAlive(service.GetAllUris(Uri));
+                            GC.KeepAlive(service.GetAllVideos(Uri));
 
                         watch.Stop();
                         elapsed += watch.Elapsed;
