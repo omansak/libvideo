@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -71,6 +72,19 @@ namespace VideoLibrary
             {
                 return await client
                     .GetByteArrayAsync(Uri)
+                    .ConfigureAwait(false);
+            }
+        }
+
+        public Stream Stream() =>
+            StreamAsync().Result;
+
+        public async Task<Stream> StreamAsync()
+        {
+            using (var client = new HttpClient())
+            {
+                return await client
+                    .GetStreamAsync(Uri)
                     .ConfigureAwait(false);
             }
         }

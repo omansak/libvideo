@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -19,6 +20,12 @@ namespace VideoLibrary
         // TODO: Make this use yield to download videos lazily.
         public IEnumerable<byte[]> DownloadMany(string videoUri) =>
             DownloadManyAsync(videoUri).Result;
+
+        public Stream Stream(string videoUri) =>
+            StreamAsync(videoUri).Result;
+
+        public IEnumerable<Stream> StreamAll(string videoUri) =>
+            StreamAllAsync(videoUri).Result;
 
         public string GetUri(string videoUri) =>
             GetUriAsync(videoUri).Result;
@@ -76,6 +83,36 @@ namespace VideoLibrary
 
                 return await Task.WhenAll(tasks)
                     .ConfigureAwait(false); // This is not lazy. You cannot use async and yield simultaneously.
+            }
+        }
+
+        public async Task<Stream> StreamAsync(string videoUri)
+        {
+            using (var client = new HttpClient())
+            {
+                string uri = await GetUriAsync(videoUri,
+                    address => client.GetStringAsync(address))
+                    .ConfigureAwait(false);
+
+                return await client
+                    .GetStreamAsync(uri)
+                    .ConfigureAwait(false);
+            }
+        }
+
+        public async Task<IEnumerable<Stream>> StreamAllAsync(string videoUri)
+        {
+            using (var client = new HttpClient())
+            {
+                var links = await GetAllUrisAsync(videoUri,
+                    address => client.GetStringAsync(address))
+                    .ConfigureAwait(false);
+
+                var tasks = links.Select(
+                    uri => client.GetStreamAsync(uri));
+
+                return await Task.WhenAll(tasks)
+                    .ConfigureAwait(false);
             }
         }
 
