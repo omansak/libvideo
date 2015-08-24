@@ -4,9 +4,9 @@
 
 [![Join the chat at https://gitter.im/James-Ko/libvideo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/James-Ko/libvideo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-libvideo is a .NET library that lets you download YouTube videos in a fast, clean way.
+libvideo (aka VideoLibrary) is a modern .NET library for downloading YouTube videos. It is portable to most platforms and is very lightweight.
 
-## Where can I install it?
+## Installation
 
 You can grab a copy of the library [on NuGet](https://www.nuget.org/packages/VideoLibrary) by running:
 
@@ -14,7 +14,15 @@ You can grab a copy of the library [on NuGet](https://www.nuget.org/packages/Vid
 
 Alternatively, you can try [building the repo](docs/building.md) if you like your assemblies extra-fresh.
 
-## How do I get started?
+## Supported Platforms
+
+- .NET Framework 4.5+
+- Windows 10 Universal apps
+- Portable Class Libraries
+- Windows 8.1 and 8.0
+- Windows Phone 8.1
+
+## Getting Started
 
 Here's a small sample to help you get familiar with libvideo:
 
@@ -29,55 +37,31 @@ void SaveVideoToDisk(string link)
 }
 ```
 
-If you'd like to check out some more of our features, take a look at our [docs](docs/README.md). You can also refer to our [example application](samples/Valks/Valks/Program.cs) (named Valks, yes, I know, it's a sily name) if you're looking for a more comprehensive sample.
+If you'd like to check out some more of our features, take a look at our [docs](docs/README.md). You can also refer to our [example application](samples/Valks/Valks/Program.cs) (named Valks, yes, I know, it's a silly name) if you're looking for a more comprehensive sample.
 
-## What platforms do you support?
+## License
 
-libvideo supports the following platforms:
+libvideo is licensed under the [BSD 2-clause license](bsd.license).
 
-- .NET Framework 4.5+
-- Windows 10 Universal apps
-- Portable Class Libraries
-- Windows 8.1 and 8.0
-- Windows Phone 8.1 (WinRT)
+## FAQ
 
-## What's the difference between libvideo and YoutubeExtractor?
+### What's the difference between libvideo and YoutubeExtractor?
 
-A lot. libvideo:
+libvideo:
 
 - can be used in Portable Class Libraries
-- supports Windows Runtime projects (Windows 10, Windows 8.1, Windows Phone 8.1, etc.)
-- is easier to use (see below)
-- is much, much faster (see below)
-- **does not** support Silverlight
-- **does not** support FLV audio extraction
+- supports WinRT projects (e.g. Windows 10)
+- is roughly 400% faster ([yes, it's true](tests/Speed.Test/Speed.Test/Program.cs))
 
-### Is libvideo *that* much easier to use?
+YoutubeExtractor:
 
-Yes. Here is the previous example rewritten using YoutubeExtractor's API:
+- supports Silverlight
+- supports Flash audio extraction
 
-```csharp
-using YoutubeExtractor;
+### Can I switch from YoutubeExtractor without having to refactor my code?
 
-void SaveFileToDisk(string link)
-{
-    var videoInfos = DownloadUrlResolver.GetDownloadUrls(link);
-    var video = videoInfos.First();
-    
-    if (video.RequiresDecryption)
-    {
-        DownloadUrlResolver.DecryptDownloadUrl(video);
-    }
-    
-    var videoDownloader = new VideoDownloader(video, @"C:\" + video.Title + video.VideoExtension);
-    videoDownloader.Execute();
-}
-```
+Absolutely! Check out our [libvideo.compat](https://www.nuget.org/packages/VideoLibrary.Compat/) package. It has the same API as YoutubeExtractor, but uses libvideo as its backend so your application will get a major speed boost.
 
-### Is libvideo *that* much faster than YoutubeExtractor?
+### Do you accept donations?
 
-Yes, I've even made some [speed tests](tests/SpeedTest/SpeedTest/Program.cs) to make sure of this. libvideo runs around [4.5x](http://imgur.com/VJAOoj5) faster than YoutubeExtractor, since it does not use any JSON parsers, query tokenizers, or regex. As a result, it's much more performant and has zero dependencies.
-
-## Do you accept donations?
-
-libvideo does not accept donations, but please [help out](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=daume%2edennis%40gmail%2ecom&lc=US&item_name=YoutubeExtractor&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest) the creator of YoutubeExtractor. Although my library is (objectively) better than his, I'm not a prick who likes cutting off other people's funds.
+Thanks! I'm flattered, but it's not really necessary. If anything, you should donate to the creator of [YoutubeExtractor](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=daume%2edennis%40gmail%2ecom&lc=US&item_name=YoutubeExtractor&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest), because this project wouldn't have happened were it not for him.
