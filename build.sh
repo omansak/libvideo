@@ -7,7 +7,7 @@ cache=0
 config="Release"
 
 scriptroot="$(cd "$(dirname $0)" && pwd -P)"
-nugetpath="$scriptroot/nuget/NuGet.exe"
+nugetpath="$scriptroot/NuGet.exe"
 cachefile="$scriptroot/$(basename $0).cache"
 
 msbuildprompt="Please specify the directory where MSBuild is installed.
@@ -142,7 +142,7 @@ then
     # curl has HTTPS CA trust-issues less often than wget, so try that first
     which curl &> /dev/null
     if [ $? -eq 0 ]; then
-       curl -sSL --create-dirs -o $nugetpath https://api.nuget.org/downloads/nuget.exe
+       curl -sSL -o $nugetpath https://api.nuget.org/downloads/nuget.exe
    else
        which wget &> /dev/null
        failerr "cURL or wget is required to build libvideo."
