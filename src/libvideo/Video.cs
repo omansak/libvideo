@@ -89,7 +89,18 @@ namespace VideoLibrary
             }
         }
 
-        public string FullName => Title + FileExtension;
+        public string FullName
+        {
+            get
+            {
+                string result = Title + FileExtension;
+
+                foreach (char bad in Path.GetInvalidFileNameChars())
+                    result = result.Replace(bad.ToString(), string.Empty);
+
+                return result;
+            }
+        }
 
         public override string ToString() => FullName;
     }
