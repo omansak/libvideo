@@ -23,7 +23,7 @@ using VideoLibrary;
 
 void SaveVideoToDisk(string link)
 {
-    var service = new YouTubeService(); // this is the starting point for all of our download actions
+    var service = YouTubeService.Default; // this is the starting point for all of our download actions
     var video = service.GetVideo(link); // gets a Video object containing information about the video
     File.WriteAllBytes(@"C:\" + video.FullName, video.GetBytes());
 }
