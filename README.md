@@ -6,14 +6,6 @@
 
 libvideo (aka VideoLibrary) is a modern .NET library for downloading YouTube videos. It is portable to most platforms and is very lightweight.
 
-## Supported Platforms
-
-- .NET Framework 4.5+
-- Windows 10 Universal apps
-- Portable Class Libraries
-- Windows 8.1 and 8.0
-- Windows Phone 8.1
-
 ## Installation
 
 You can grab a copy of the library [on NuGet](https://www.nuget.org/packages/VideoLibrary) by running:
@@ -36,6 +28,14 @@ void SaveVideoToDisk(string link)
     File.WriteAllBytes(@"C:\" + video.FullName, video.GetBytes());
 }
 ```
+
+## Supported Platforms
+
+- .NET Framework 4.5+
+- Windows 10 Universal apps
+- Portable Class Libraries
+- Windows 8.1 and 8.0
+- Windows Phone 8.1
 
 If you'd like to check out some more of our features, take a look at our [docs](docs/README.md). You can also refer to our [example application](samples/Valks/Valks/Program.cs) (named Valks, yes, I know, it's a silly name) if you're looking for a more comprehensive sample.
 
