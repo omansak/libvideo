@@ -3,6 +3,7 @@
 ## Prerequisites
 
 - MSBuild
+- A C# 6 compiler
 - a working copy of Bash (Windows users can install [Git Bash](http://www.git-scm.com/downloads))
  - cURL or wget
 
