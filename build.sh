@@ -9,6 +9,7 @@ config="Release"
 scriptroot="$(cd "$(dirname $0)" && pwd -P)"
 nugetpath="$scriptroot/NuGet.exe"
 cachefile="$scriptroot/$(basename $0).cache"
+targets="portable-net45+win+wpa81"
 
 msbuildprompt="Please specify the directory where MSBuild is installed.
 Example: ./build.sh --msbuild \"/C/Program Files (x86)/MSBuild/14.0/Bin\""
@@ -192,6 +193,7 @@ fi
 if [ "$nuget" -eq 0 ]
 then
     echo "Creating NuGet packages..."
+    mkdir -p $scriptroot/nuget/lib/$targets
 
     for projdir in $scriptroot/src/*
     do
@@ -200,8 +202,7 @@ then
         then
             echo "Getting assemblies from $projdir..."
             cd $projdir/bin/$config
-            mkdir $scriptroot/nuget/lib 2> /dev/null
-            cp $baseproj.dll $scriptroot/nuget/lib
+            cp $baseproj.dll $scriptroot/nuget/lib/$targets
         fi
     done
 
