@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace VideoLibrary
     {
         private bool Disposed = false;
         private readonly ServiceBase BaseService;
-        private readonly HttpClient Client = new HttpClient();
+        private readonly HttpClient Client;
 
         private Func<string, Task<string>> SourceFactory =>
             address => Client.GetStringAsync(address);
@@ -22,6 +23,21 @@ namespace VideoLibrary
                 throw new ArgumentNullException(nameof(baseService));
 
             this.BaseService = baseService;
+
+            var handler = new HttpClientHandler();
+
+            // Be very careful because if any exceptions are 
+            // thrown between here && the HttpClient ctor, 
+            // we will leak resources.
+
+            if (handler.SupportsAutomaticDecompression)
+            {
+                handler.AutomaticDecompression =
+                    DecompressionMethods.GZip |
+                    DecompressionMethods.Deflate;
+            }
+
+            this.Client = new HttpClient(handler);
         }
 
         #region IDisposable implementation

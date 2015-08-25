@@ -16,48 +16,45 @@ namespace VideoLibrary
         #region Synchronous wrappers
         public Video GetVideo(string videoUri) =>
             GetVideoAsync(videoUri).Result;
-        public Video GetVideo(string videoUri, Func<string, string> sourceFactory) =>
-            GetVideoAsync(videoUri, sourceFactory).Result;
-        public Video GetVideo(string videoUri, Func<string, Task<string>> sourceFactory) =>
+
+        internal Video GetVideo(string videoUri, 
+            Func<string, Task<string>> sourceFactory) =>
             GetVideoAsync(videoUri, sourceFactory).Result;
 
         public IEnumerable<Video> GetAllVideos(string videoUri) =>
             GetAllVideosAsync(videoUri).Result;
-        public IEnumerable<Video> GetAllVideos(string videoUri, Func<string, string> sourceFactory) =>
-            GetAllVideosAsync(videoUri, sourceFactory).Result;
-        public IEnumerable<Video> GetAllVideos(string videoUri, Func<string, Task<string>> sourceFactory) =>
+
+        internal IEnumerable<Video> GetAllVideos(string videoUri, 
+            Func<string, Task<string>> sourceFactory) =>
             GetAllVideosAsync(videoUri, sourceFactory).Result;
         #endregion
 
         public async Task<Video> GetVideoAsync(string videoUri)
         {
-            using (var client = new HttpClient())
+            using (var wrapped = new SingleClientService(this))
             {
-                return await GetVideoAsync(videoUri,
-                    uri => client.GetStringAsync(uri))
+                return await wrapped
+                    .GetVideoAsync(videoUri)
                     .ConfigureAwait(false);
             }
         }
 
-        public Task<Video> GetVideoAsync(string videoUri, Func<string, string> sourceFactory) =>
-            GetVideoAsync(videoUri, uri => Task.FromResult(sourceFactory(uri)));
-
-        public async Task<Video> GetVideoAsync(string videoUri, Func<string, Task<string>> sourceFactory) =>
-            VideoSelector(await GetAllVideosAsync(videoUri, sourceFactory).ConfigureAwait(false));
+        internal async Task<Video> GetVideoAsync(
+            string videoUri, Func<string, Task<string>> sourceFactory) =>
+            VideoSelector(await GetAllVideosAsync(
+                videoUri, sourceFactory).ConfigureAwait(false));
 
         public async Task<IEnumerable<Video>> GetAllVideosAsync(string videoUri)
         {
-            using (var client = new HttpClient())
+            using (var wrapped = new SingleClientService(this))
             {
-                return await GetAllVideosAsync(videoUri,
-                    uri => client.GetStringAsync(uri))
+                return await wrapped
+                    .GetAllVideosAsync(videoUri)
                     .ConfigureAwait(false);
             }
         }
 
-        public Task<IEnumerable<Video>> GetAllVideosAsync(string videoUri, Func<string, string> sourceFactory) =>
-            GetAllVideosAsync(videoUri, uri => Task.FromResult(sourceFactory(uri)));
-
-        public abstract Task<IEnumerable<Video>> GetAllVideosAsync(string videoUri, Func<string, Task<string>> sourceFactory);
+        internal abstract Task<IEnumerable<Video>> GetAllVideosAsync(
+            string videoUri, Func<string, Task<string>> sourceFactory);
     }
 }

@@ -12,7 +12,7 @@ namespace VideoLibrary
     {
         public static YouTubeService Default { get; } = new YouTubeService();
 
-        public async override Task<IEnumerable<Video>> GetAllVideosAsync(
+        internal async override Task<IEnumerable<Video>> GetAllVideosAsync(
             string videoUri, Func<string, Task<string>> sourceFactory)
         {
             if (!TryNormalize(videoUri, out videoUri))
