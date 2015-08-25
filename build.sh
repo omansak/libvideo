@@ -193,28 +193,25 @@ fi
 if [ "$nuget" -eq 0 ]
 then
     echo "Creating NuGet packages..."
-    mkdir -p $scriptroot/nuget/lib/$targets
 
-    for projdir in $scriptroot/src/*
+    for packageroot in $scriptroot/nuget/*
     do
-        baseproj="$(basename $projdir)"
-        if project "$baseproj"
-        then
-            echo "Getting assemblies from $projdir..."
-            cd $projdir/bin/$config
-            cp $baseproj.dll $scriptroot/nuget/lib/$targets
-        fi
-    done
+        package="$(basename $packageroot)"
+        echo "Getting assemblies for $package..."
+        mkdir -p $packageroot/lib/$targets
+        cd $scriptroot/src/$package/bin/$config
+        cp $package.dll $packageroot/lib/$targets
 
-    echo "Cleaning existing packages..."
-    cd $scriptroot/nuget
-    rm *.nupkg
+        echo "Cleaning existing $package packages..."
+        cd $packageroot
+        rm *.nupkg 2> /dev/null
 
-    for spec in *.nuspec
-    do
-        echo "Packing $spec..."
-        $nugetpath pack $spec
+        for spec in *.nuspec
+        do
+            echo "Packing $spec..."
+            $nugetpath pack $spec
 
-        failerr "Packing $spec failed! Exiting..."
+            failerr "Packing $spec failed! Exiting..."
+        done
     done
 fi
