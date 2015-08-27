@@ -36,7 +36,7 @@ File.WriteAllBytes(@"C:\" + fullName, contents);
 
 ## Advanced
 
-YouTube actually exposes *multiple* videos for each URL- e.g. when you change the resolution of a video, you're watching a *different video*. libvideo supports downloading more than one of them:
+YouTube actually exposes multiple videos for each URL- e.g. when you change the resolution of a video, you're watching a *different video*. libvideo supports downloading more than one of them:
 
 ```csharp
 IEnumerable<Video> videos = service.GetAllVideos(uri);
@@ -59,5 +59,7 @@ using (var service = new SingleClientService(YouTubeService.Default)) // be sure
     service.Download("[some other video]"); // the service's HttpClient is reused here, saving memory and reducing GC pressure
 }
 ```
+
+---
 
 That's it. We hope you enjoy libvideo! If you're looking for more features, feel free to raise an issue and we'll discuss it with you.
