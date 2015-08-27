@@ -41,7 +41,7 @@ namespace Valks
                         folder = Console.ReadLine();
                     }
 
-                    string path = Path.Combine(folder, GetFileName(video));
+                    string path = Path.Combine(folder, video.FullName);
 
                     Console.WriteLine("Saving...");
 
@@ -50,16 +50,6 @@ namespace Valks
                     Console.WriteLine("Done.");
                 }
             }
-        }
-
-        static string GetFileName(Video video)
-        {
-            string result = video.Title + video.Extension;
-
-            foreach (char bad in Path.GetInvalidFileNameChars())
-                result = result.Replace(bad.ToString(), String.Empty);
-
-            return result;
         }
 
         static string GetDefaultFolder()

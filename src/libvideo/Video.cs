@@ -96,7 +96,7 @@ namespace VideoLibrary
                 string result = Title + FileExtension;
 
                 foreach (char bad in Path.GetInvalidFileNameChars())
-                    result = result.Replace(bad.ToString(), string.Empty);
+                    result = result.Replace(bad, '_');
 
                 return result;
             }
