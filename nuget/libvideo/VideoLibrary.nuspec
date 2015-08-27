@@ -14,7 +14,7 @@
     <description>libvideo is a fast, clean way to download YouTube videos. It is fully portable and has no dependencies.</description>
     <releaseNotes></releaseNotes>
     <copyright></copyright>
-    <tags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core</tags>
+    <tags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core xamarin mono monotouch xamarin.ios ios xamarin.android android</tags>
     <dependencies/>
   </metadata>
 </package>
