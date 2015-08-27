@@ -9,7 +9,7 @@ config="Release"
 scriptroot="$(cd "$(dirname $0)" && pwd -P)"
 nugetpath="$scriptroot/NuGet.exe"
 cachefile="$scriptroot/$(basename $0).cache"
-targets="portable-net45+win+wpa81"
+targets="portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10"
 
 msbuildprompt="Please specify the directory where MSBuild is installed.
 Example: ./build.sh --msbuild \"/C/Program Files (x86)/MSBuild/14.0/Bin\""

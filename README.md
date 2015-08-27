@@ -19,6 +19,8 @@ Alternatively, you can try [building the repo](docs/building.md) if you like you
 - .NET Framework 4.5+
 - Windows 10 Universal apps
 - Portable Class Libraries
+- Xamarin.iOS
+- Xamarin.Android
 - Windows 8.1 and 8.0
 - Windows Phone 8.1
 

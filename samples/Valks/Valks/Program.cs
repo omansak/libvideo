@@ -33,7 +33,7 @@ namespace Valks
 
                     string folder;
 
-                    if (Char.ToUpper(opt) == 'Y')
+                    if (char.ToUpper(opt) == 'Y')
                         folder = GetDefaultFolder();
                     else
                     {
