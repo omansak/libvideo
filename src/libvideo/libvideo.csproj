@@ -47,6 +47,7 @@
     <Compile Include="SingleClientService.cs" />
     <Compile Include="Video.cs" />
     <Compile Include="Video.Format.cs" />
+    <Compile Include="VideoClient.cs" />
     <Compile Include="VideoFormat.cs" />
     <Compile Include="VimeoService.cs" />
     <Compile Include="WebSites.cs" />

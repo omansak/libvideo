@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,10 +67,10 @@ namespace VideoLibrary
         /// <returns>A Task returning the bytes of the video, which are generally saved into a file.</returns>
         public async Task<byte[]> GetBytesAsync()
         {
-            using (var client = new HttpClient())
+            using (var client = new VideoClient())
             {
                 return await client
-                    .GetByteArrayAsync(Uri)
+                    .GetBytesAsync(this)
                     .ConfigureAwait(false);
             }
         }
@@ -81,10 +80,10 @@ namespace VideoLibrary
 
         public async Task<Stream> StreamAsync()
         {
-            using (var client = new HttpClient())
+            using (var client = new VideoClient())
             {
                 return await client
-                    .GetStreamAsync(Uri)
+                    .StreamAsync(this)
                     .ConfigureAwait(false);
             }
         }
