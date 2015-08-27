@@ -75,9 +75,17 @@ namespace VideoLibrary
             }
         }
 
+        /// <summary>
+        /// Streams the contents of the video.
+        /// </summary>
+        /// <returns>A stream to the binary contents of this video.</returns>
         public Stream Stream() =>
             StreamAsync().Result;
 
+        /// <summary>
+        /// Streams the contents of the video as an asynchronous operation.
+        /// </summary>
+        /// <returns>A Task to a stream representing the binary contents of this video.</returns>
         public async Task<Stream> StreamAsync()
         {
             using (var client = new VideoClient())
@@ -88,6 +96,9 @@ namespace VideoLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the full name of the video, typically used as the file name when saving the video to disk.
+        /// </summary>
         public string FullName
         {
             get
@@ -101,6 +112,10 @@ namespace VideoLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the full name of the video, typically used as the file name when saving the video to disk.
+        /// </summary>
+        /// <returns>The full name of the video. Refer to <see cref="FullName"/>.</returns>
         public override string ToString() => FullName;
     }
 }
