@@ -8,21 +8,21 @@ namespace VideoLibrary.Helpers
 {
     internal static class Query
     {
-        public static string ParamsFor(string param, string query)
+        public static string GetSignatureAndHost(string signature, string query)
         {
-            string @params = "&signature=" + param;
+            string @params = "&signature=" + signature;
 
             string fallbackHost;
-            if (TryGetParamValue("fallback_host", query, out fallbackHost))
+            if (TryGetParam("fallback_host", query, out fallbackHost))
                 @params += "&fallback_host=" + fallbackHost;
 
             return @params;
         }
 
-        public static string GetParamValue(string param, string query)
+        public static string GetParam(string param, string query)
         {
             string result;
-            if (!TryGetParamValue(param, query, out result))
+            if (!TryGetParam(param, query, out result))
                 throw new InvalidOperationException($@"Param {param} is not contained by the following query:
 {query}");
             return result;
@@ -31,7 +31,7 @@ namespace VideoLibrary.Helpers
         public static bool ContainsParam(string param, string query) =>
             query.Contains('&' + param + '=') || query.Contains('?' + param + '=');
 
-        public static bool TryGetParamValue(string param, string query, out string value)
+        public static bool TryGetParam(string param, string query, out string value)
         {
             value = String.Empty;
 

@@ -42,7 +42,7 @@ namespace VideoLibrary
 
             string value;
 
-            if (!Query.TryGetParamValue("v", videoUri, out value))
+            if (!Query.TryGetParam("v", videoUri, out value))
                 return false;
 
             normalized = "https://youtube.com/watch?v=" + value;
@@ -79,13 +79,13 @@ namespace VideoLibrary
             // bool encrypted = false; // TODO: Use this.
             string signature;
 
-            if (Query.TryGetParamValue("s", query, out signature))
+            if (Query.TryGetParam("s", query, out signature))
             {
                 // encrypted = true;
-                uri += Query.ParamsFor(signature, query);
+                uri += Query.GetSignatureAndHost(signature, query);
             }
-            else if (Query.TryGetParamValue("sig", query, out signature))
-                uri += Query.ParamsFor(signature, query);
+            else if (Query.TryGetParam("sig", query, out signature))
+                uri += Query.GetSignatureAndHost(signature, query);
 
             uri = WebUtility.UrlDecode(
                 WebUtility.UrlDecode(uri));
@@ -101,6 +101,6 @@ namespace VideoLibrary
         }
 
         private static int GetFormatCode(string uri) =>
-            int.Parse(Query.GetParamValue("itag", uri));
+            int.Parse(Query.GetParam("itag", uri));
     }
 }
