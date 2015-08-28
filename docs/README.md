@@ -2,47 +2,43 @@
 
 Here you'll find a more in-depth explanation of the libvideo APIs.
 
-The entry point for most of the API is in `YouTubeService`:
+To get information about a video:
 
 ```csharp
-var service = YouTubeService.Default;
-```
+string uri = "https://www.youtube.com/watch?v=vPto6XpRq-U"; // URL we want to use
+Video video = YouTubeService.Default.GetVideo(uri); // here we "parse" a Video object from the given URL
 
-To download a video:
-
-```csharp
-string uri = "https://www.youtube.com/watch?v=vPto6XpRq-U";
-Video video = service.GetVideo(uri);
-```
-
-To get information about it:
-
-```csharp
-string title = video.Title;
-string fileExtension = video.FileExtension;
+string title = video.Title; // gets the title
+string fileExtension = video.FileExtension; // file extension
 string fullName = video.FullName; // essentially the same thing as title + fileExtension, provided for convenience
-byte[] contents = video.GetBytes(); // gets binary contents of video
-Stream stream = video.Stream(); // stream the video
-// We also support more advanced info like audio bitrate, resolution, etc.
+int resolution = video.Resolution; // resolution
+// etc.
 ```
 
-To save it to disk:
+You can download it like this:
 
 ```csharp
-File.WriteAllBytes(@"C:\" + fullName, contents);
+byte[] bytes = video.GetBytes(); // gets the binary contents of the video
+Stream stream = video.Stream(); // you can stream it as well
+```
+
+And to save it to a file:
+
+```csharp
+File.WriteAllBytes(@"C:\" + fullName, bytes);
 ```
 
 ---
 
 ## Advanced
 
-YouTube actually exposes multiple videos for each URL- e.g. when you change the resolution of a video, you're watching a *different video*. libvideo supports downloading more than one of them:
+YouTube exposes multiple videos for each URL- e.g. when you change the resolution of a video, you're actually watching a different video. libvideo supports downloading multiple of them:
 
 ```csharp
 IEnumerable<Video> videos = service.GetAllVideos(uri);
 ```
 
-We also have full support for async code:
+We also have full support for async:
 
 ```csharp
 Video video = await service.GetVideoAsync(uri);
@@ -72,4 +68,4 @@ using (var client = new VideoClient())
 
 ---
 
-That's it. We hope you enjoy libvideo! If you're looking for more features, feel free to raise an issue and we'll discuss it with you.
+That's it; enjoy! If you're looking for more features, feel free to raise an issue and we can discuss it with you.
