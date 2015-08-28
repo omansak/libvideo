@@ -49,7 +49,7 @@ byte[] contents = await video.GetBytesAsync();
 Lastly, you should be aware that for every time you visit YouTube a new `HttpClient` is created and disposed. To avoid this, use `SingleClientService`:
 
 ```csharp
-using (var service = new SingleClientService(YouTubeService.Default)) // put this in a using block to not leak memory
+using (var service = new ClientService(new YouTubeService())) // put this in a using block to not leak resources
 {
     service.GetVideo(uri);
     service.GetVideo("[some other video]"); // the service's HttpClient is reused here, saving memory and reducing GC pressure
