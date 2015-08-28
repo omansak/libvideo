@@ -1,21 +1,15 @@
 # Documentation
 
-Here you'll find a more in-depth explanation of the libvideo APIs.
+Looking for a more in-depth explanation of libvideo? You've come to the right place.
 
-The entry point for most of the API is in `YouTubeService`:
-
-```csharp
-var service = YouTubeService.Default;
-```
-
-To dowload a video:
+**Downloading a video**
 
 ```csharp
 string uri = "https://www.youtube.com/watch?v=vPto6XpRq-U";
 Video video = service.GetVideo(uri);
 ```
 
-To get information about it:
+**Getting information about it**
 
 ```csharp
 string title = video.Title;
@@ -26,7 +20,7 @@ Stream stream = video.Stream(); // stream the video
 // We also support more advanced info like audio bitrate, resolution, etc.
 ```
 
-To save it to disk:
+**Saving it to disk**
 
 ```csharp
 File.WriteAllBytes(@"C:\" + fullName, contents);
