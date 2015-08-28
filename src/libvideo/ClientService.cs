@@ -17,8 +17,8 @@ namespace VideoLibrary
         private readonly ServiceBase BaseService;
         private readonly HttpClient Client;
 
-        private Func<string, Task<string>> SourceFactory =>
-            address => Client.GetStringAsync(address);
+        private Task<string> SourceFactory(string address) =>
+            Client.GetStringAsync(address);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientService"/> class with the specified base service.
