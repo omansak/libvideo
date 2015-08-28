@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VideoLibrary
 {
-    public interface IService
+    internal interface IService
     {
         Video GetVideo(string videoUri);
         IEnumerable<Video> GetAllVideos(string videoUri);

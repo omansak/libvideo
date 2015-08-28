@@ -8,8 +8,14 @@ using System.Threading.Tasks;
 
 namespace VideoLibrary
 {
+    /// <summary>
+    /// Provides the entry point for the YouTube-specific API.
+    /// </summary>
     public class YouTubeService : ServiceBase
     {
+        /// <summary>
+        /// Gets the default instance of the <see cref="YouTubeService"/> class.
+        /// </summary>
         public static YouTubeService Default { get; } = new YouTubeService();
 
         internal async override Task<IEnumerable<Video>> GetAllVideosAsync(
@@ -60,7 +66,7 @@ namespace VideoLibrary
                 .Select(QuerySelector);
 
             foreach (var uri in links)
-                yield return new Video(title, uri, WebSites.YouTube, GetFormatCode(uri));
+                yield return new Video(title, uri, GetFormatCode(uri));
 
             string adaptiveMap = Json.GetKeyValue("adaptive_fmts", source);
 
@@ -68,7 +74,7 @@ namespace VideoLibrary
                 .Select(QuerySelector);
 
             foreach (var uri in links)
-                yield return new Video(title, uri, WebSites.YouTube, GetFormatCode(uri));
+                yield return new Video(title, uri, GetFormatCode(uri));
         }
 
         // TODO: Consider making this static...

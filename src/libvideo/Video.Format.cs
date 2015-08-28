@@ -8,6 +8,9 @@ namespace VideoLibrary
 {
     public partial class Video
     {
+        /// <summary>
+        /// Returns True if the video is 3D; otherwise, False.
+        /// </summary>
         public bool Is3D
         {
             get
@@ -28,10 +31,15 @@ namespace VideoLibrary
             }
         }
 
-        // TODO: Is this redundant?
+        /// <summary>
+        /// Returns False if the value of <see cref="AdaptiveKind"/> is <see cref="AdaptiveKind.None"/>; otherwise, True.
+        /// </summary>
         public bool IsAdaptive =>
             this.AdaptiveKind != AdaptiveKind.None;
 
+        /// <summary>
+        /// Gets the <see cref="VideoLibrary.AdaptiveKind"/> of the video.
+        /// </summary>
         public AdaptiveKind AdaptiveKind
         {
             get
@@ -67,6 +75,9 @@ namespace VideoLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the audio bitrate of the video, as an integer.
+        /// </summary>
         public int AudioBitrate
         {
             get
@@ -114,6 +125,9 @@ namespace VideoLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the resolution of the video, as an integer.
+        /// </summary>
         public int Resolution
         {
             get
@@ -174,6 +188,9 @@ namespace VideoLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="VideoFormat"/> for this video.
+        /// </summary>
         public VideoFormat Format
         {
             get
@@ -233,6 +250,9 @@ namespace VideoLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="VideoLibrary.AudioFormat"/> for this video.
+        /// </summary>
         public AudioFormat AudioFormat
         {
             get
@@ -275,6 +295,9 @@ namespace VideoLibrary
             }
         }
 
+        /// <summary>
+        /// Gets the appropriate file extension for this video, based on <see cref="Format"/>.
+        /// </summary>
         public string FileExtension
         {
             get
@@ -285,9 +308,8 @@ namespace VideoLibrary
                     case VideoFormat.Mobile: return ".3gp";
                     case VideoFormat.Mp4: return ".mp4";
                     case VideoFormat.WebM: return ".webm";
-                    case VideoFormat.Unknown: return String.Empty;
+                    case VideoFormat.Unknown: return string.Empty;
                     default:
-                        // TODO: Consider var format = Format; at beginning of getter to dereference property only once.
                         throw new NotImplementedException($"Format {Format} is unrecognized! Please file an issue at libvideo on GitHub.");
                 }
             }

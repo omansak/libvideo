@@ -23,7 +23,6 @@ namespace Core
 
             Assert.NotNull(video.Uri);
             Assert.NotEqual(video.FormatCode, -1);
-            Assert.Equal(video.WebSite, WebSites.YouTube);
         }
 
         [Fact]
@@ -36,12 +35,12 @@ namespace Core
         }
 
         [Fact]
-        public void YouTube_ThrowOnInvalidUri()
+        public async void YouTube_ThrowOnInvalidUriAsync()
         {
-            // Assert.Throws<ArgumentException>(
-            //     () => YouTubeService.Default.GetVideo(YouTubeInvalidUriOne));
-            // Assert.Throws<ArgumentException>(
-            //     () => YouTubeService.Default.GetVideo(YouTubeInvalidUriTwo));
+            await Assert.ThrowsAsync<ArgumentException>(
+                () => YouTubeService.Default.GetVideoAsync(YouTubeInvalidUriOne));
+            await Assert.ThrowsAsync<ArgumentException>(
+                () => YouTubeService.Default.GetVideoAsync(YouTubeInvalidUriTwo));
         }
     }
 }
