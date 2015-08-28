@@ -11,7 +11,7 @@ namespace VideoLibrary
     /// <summary>
     /// A class that facilitates <see cref="HttpClient"/> reuse over multiple YouTube visits.
     /// </summary>
-    public class SingleClientService : IService, IAsyncService, IDisposable
+    public class ClientService : IService, IAsyncService, IDisposable
     {
         private bool Disposed = false;
         private readonly ServiceBase BaseService;
@@ -21,10 +21,10 @@ namespace VideoLibrary
             address => Client.GetStringAsync(address);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceBase"/> class with the specified base service.
+        /// Initializes a new instance of the <see cref="ClientService"/> class with the specified base service.
         /// </summary>
         /// <param name="baseService">The base service on which to send requests.</param>
-        public SingleClientService(ServiceBase baseService)
+        public ClientService(ServiceBase baseService)
         {
             if (baseService == null)
                 throw new ArgumentNullException(nameof(baseService));
@@ -48,13 +48,13 @@ namespace VideoLibrary
         }
 
         #region IDisposable implementation
-        ~SingleClientService()
+        ~ClientService()
         {
             Dispose(false);
         }
 
         /// <summary>
-        /// Frees any resources held by this instance of the <see cref="ServiceBase"/> class.
+        /// Frees any resources held by this instance of the <see cref="ClientService"/> class.
         /// </summary>
         public void Dispose()
         {
@@ -63,7 +63,7 @@ namespace VideoLibrary
         }
 
         /// <summary>
-        /// Frees resources held by this instance of the <see cref="ServiceBase"/> class.
+        /// Frees resources held by this instance of the <see cref="ClientService"/> class.
         /// </summary>
         /// <param name="disposing">True if managed resources should be freed; otherwise, False.</param>
         protected virtual void Dispose(bool disposing)
