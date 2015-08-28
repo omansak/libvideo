@@ -68,4 +68,4 @@ using (var client = new VideoClient())
 
 ---
 
-That's it; enjoy! If you're looking for more features, feel free to raise an issue and we can discuss it with you.
+That's it, enjoy! If you're looking for more features, feel free to raise an issue and we can discuss it with you.
