@@ -8,7 +8,7 @@ The entry point for most of the API is in `YouTubeService`:
 var service = YouTubeService.Default;
 ```
 
-To dowload a video:
+To download a video:
 
 ```csharp
 string uri = "https://www.youtube.com/watch?v=vPto6XpRq-U";
