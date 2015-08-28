@@ -53,7 +53,7 @@ namespace VideoLibrary
         /// <returns>A <see cref="Task"/> of the <see cref="Video"/> representing the information from <paramref name="videoUri"/>.</returns>
         public async Task<Video> GetVideoAsync(string videoUri)
         {
-            using (var wrapped = new SingleClientService(this))
+            using (var wrapped = new ClientService(this))
             {
                 return await wrapped
                     .GetVideoAsync(videoUri)
@@ -73,7 +73,7 @@ namespace VideoLibrary
         /// <returns>A <see cref="Task"/> of the <see cref="IEnumerable{Video}"/> representing the information from <paramref name="videoUri"/>.</returns>
         public async Task<IEnumerable<Video>> GetAllVideosAsync(string videoUri)
         {
-            using (var wrapped = new SingleClientService(this))
+            using (var wrapped = new ClientService(this))
             {
                 return await wrapped
                     .GetAllVideosAsync(videoUri)

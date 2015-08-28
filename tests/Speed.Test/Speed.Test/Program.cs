@@ -44,8 +44,7 @@ namespace Speed.Test
 
             elapsed = TimeSpan.Zero;
 
-            using (var service =
-                new SingleClientService(new YouTubeService()))
+            using (var service = new ClientService(new YouTubeService()))
             {
                 for (int i = 0; i < times; i++)
                 {
