@@ -10,7 +10,7 @@ Video video = YouTubeService.Default.GetVideo(uri); // here we "parse" a Video o
 
 string title = video.Title; // gets the title
 string fileExtension = video.FileExtension; // file extension
-string fullName = video.FullName; // essentially the same thing as title + fileExtension, provided for convenience
+string fullName = video.FullName; // same thing as title + fileExtension, provided for convenience
 int resolution = video.Resolution; // resolution
 // etc.
 ```
