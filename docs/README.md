@@ -50,13 +50,23 @@ IEnumerable<Video> videos = await service.GetAllVideosAsync(uri);
 byte[] contents = await video.GetBytesAsync();
 ```
 
-Lastly, you should be aware that for every time you download a video a new `HttpClient` is created and disposed. To avoid this, use `SingleClientService`:
+Lastly, you should be aware that for every time you visit YouTube a new `HttpClient` is created and disposed. To avoid this, use `SingleClientService`:
 
 ```csharp
 using (var service = new SingleClientService(YouTubeService.Default)) // put this in a using block to not leak memory
 {
-    service.Download(uri);
-    service.Download("[some other video]"); // the service's HttpClient is reused here, saving memory and reducing GC pressure
+    service.GetVideo(uri);
+    service.GetVideo("[some other video]"); // the service's HttpClient is reused here, saving memory and reducing GC pressure
+}
+```
+
+Likewise, if you'd like to reuse `HttpClients` when downloading a video, use `VideoClient`:
+
+```csharp
+using (var client = new VideoClient())
+{
+    client.GetBytes(video);
+    await client.StreamAsync(video);
 }
 ```
 
