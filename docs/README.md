@@ -22,7 +22,7 @@ byte[] bytes = video.GetBytes(); // gets the binary contents of the video
 Stream stream = video.Stream(); // you can stream it as well
 ```
 
-And to save it to a file:
+And save it to a file:
 
 ```csharp
 File.WriteAllBytes(@"C:\" + fullName, bytes);
