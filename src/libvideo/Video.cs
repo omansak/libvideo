@@ -39,7 +39,7 @@ namespace VideoLibrary
         /// </summary>
         /// <returns>The bytes of the video, which are generally saved into a file.</returns>
         public byte[] GetBytes() =>
-            GetBytesAsync().Result;
+            GetBytesAsync().GetAwaiter().GetResult();
 
         /// <summary>
         /// Gets the byte array representing the video's file as an asynchronous operation.
@@ -60,7 +60,7 @@ namespace VideoLibrary
         /// </summary>
         /// <returns>A stream to the binary contents of this video.</returns>
         public Stream Stream() =>
-            StreamAsync().Result;
+            StreamAsync().GetAwaiter().GetResult();
 
         /// <summary>
         /// Streams the contents of the video as an asynchronous operation.

@@ -27,11 +27,11 @@ namespace VideoLibrary
         /// <param name="videoUri">The URL to visit.</param>
         /// <returns>A <see cref="Video"/> representing the information from <paramref name="videoUri"/>.</returns>
         public Video GetVideo(string videoUri) =>
-            GetVideoAsync(videoUri).Result;
+            GetVideoAsync(videoUri).GetAwaiter().GetResult();
 
         internal Video GetVideo(string videoUri, 
             Func<string, Task<string>> sourceFactory) =>
-            GetVideoAsync(videoUri, sourceFactory).Result;
+            GetVideoAsync(videoUri, sourceFactory).GetAwaiter().GetResult();
 
         /// <summary>
         /// Retrieves the <see cref="IEnumerable{Video}"/> specified by <paramref name="videoUri"/>.
@@ -39,11 +39,11 @@ namespace VideoLibrary
         /// <param name="videoUri">The URL to visit.</param>
         /// <returns>A <see cref="IEnumerable{Video}"/> representing the information from <paramref name="videoUri"/>.</returns>
         public IEnumerable<Video> GetAllVideos(string videoUri) =>
-            GetAllVideosAsync(videoUri).Result;
+            GetAllVideosAsync(videoUri).GetAwaiter().GetResult();
 
         internal IEnumerable<Video> GetAllVideos(string videoUri, 
             Func<string, Task<string>> sourceFactory) =>
-            GetAllVideosAsync(videoUri, sourceFactory).Result;
+            GetAllVideosAsync(videoUri, sourceFactory).GetAwaiter().GetResult();
         #endregion
 
         /// <summary>
