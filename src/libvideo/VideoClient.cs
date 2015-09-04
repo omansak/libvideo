@@ -64,7 +64,7 @@ namespace VideoLibrary
         /// </summary>
         /// <param name="video">The <see cref="Video"/> to retrieve bytes from.</param>
         /// <returns>The binary contents of the video.</returns>
-        public byte[] GetBytes(Video video) => GetBytesAsync(video).Result;
+        public byte[] GetBytes(Video video) => GetBytesAsync(video).GetAwaiter().GetResult();
 
         /// <summary>
         /// Retrieves the binary contents of the specified <see cref="Video"/> as an asynchronous operation.
@@ -83,7 +83,7 @@ namespace VideoLibrary
         /// </summary>
         /// <param name="video">The <see cref="Video"/> to stream.</param>
         /// <returns>A <see cref="System.IO.Stream"/> of the binary contents of the video.</returns>
-        public Stream Stream(Video video) => StreamAsync(video).Result;
+        public Stream Stream(Video video) => StreamAsync(video).GetAwaiter().GetResult();
 
         /// <summary>
         /// Streams the binary contents of the specified <see cref="Video"/> as an asynchronous operation.
