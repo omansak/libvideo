@@ -41,17 +41,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\libvideo\Helpers\Query.cs">
+      <Link>Helpers\Query.cs</Link>
+    </Compile>
     <Compile Include="AdaptiveType.cs" />
     <Compile Include="AudioExtractionException.cs" />
     <Compile Include="AudioType.cs" />
     <Compile Include="DownloadUrlResolver.cs" />
-    <Compile Include="Helpers\Query.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VideoInfo.cs" />
     <Compile Include="VideoNotAvailableException.cs" />
     <Compile Include="VideoType.cs" />
     <Compile Include="YoutubeParseException.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
