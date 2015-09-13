@@ -45,6 +45,34 @@ To run the build script for the first time, you'll need to specify the directory
 
 Once this is done, you'll find a fresh batch of the core DLLs in `src/libvideo/bin/Release/` as well as the other projects in the solution.
 
+Note that the build script caches the path to MSBuild; the second time you run the build script, you no longer need to specify the path:
+
+    ./build.sh
+
 ### Passing options to the build script
 
 By default, the script will only build the solution in `src/` as part of the build process. If you'd like to e.g. run tests or set the configuration to Debug during the build, run `./build.sh --help` to see a list of options.
+
+## FAQ
+
+### How do I install MSBuild for Mac/Linux?
+
+Make sure you have Mono installed beforehand.
+
+First install NuGet if you don't already have it:
+
+    curl -sSL -o nuget.exe https://api.nuget.org/downloads/nuget.exe
+
+Next, to install MSBuild:
+
+    packageid="Microsoft.Build.Mono.Debug"
+    version="14.1.0.0-prerelease" # update as needed
+    mono nuget.exe install $packageid -Version $version -Source "https://www.myget.org/F/dotnet-buildtools/"
+
+To use it during the build script, run
+
+    ./build.sh --msbuild ../Microsoft.Build.Mono.Debug.14.1.0.0-prerelease/lib # adjust accordingly
+
+Remember, after the first build you can simply run
+
+    ./build.sh
