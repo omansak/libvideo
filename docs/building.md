@@ -7,7 +7,27 @@
 - a working copy of Bash (Windows users can install [Git Bash](http://www.git-scm.com/downloads))
  - cURL or wget
 
-You should be able to build the repo from any OS as long as it meets the above requirements.
+In addition to above, Mono 4.0.1 or higher is required if building from Unix.
+
+### PCL reference assemblies
+
+Linux users must install the `referenceassemblies-pcl` package before attempting to build.
+
+**For Debian/Ubuntu users:**
+
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+    echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
+    echo "deb http://jenkins.mono-project.com/repo/debian sid main" | sudo tee /etc/apt/sources.list.d/mono-jenkins.list
+    sudo apt-get update
+    sudo apt-get install referenceassemblies-pcl
+
+**For Fedora/CentOS users:**
+
+    sudo rpm --import "http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF"
+    sudo yum-config-manager --add-repo http://download.mono-project.com/repo/centos/
+    sudo yum-config-manager --add-repo http://jenkins.mono-project.com/repo/centos/
+    sudo yum upgrade
+    sudo yum install referenceassemblies-pcl
 
 ## Running the build script
 
