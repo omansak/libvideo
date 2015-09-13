@@ -11,7 +11,7 @@ In addition to above, Mono 4.0.1 or higher is required if building from Unix.
 
 ### PCL reference assemblies
 
-Linux users must install the `referenceassemblies-pcl` package before attempting to build.
+Linux users must install the `referenceassemblies-pcl` package before attempting to build. If you're not one of them, skip this.
 
 **For Debian/Ubuntu users:**
 
