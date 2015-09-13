@@ -6,10 +6,11 @@ run=0
 cache=0
 config="Release"
 
-scriptroot="$(cd "$(dirname $0)" && pwd -P)"
+scriptroot="$(cd "$(dirname $0)"; pwd -P)"
 nugetpath="$scriptroot/NuGet.exe"
 cachefile="$scriptroot/$(basename $0).cache"
 targets="portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10"
+windows="$(uname | grep -E 'CYGWIN|MINGW|MSYS' 1> /dev/null; echo $?)"
 
 msbuildprompt="Please specify the directory where MSBuild is installed.
 Example: ./build.sh --msbuild \"/C/Program Files (x86)/MSBuild/14.0/Bin\""
@@ -52,9 +53,23 @@ executable() {
     return "$?"
 }
 
+nuget() {
+    if [ $windows -eq 0 ]
+    then
+        $nugetpath $@
+    else
+        mono $nugetpath $@
+    fi
+}
+
 buildproj() {
-    $nugetpath restore
-    "$msbuildpath" /property:Configuration=$config
+    nuget restore
+    if [ $windows -eq 0 ]
+    then
+        "$msbuildpath" /property:Configuration=$config
+    else
+        mono "$msbuildpath" /property:Configuration=$config
+    fi
 }
 
 # get options
@@ -105,6 +120,13 @@ do
     esac
     shift
 done
+
+# check for Mono
+if [ $windows -ne 0 ]
+then
+    which mono &> /dev/null
+    failerr "Mono is required to build libvideo on OS X or Linux."
+fi
 
 # determine path to MSBuild.exe
 if [ -z "$msbuildpath" ]
@@ -209,7 +231,7 @@ then
         for spec in *.nuspec
         do
             echo "Packing $spec..."
-            $nugetpath pack $spec
+            nuget pack $spec
 
             failerr "Packing $spec failed! Exiting..."
         done
