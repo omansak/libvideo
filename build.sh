@@ -58,7 +58,7 @@ buildproj() {
 }
 
 # get options
-while [[ "$#" > 0 ]]
+while [[ $# > 0 ]]
 do
     case "$1" in
         -t|--test)
