@@ -72,6 +72,10 @@ buildproj() {
     fi
 }
 
+absolute() {
+    echo "$(cd "$(dirname "$1")"; pwd -P)/$(basename "$1")"
+}
+
 # get options
 while [[ "$#" > 0 ]]
 do
@@ -152,6 +156,7 @@ else
 
     if [ $cache -eq 0 ]
     then
+        msbuildpath="$(absolute "$msbuildpath")"
         echo "$msbuildpath" > $cachefile
     fi
 fi
