@@ -10,6 +10,7 @@ scriptroot="$(cd "$(dirname $0)"; pwd -P)"
 nugetpath="$scriptroot/NuGet.exe"
 cachefile="$scriptroot/$(basename $0).cache"
 targets="portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10"
+osys=$(uname)
 windows="$(uname | grep -E 'CYGWIN|MINGW|MSYS' 1> /dev/null; echo $?)"
 
 msbuildprompt="Please specify the directory where MSBuild is installed.
@@ -26,15 +27,19 @@ Options:
 --norun                        build nothing unless specified by other options
 -n, --nuget                    create NuGet package post-build"
 
+error() {
+    echo "$1" 1>&2
+}
+
 usage() {
-    echo "$usage" 1>&2
+    error "$usage"
 }
 
 failerr() {
     exitcode=$?
     if [ "$exitcode" -ne 0 ]
     then
-        echo "$1" 1>&2
+        error "$1"
         exit $exitcode
     fi
 }
@@ -125,11 +130,42 @@ do
     shift
 done
 
-# check for Mono
+# check for Mono (mostly plagiarized from CoreFX)
 if [ $windows -ne 0 ]
 then
-    which mono &> /dev/null
-    failerr "Mono is required to build libvideo on OS X or Linux."
+    if [ $osys == "Linux" ]
+    then
+        monoroot=/usr
+    elif [ $osys == "FreeBSD" ]
+    then
+        monoroot=/usr/local
+    else
+        # OS X (Darwin)
+        monoroot=/Library/Frameworks/Mono.framework/Versions/Current
+    fi
+    
+    referenceassemblyroot=$monoroot/lib/mono/xbuild-frameworks
+    
+    monoversion=$(mono --version | grep "version 4.[1-9]")
+    
+    if [ $? -ne 0 ]
+    then
+        # if built from tarball, Mono only identifies itself as 4.0.1
+        monoversion=$(mono --version | egrep "version 4.0.[1-9]+(.[0-9]+)?")
+        if [ $? -ne 0 ]
+        then
+            error "Mono 4.0.1.44 or later is required to build libvideo on Unix."
+            exit 1
+        else
+            error "WARNING: Mono 4.0.1.44 or later is required to build libvideo on Unix. Unable to assess if current version is supported."
+        fi
+    fi
+    
+    if [ ! -e "$referenceassemblyroot/.NETPortable" ]
+    then
+        error "PCL reference assemblies not found! Install 'referenceassemblies-pcl' via your distro's package manager, and try again."
+        exit 1
+    fi
 fi
 
 # determine path to MSBuild.exe
@@ -139,18 +175,18 @@ then
 
     if [ $? -ne 0 ]
     then
-        echo "$msbuildprompt" 1>&2
+        error "$msbuildprompt"
         exit 1
     elif [ ! -e "$msbuildpath" ]
     then
-        echo "\"$msbuildpath\" was read from the cache, but it does not exist." 1>&2
-        echo "$msbuildprompt" 1>&2
+        error "\"$msbuildpath\" was read from the cache, but it does not exist."
+        error "$msbuildprompt"
         exit 1
     fi
 else
     if [ ! -e "$msbuildpath" ]
     then
-        echo "\"$msbuildpath\" does not exist." 1>&2
+        error "\"$msbuildpath\" does not exist."
         exit 1
     fi
 
