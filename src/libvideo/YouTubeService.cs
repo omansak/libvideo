@@ -11,14 +11,14 @@ namespace VideoLibrary
     /// <summary>
     /// Provides the entry point for the YouTube-specific API.
     /// </summary>
-    public class YouTubeService : ServiceBase
+    public class YouTubeService : ServiceBase<YouTubeVideo>
     {
         /// <summary>
         /// Gets the default instance of the <see cref="YouTubeService"/> class.
         /// </summary>
         public static YouTubeService Default { get; } = new YouTubeService();
 
-        internal async override Task<IEnumerable<Video>> GetAllVideosAsync(
+        internal async override Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(
             string videoUri, Func<string, Task<string>> sourceFactory)
         {
             if (!TryNormalize(videoUri, out videoUri))
@@ -55,7 +55,7 @@ namespace VideoLibrary
             return true;
         }
 
-        private IEnumerable<Video> ParseVideos(string source)
+        private IEnumerable<YouTubeVideo> ParseVideos(string source)
         {
             string title = Html.GetNodeValue("title", source);
 
@@ -66,7 +66,7 @@ namespace VideoLibrary
                 .Select(QuerySelector);
 
             foreach (var uri in links)
-                yield return new Video(title, uri, GetFormatCode(uri));
+                yield return new YouTubeVideo(title, uri, GetFormatCode(uri));
 
             string adaptiveMap = Json.GetKeyValue("adaptive_fmts", source);
 
@@ -74,7 +74,7 @@ namespace VideoLibrary
                 .Select(QuerySelector);
 
             foreach (var uri in links)
-                yield return new Video(title, uri, GetFormatCode(uri));
+                yield return new YouTubeVideo(title, uri, GetFormatCode(uri));
         }
 
         // TODO: Consider making this static...

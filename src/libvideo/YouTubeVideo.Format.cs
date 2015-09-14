@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VideoLibrary
 {
-    public partial class Video
+    public partial class YouTubeVideo
     {
         /// <summary>
         /// Returns True if the video is 3D; otherwise, False.
@@ -191,7 +191,7 @@ namespace VideoLibrary
         /// <summary>
         /// Gets the <see cref="VideoFormat"/> for this video.
         /// </summary>
-        public VideoFormat Format
+        public override VideoFormat Format
         {
             get
             {
@@ -291,26 +291,6 @@ namespace VideoLibrary
                         return AudioFormat.Vorbis;
                     default:
                         return AudioFormat.Unknown;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the appropriate file extension for this video, based on <see cref="Format"/>.
-        /// </summary>
-        public string FileExtension
-        {
-            get
-            {
-                switch (Format)
-                {
-                    case VideoFormat.Flash: return ".flv";
-                    case VideoFormat.Mobile: return ".3gp";
-                    case VideoFormat.Mp4: return ".mp4";
-                    case VideoFormat.WebM: return ".webm";
-                    case VideoFormat.Unknown: return string.Empty;
-                    default:
-                        throw new NotImplementedException($"Format {Format} is unrecognized! Please file an issue at libvideo on GitHub.");
                 }
             }
         }

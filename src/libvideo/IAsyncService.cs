@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace VideoLibrary
 {
-    internal interface IAsyncService
+    internal interface IAsyncService<T> where T : Video
     {
-        Task<Video> GetVideoAsync(string videoUri);
-        Task<IEnumerable<Video>> GetAllVideosAsync(string videoUri);
+        Task<T> GetVideoAsync(string uri);
+        Task<IEnumerable<T>> GetAllVideosAsync(string uri);
     }
 }

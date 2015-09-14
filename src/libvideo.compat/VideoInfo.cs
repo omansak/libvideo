@@ -9,9 +9,9 @@ namespace YoutubeExtractor
 {
     public class VideoInfo
     {
-        private readonly Video Video;
+        private readonly YouTubeVideo Video;
 
-        internal VideoInfo(Video video)
+        internal VideoInfo(YouTubeVideo video)
         {
             this.Video = video;
         }

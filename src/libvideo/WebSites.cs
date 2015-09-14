@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace VideoLibrary
 {
-    internal interface IService<T> where T : Video
+    public enum WebSites
     {
-        T GetVideo(string uri);
-        IEnumerable<T> GetAllVideos(string uri);
+        YouTube = 0
     }
 }

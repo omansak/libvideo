@@ -13,7 +13,7 @@ namespace VideoLibrary.Helpers
             int start = parent.IndexOf(prefix) + prefix.Length;
 
             if (start < prefix.Length)
-                return String.Empty;
+                return string.Empty;
 
             int end = parent.IndexOf(suffix, start);
 
