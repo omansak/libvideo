@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace VideoLibrary
 {
@@ -108,5 +109,31 @@ namespace VideoLibrary
 
         private static int GetFormatCode(string uri) =>
             int.Parse(Query.GetParam("itag", uri));
+
+        #region HttpService
+
+        // Called internally by ClientService to 
+        // initialize the HttpClient. Not 
+        // intended for direct consumption.
+
+        internal override HttpClient ClientFactory()
+        {
+            var handler = new HttpClientHandler();
+
+            // Be very careful because if any exceptions are 
+            // thrown between here && the HttpClient ctor, 
+            // we will leak resources.
+
+            if (handler.SupportsAutomaticDecompression)
+            {
+                handler.AutomaticDecompression =
+                    DecompressionMethods.GZip |
+                    DecompressionMethods.Deflate;
+            }
+
+            return new HttpClient(handler);
+        }
+
+        #endregion
     }
 }

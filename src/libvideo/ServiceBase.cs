@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -84,5 +85,7 @@ namespace VideoLibrary
 
         internal abstract Task<IEnumerable<T>> GetAllVideosAsync(
             string videoUri, Func<string, Task<string>> sourceFactory);
+
+        internal virtual HttpClient ClientFactory() => new HttpClient();
     }
 }

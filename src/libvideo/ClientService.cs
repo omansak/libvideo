@@ -37,24 +37,11 @@ namespace VideoLibrary
                 throw new ArgumentNullException(nameof(baseService));
 
             this.baseService = baseService;
-
-            var handler = new HttpClientHandler();
-
-            // Be very careful because if any exceptions are 
-            // thrown between here && the HttpClient ctor, 
-            // we will leak resources.
-
-            if (handler.SupportsAutomaticDecompression)
-            {
-                handler.AutomaticDecompression =
-                    DecompressionMethods.GZip |
-                    DecompressionMethods.Deflate;
-            }
-
-            this.client = new HttpClient(handler);
+            this.client = baseService.ClientFactory();
         }
 
-        #region IDisposable implementation
+        #region IDisposable
+
         ~ClientService()
         {
             Dispose(false);
@@ -85,6 +72,7 @@ namespace VideoLibrary
                     client.Dispose();
             }
         }
+
         #endregion
 
         /// <summary>
