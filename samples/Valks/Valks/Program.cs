@@ -11,7 +11,7 @@ namespace Valks
             Console.WriteLine("Welcome to Valks!");
             Console.WriteLine("Easily save your favorite videos from YouTube.");
 
-            using (var service = new ClientService(new YouTubeService()))
+            using (var service = Client.For(YouTube.Default))
             {
                 while (true)
                 {

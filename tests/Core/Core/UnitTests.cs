@@ -19,7 +19,7 @@ namespace Core
         [Fact]
         public void YouTube_GetVideo()
         {
-            var video = YouTubeService.Default.GetVideo(YouTubeUri);
+            var video = YouTube.Default.GetVideo(YouTubeUri);
 
             Assert.NotNull(video.Uri);
             Assert.NotEqual(video.FormatCode, -1);
@@ -28,19 +28,19 @@ namespace Core
         [Fact]
         public void YouTube_GetAllVideos()
         {
-            var videos = YouTubeService.Default.GetAllVideos(YouTubeUri);
+            var videos = YouTube.Default.GetAllVideos(YouTubeUri);
 
             Assert.NotNull(videos);
             Assert.DoesNotContain(null, videos);
         }
 
         [Fact]
-        public async void YouTube_ThrowOnInvalidUriAsync()
+        public void YouTube_ThrowOnInvalidUri()
         {
-            await Assert.ThrowsAsync<ArgumentException>(
-                () => YouTubeService.Default.GetVideoAsync(YouTubeInvalidUriOne));
-            await Assert.ThrowsAsync<ArgumentException>(
-                () => YouTubeService.Default.GetVideoAsync(YouTubeInvalidUriTwo));
+            Assert.Throws<ArgumentException>(() 
+                => YouTube.Default.GetVideo(YouTubeInvalidUriOne));
+            Assert.Throws<ArgumentException>(() 
+                => YouTube.Default.GetVideo(YouTubeInvalidUriTwo));
         }
     }
 }

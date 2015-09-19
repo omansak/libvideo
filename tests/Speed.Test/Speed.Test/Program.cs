@@ -44,7 +44,7 @@ namespace Speed.Test
 
             elapsed = TimeSpan.Zero;
 
-            using (var service = new ClientService(new YouTubeService()))
+            using (var service = Client.For(YouTube.Default))
             {
                 for (int i = 0; i < times; i++)
                 {
@@ -76,9 +76,9 @@ namespace Speed.Test
                 {
                     $"A {e.GetType()} was thrown!",
                     "Message:",
-                    String.Empty,
+                    string.Empty,
                     e.ToString(),
-                    String.Empty,
+                    string.Empty,
                     "Restarting..."
                 };
                 
