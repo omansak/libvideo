@@ -3,7 +3,7 @@
   <metadata>
     <title>libvideo.compat</title>
     <id>VideoLibrary.Compat</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <authors>James Ko</authors>
     <owners>James Ko</owners>
     <licenseUrl>https://github.com/James-Ko/libvideo/blob/master/bsd.license</licenseUrl>
@@ -16,7 +16,7 @@
     <copyright></copyright>
     <tags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</tags>
     <dependencies>
-      <dependency id="VideoLibrary" version="1.0.0"/>
+      <dependency id="VideoLibrary" version="1.1.0"/>
     </dependencies>
   </metadata>
 </package>

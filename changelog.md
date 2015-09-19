@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.1.0
+
+- Videos with encrypted signatures are (finally) supported!
+- A bug where we would "snip off" parts of the query has been fixed; this should lead to less 403s.
+- A libvideo.debug project has been added to give contributors a better debugging experience.
+- The API has been rewritten from scratch to become more generic, raising the possibility for other providers (e.g. Vimeo) in the future.
+- The XML documentation has been eliminated for reasons of cleanliness; read the docs on GitHub if you want to learn more about the library.
+- Breaking changes:
+ - `YouTubeService` => `YouTube`
+ - `ClientService` => `Client`
+ - `Video` => `YouTubeVideo`
+
 ## v1.0.0
 
 - First stable release!
