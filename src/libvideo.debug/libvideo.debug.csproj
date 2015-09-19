@@ -7,7 +7,7 @@
     <ProjectGuid>{6C66F504-633E-4A9B-B31F-7A780A0916C4}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>libvideo.debug</RootNamespace>
+    <RootNamespace>VideoLibrary.Debug</RootNamespace>
     <AssemblyName>libvideo.debug</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

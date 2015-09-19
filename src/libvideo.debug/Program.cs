@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VideoLibrary;
 using YoutubeExtractor;
 
-namespace libvideo.debug
+namespace VideoLibrary.Debug
 {
     class Program
     {
