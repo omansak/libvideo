@@ -10,9 +10,6 @@ using VideoLibrary.Helpers;
 
 namespace VideoLibrary
 {
-    /// <summary>
-    /// Provides the base class for most services.
-    /// </summary>
     public abstract class ServiceBase<T> : IService<T>, IAsyncService<T>
         where T : Video
     {
@@ -20,11 +17,6 @@ namespace VideoLibrary
             videos.First();
 
         #region Synchronous wrappers
-        /// <summary>
-        /// Retrieves the <see cref="T"/> specified by <paramref name="videoUri"/>.
-        /// </summary>
-        /// <param name="videoUri">The URL to visit.</param>
-        /// <returns>A <see cref="T"/> representing the information from <paramref name="videoUri"/>.</returns>
         public T GetVideo(string videoUri) =>
             GetVideoAsync(videoUri).GetAwaiter().GetResult();
 
@@ -32,11 +24,6 @@ namespace VideoLibrary
             Func<string, Task<string>> sourceFactory) =>
             GetVideoAsync(videoUri, sourceFactory).GetAwaiter().GetResult();
 
-        /// <summary>
-        /// Retrieves the <see cref="IEnumerable{T}"/> specified by <paramref name="videoUri"/>.
-        /// </summary>
-        /// <param name="videoUri">The URL to visit.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> representing the information from <paramref name="videoUri"/>.</returns>
         public IEnumerable<T> GetAllVideos(string videoUri) =>
             GetAllVideosAsync(videoUri).GetAwaiter().GetResult();
 
@@ -45,11 +32,6 @@ namespace VideoLibrary
             GetAllVideosAsync(videoUri, sourceFactory).GetAwaiter().GetResult();
         #endregion
 
-        /// <summary>
-        /// Retrieves the <see cref="T"/> specified by <paramref name="videoUri"/> as an asynchronous operation.
-        /// </summary>
-        /// <param name="videoUri">The URL to visit.</param>
-        /// <returns>A <see cref="Task"/> of the <see cref="T"/> representing the information from <paramref name="videoUri"/>.</returns>
         public async Task<T> GetVideoAsync(string videoUri)
         {
             using (var wrapped = Client.For(this))
@@ -65,11 +47,6 @@ namespace VideoLibrary
             VideoSelector(await GetAllVideosAsync(
                 videoUri, sourceFactory).ConfigureAwait(false));
 
-        /// <summary>
-        /// Retrieves the <see cref="IEnumerable{T}"/> specified by <paramref name="videoUri"/> as an asynchronous operation.
-        /// </summary>
-        /// <param name="videoUri">The URL to visit.</param>
-        /// <returns>A <see cref="Task"/> of the <see cref="IEnumerable{T}"/> representing the information from <paramref name="videoUri"/>.</returns>
         public async Task<IEnumerable<T>> GetAllVideosAsync(string videoUri)
         {
             using (var wrapped = Client.For(this))

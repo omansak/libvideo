@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VideoLibrary.Helpers
 {
-    public static class Require
+    internal static class Require
     {
         public static void NotNull<T>(T obj, string name)
             where T : class

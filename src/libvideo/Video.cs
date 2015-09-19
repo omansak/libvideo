@@ -22,17 +22,9 @@ namespace VideoLibrary
         public virtual Task<string> GetUriAsync() =>
             Task.FromResult(Uri);
 
-        /// <summary>
-        /// Gets the byte array representing the video's file.
-        /// </summary>
-        /// <returns>The bytes of the video, which are generally saved into a file.</returns>
         public byte[] GetBytes() =>
             GetBytesAsync().GetAwaiter().GetResult();
 
-        /// <summary>
-        /// Gets the byte array representing the video's file as an asynchronous operation.
-        /// </summary>
-        /// <returns>A Task returning the bytes of the video, which are generally saved into a file.</returns>
         public async Task<byte[]> GetBytesAsync()
         {
             using (var client = new VideoClient())
@@ -43,17 +35,9 @@ namespace VideoLibrary
             }
         }
 
-        /// <summary>
-        /// Streams the contents of the video.
-        /// </summary>
-        /// <returns>A stream to the binary contents of this video.</returns>
         public Stream Stream() =>
             StreamAsync().GetAwaiter().GetResult();
 
-        /// <summary>
-        /// Streams the contents of the video as an asynchronous operation.
-        /// </summary>
-        /// <returns>A Task to a stream representing the binary contents of this video.</returns>
         public async Task<Stream> StreamAsync()
         {
             using (var client = new VideoClient())
@@ -64,9 +48,6 @@ namespace VideoLibrary
             }
         }
 
-        /// <summary>
-        /// Gets the appropriate file extension for this video, based on <see cref="Format"/>.
-        /// </summary>
         public virtual string FileExtension
         {
             get
@@ -84,9 +65,6 @@ namespace VideoLibrary
             }
         }
 
-        /// <summary>
-        /// Gets the full name of the video, typically used as the file name when saving the video to disk.
-        /// </summary>
         public string FullName
         {
             get

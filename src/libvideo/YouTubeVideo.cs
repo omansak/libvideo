@@ -8,9 +8,6 @@ using VideoLibrary.Helpers;
 
 namespace VideoLibrary
 {
-    /// <summary>
-    /// Enscapulates information about a video, such as title, format, and resolution.
-    /// </summary>
     public partial class YouTubeVideo : Video
     {
         private string uri;
@@ -45,9 +42,6 @@ namespace VideoLibrary
             return uri;
         }
 
-        /// <summary>
-        /// The format code of the video, which it used by YouTube to denote important information.
-        /// </summary>
         public int FormatCode { get; }
         public bool IsEncrypted => encrypted;
     }

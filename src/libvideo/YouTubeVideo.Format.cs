@@ -8,9 +8,6 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        /// <summary>
-        /// Returns True if the video is 3D; otherwise, False.
-        /// </summary>
         public bool Is3D
         {
             get
@@ -31,15 +28,9 @@ namespace VideoLibrary
             }
         }
 
-        /// <summary>
-        /// Returns False if the value of <see cref="AdaptiveKind"/> is <see cref="AdaptiveKind.None"/>; otherwise, True.
-        /// </summary>
         public bool IsAdaptive =>
             this.AdaptiveKind != AdaptiveKind.None;
 
-        /// <summary>
-        /// Gets the <see cref="VideoLibrary.AdaptiveKind"/> of the video.
-        /// </summary>
         public AdaptiveKind AdaptiveKind
         {
             get
@@ -75,9 +66,6 @@ namespace VideoLibrary
             }
         }
 
-        /// <summary>
-        /// Gets the audio bitrate of the video, as an integer.
-        /// </summary>
         public int AudioBitrate
         {
             get
@@ -125,9 +113,6 @@ namespace VideoLibrary
             }
         }
 
-        /// <summary>
-        /// Gets the resolution of the video, as an integer.
-        /// </summary>
         public int Resolution
         {
             get
@@ -188,9 +173,6 @@ namespace VideoLibrary
             }
         }
 
-        /// <summary>
-        /// Gets the <see cref="VideoFormat"/> for this video.
-        /// </summary>
         public override VideoFormat Format
         {
             get
@@ -250,9 +232,6 @@ namespace VideoLibrary
             }
         }
 
-        /// <summary>
-        /// Gets the <see cref="VideoLibrary.AudioFormat"/> for this video.
-        /// </summary>
         public AudioFormat AudioFormat
         {
             get

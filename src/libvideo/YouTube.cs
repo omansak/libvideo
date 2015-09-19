@@ -8,14 +8,8 @@ using System.Threading.Tasks;
 
 namespace VideoLibrary
 {
-    /// <summary>
-    /// Provides the entry point for the YouTube-specific API.
-    /// </summary>
     public class YouTube : ServiceBase<YouTubeVideo>
     {
-        /// <summary>
-        /// Gets the default instance of the <see cref="YouTube"/> class.
-        /// </summary>
         public static YouTube Default { get; } = new YouTube();
 
         internal async override Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(
