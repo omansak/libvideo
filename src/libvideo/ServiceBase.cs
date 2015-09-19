@@ -63,19 +63,27 @@ namespace VideoLibrary
         #region ClientFactory
 
         // Called internally by ClientService to 
-        // initialize the HttpClient.
+        // initialize the HttpClient. Not intended 
+        // for direct consumption.
 
-        private Func<HttpClient> clientFactory = () => new HttpClient();
+        // TODO: Refactor?
 
-        public Func<HttpClient> ClientFactory
+        internal virtual HttpClient ClientFactory()
         {
-            get { return clientFactory; }
-            set
-            {
-                Require.NotNull(value, nameof(value));
+            var handler = new HttpClientHandler();
 
-                this.clientFactory = value;
+            // Be very careful because if any exceptions are 
+            // thrown between here && the HttpClient ctor, 
+            // we will leak resources.
+
+            if (handler.SupportsAutomaticDecompression)
+            {
+                handler.AutomaticDecompression =
+                    DecompressionMethods.GZip |
+                    DecompressionMethods.Deflate;
             }
+
+            return new HttpClient(handler);
         }
 
         #endregion
