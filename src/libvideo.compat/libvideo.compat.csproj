@@ -53,6 +53,9 @@
     <Compile Include="..\libvideo\Helpers\Query.cs">
       <Link>Helpers\Query.cs</Link>
     </Compile>
+    <Compile Include="..\libvideo\Helpers\Require.cs">
+      <Link>Helpers\Require.cs</Link>
+    </Compile>
     <Compile Include="..\libvideo\Helpers\ValueCollection.cs">
       <Link>Helpers\ValueCollection.cs</Link>
     </Compile>

@@ -9,18 +9,18 @@ namespace YoutubeExtractor
 {
     public class VideoInfo
     {
-        private readonly YouTubeVideo Video;
+        private readonly YouTubeVideo video;
 
         internal VideoInfo(YouTubeVideo video)
         {
-            this.Video = video;
+            this.video = video;
         }
 
         public AdaptiveType AdaptiveType
         {
             get
             {
-                switch (Video.AdaptiveKind)
+                switch (video.AdaptiveKind)
                 {
                     case AdaptiveKind.Audio:
                         return AdaptiveType.Audio;
@@ -36,7 +36,7 @@ namespace YoutubeExtractor
         {
             get
             {
-                int result = Video.AudioBitrate;
+                int result = video.AudioBitrate;
 
                 return result == -1 ? 0 : result;
             }
@@ -46,7 +46,7 @@ namespace YoutubeExtractor
         {
             get
             {
-                switch (Video.AudioFormat)
+                switch (video.AudioFormat)
                 {
                     case AudioFormat.Aac: return ".aac";
                     case AudioFormat.Mp3: return ".mp3";
@@ -54,7 +54,7 @@ namespace YoutubeExtractor
                     case AudioFormat.Unknown: return String.Empty;
                     default:
                         // TODO: Consider a var format = AudioFormat; statement at beginning of getter.
-                        throw new NotImplementedException($"Audio format {Video.AudioFormat} is unrecognized! Please file an issue at libvideo on GitHub.");
+                        throw new NotImplementedException($"Audio format {video.AudioFormat} is unrecognized! Please file an issue at libvideo on GitHub.");
                 }
             }
         }
@@ -63,7 +63,7 @@ namespace YoutubeExtractor
         {
             get
             {
-                switch (Video.AudioFormat)
+                switch (video.AudioFormat)
                 {
                     case AudioFormat.Aac:
                         return AudioType.Aac;
@@ -79,19 +79,19 @@ namespace YoutubeExtractor
 
         public bool CanExtractAudio => false;
 
-        public string DownloadUrl => Video.Uri;
+        public string DownloadUrl => video.Uri;
 
         public int FormatCode
         {
             get
             {
-                int result = Video.FormatCode;
+                int result = video.FormatCode;
 
                 return result == -1 ? 0 : result;
             }
         }
 
-        public bool Is3D => Video.Is3D;
+        public bool Is3D => video.Is3D;
 
         public bool RequiresDecryption => false;
 
@@ -99,21 +99,21 @@ namespace YoutubeExtractor
         {
             get
             {
-                int result = Video.Resolution;
+                int result = video.Resolution;
 
                 return result == -1 ? 0 : result;
             }
         }
 
-        public string Title => Video.Title;
+        public string Title => video.Title;
 
-        public string VideoExtension => Video.FileExtension;
+        public string VideoExtension => video.FileExtension;
 
         public VideoType VideoType
         {
             get
             {
-                switch (Video.Format)
+                switch (video.Format)
                 {
                     case VideoFormat.Flash:
                         return VideoType.Flash;
@@ -131,7 +131,8 @@ namespace YoutubeExtractor
 
         public override string ToString()
         { 
-            return string.Format("Full Title: {0}, Type: {1}, Resolution: {2}p", this.Title + this.VideoExtension, this.VideoType, this.Resolution); 
+            return string.Format("Full Title: {0}, Type: {1}, Resolution: {2}p", 
+                Title + VideoExtension, VideoType, Resolution); 
         }
     }
 }

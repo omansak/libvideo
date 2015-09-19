@@ -26,6 +26,51 @@ namespace VideoLibrary
 				await sourceFactory(jsPlayer)
                 .ConfigureAwait(false);
 
+            query["signature"] = DecryptedSignature(signature, js);
+            return query.ToString();
+        }
+
+        private string DecryptedSignature(string signature, string js)
+        {
+            string[] lines;
+            var operations = Operations(js, out lines);
+
+            var result = signature.ToCharArray();
+
+            // Apply the operations once known
+            for (int i = 1; i < lines.Length - 1; i++)
+            {
+                string line = lines[i];
+                string name = SubDecryptFunction(line);
+
+                if (name == operations.Reverse)
+                {
+                    Array.Reverse(result, 0, result.Length);
+                }
+                else if (name == operations.Splice)
+                {
+                    // Cut the first N chars
+                    int index = NumericParam(line);
+                    char[] resized = new char[result.Length - index];
+                    Array.Copy(result, index, resized, 0, resized.Length);
+                    result = resized;
+                }
+                else // if (name == operations.Swap)
+                {
+                    // Swap first char
+                    int index = NumericParam(line);
+
+                    char displaced = result[0];
+                    result[0] = result[index % result.Length];
+                    result[index] = displaced;
+                }
+            }
+
+            return new string(result);
+        }
+
+        private Operations Operations(string js, out string[] lines)
+        {
             // NOTE: We have to be careful from here on out, 
             // as the typical size for js is about 1 MB. 
             // Unnecessary string allocations could cost 
@@ -34,16 +79,14 @@ namespace VideoLibrary
             string function = DecryptFunction(js);
             int index = DeclaredFunctionStart(function, js);
             string body = FunctionBody(function, js, index);
-            string[] lines = body.Split(';');
+            lines = body.Split(';');
 
             // We have to find the identifiers 
             // for three cipher functions. One 
             // does a reverse, one does a 
             // splice, and one does a char swap.
 
-            string reverse = null;
-            string splice = null;
-            string swap = null;
+            string reverse = null, splice = null, swap = null;
 
             // Skip the first and last statements; 
             // they're only split and join statements
@@ -103,39 +146,7 @@ namespace VideoLibrary
                     break;
             }
 
-            var result = signature.ToCharArray();
-
-            // Apply the operations once known
-            for (int i = 1; i < lines.Length - 1; i++)
-            {
-                string line = lines[i];
-                string name = SubDecryptFunction(line);
-
-                if (name == reverse)
-                {
-                    Array.Reverse(result, 0, result.Length);
-                }
-                else if (name == splice)
-                {
-                    // Cut the first N chars
-                    index = NumericParam(line);
-                    char[] resized = new char[result.Length - index];
-                    Array.Copy(result, index, resized, 0, resized.Length);
-                    result = resized;
-                }
-                else // if (name == swap)
-                {
-                    // Swap first char
-                    index = NumericParam(line);
-
-                    char displaced = result[0];
-                    result[0] = result[index % result.Length];
-                    result[index] = displaced;
-                }
-            }
-
-            query["signature"] = new string(result);
-            return query.ToString();
+            return new Operations(reverse, swap, splice);
         }
 
         private string DecryptFunction(string js)

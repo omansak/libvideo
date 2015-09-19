@@ -41,6 +41,7 @@
     <Compile Include="Helpers\Html.cs" />
     <Compile Include="Helpers\Json.cs" />
     <Compile Include="Helpers\KeyCollection.cs" />
+    <Compile Include="Helpers\Operations.cs" />
     <Compile Include="Helpers\Query.cs" />
     <Compile Include="Helpers\Require.cs" />
     <Compile Include="Helpers\Text.cs" />
