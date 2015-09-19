@@ -41,8 +41,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\libvideo\Exceptions\BadQueryException.cs">
+      <Link>Exceptions\BadQueryException.cs</Link>
+    </Compile>
+    <Compile Include="..\libvideo\Helpers\EmptyArray.cs">
+      <Link>Helpers\EmptyArray.cs</Link>
+    </Compile>
+    <Compile Include="..\libvideo\Helpers\KeyCollection.cs">
+      <Link>Helpers\KeyCollection.cs</Link>
+    </Compile>
     <Compile Include="..\libvideo\Helpers\Query.cs">
       <Link>Helpers\Query.cs</Link>
+    </Compile>
+    <Compile Include="..\libvideo\Helpers\ValueCollection.cs">
+      <Link>Helpers\ValueCollection.cs</Link>
     </Compile>
     <Compile Include="AdaptiveType.cs" />
     <Compile Include="AudioExtractionException.cs" />

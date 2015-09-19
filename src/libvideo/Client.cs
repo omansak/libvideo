@@ -5,19 +5,20 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using VideoLibrary.Helpers;
 
 namespace VideoLibrary
 {
-    public static class ClientService
+    public static class Client
     {
-        public static ClientService<T> For<T>(ServiceBase<T> baseService) 
-            where T : Video => new ClientService<T>(baseService);
+        public static Client<T> For<T>(ServiceBase<T> baseService) 
+            where T : Video => new Client<T>(baseService);
     }
 
     /// <summary>
     /// A class that facilitates <see cref="HttpClient"/> reuse over multiple YouTube visits.
     /// </summary>
-    public class ClientService<T> : IService<T>, IAsyncService<T>, IDisposable 
+    public class Client<T> : IService<T>, IAsyncService<T>, IDisposable 
         where T : Video
     {
         private bool disposed = false;
@@ -28,13 +29,12 @@ namespace VideoLibrary
             client.GetStringAsync(address);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientService"/> class with the specified base service.
+        /// Initializes a new instance of the <see cref="Client"/> class with the specified base service.
         /// </summary>
         /// <param name="baseService">The base service on which to send requests.</param>
-        internal ClientService(ServiceBase<T> baseService)
+        internal Client(ServiceBase<T> baseService)
         {
-            if (baseService == null)
-                throw new ArgumentNullException(nameof(baseService));
+            Require.NotNull(baseService, nameof(baseService));
 
             this.baseService = baseService;
             this.client = baseService.ClientFactory();
@@ -42,13 +42,13 @@ namespace VideoLibrary
 
         #region IDisposable
 
-        ~ClientService()
+        ~Client()
         {
             Dispose(false);
         }
 
         /// <summary>
-        /// Frees any resources held by this instance of the <see cref="ClientService"/> class.
+        /// Frees any resources held by this instance of the <see cref="Client"/> class.
         /// </summary>
         public void Dispose()
         {
@@ -57,7 +57,7 @@ namespace VideoLibrary
         }
 
         /// <summary>
-        /// Frees resources held by this instance of the <see cref="ClientService"/> class.
+        /// Frees resources held by this instance of the <see cref="Client"/> class.
         /// </summary>
         /// <param name="disposing">True if managed resources should be freed; otherwise, False.</param>
         protected virtual void Dispose(bool disposing)

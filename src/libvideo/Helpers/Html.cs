@@ -9,7 +9,8 @@ namespace VideoLibrary.Helpers
 {
     internal static class Html
     {
-        public static string GetNodeValue(string name, string source) =>
+        // TODO: Refactor?
+        public static string GetNode(string name, string source) =>
             WebUtility.HtmlDecode(
                 Text.StringBetween(
                     '<' + name + '>', "</" + name + '>', source));

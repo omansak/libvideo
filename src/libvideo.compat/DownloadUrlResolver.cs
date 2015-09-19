@@ -10,16 +10,17 @@ namespace YoutubeExtractor
 {
     public static class DownloadUrlResolver
     {
-        private static YouTubeService Service = new YouTubeService();
+        private static YouTube Service = new YouTube();
 
         public static void DecryptDownloadUrl(VideoInfo info)
         {
+            // Nothing to do here, URL is decrypted automatically 
+            // upon calling YouTubeVideo.Uri.
         }
 
         public static IEnumerable<VideoInfo> GetDownloadUrls(string videoUrl, bool decryptSignature = true)
         {
-            if (videoUrl == null)
-                throw new ArgumentNullException(nameof(videoUrl));
+            Require.NotNull(videoUrl, nameof(videoUrl));
 
             // GetAllVideos normalizes the URL as of libvideo v0.4.1, 
             // don't call TryNormalizeYoutubeUrl here.
@@ -48,7 +49,9 @@ namespace YoutubeExtractor
 
             string value;
 
-            if (!Query.TryGetParam("v", url, out value))
+            var query = new Query(url);
+
+            if (!query.TryGetValue("v", out value))
                 return false;
 
             normalizedUrl = "https://youtube.com/watch?v=" + value;

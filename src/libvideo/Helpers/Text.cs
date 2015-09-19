@@ -22,5 +22,13 @@ namespace VideoLibrary.Helpers
 
             return parent.Substring(start, end - start);
         }
+
+        public static int SkipWhitespace(this string text, int start)
+        {
+            int result = start;
+            while (char.IsWhiteSpace(text[result]))
+                result++;
+            return result;
+        }
     }
 }

@@ -19,6 +19,9 @@ namespace VideoLibrary
         public virtual VideoFormat Format => VideoFormat.Unknown;
         // public virtual AudioFormat AudioFormat => AudioFormat.Unknown;
 
+        public virtual Task<string> GetUriAsync() =>
+            Task.FromResult(Uri);
+
         /// <summary>
         /// Gets the byte array representing the video's file.
         /// </summary>

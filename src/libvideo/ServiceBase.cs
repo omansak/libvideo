@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using VideoLibrary.Helpers;
 
 namespace VideoLibrary
 {
@@ -14,12 +16,7 @@ namespace VideoLibrary
     public abstract class ServiceBase<T> : IService<T>, IAsyncService<T>
         where T : Video
     {
-        /// <summary>
-        /// Chooses which <see cref="T"/> to return from a pool of <see cref="T"/> objects.
-        /// </summary>
-        /// <param name="videos">The pool of <see cref="T"/> objects.</param>
-        /// <returns>The suggested <see cref="T"/> to return.</returns>
-        protected virtual T VideoSelector(IEnumerable<T> videos) =>
+        internal virtual T VideoSelector(IEnumerable<T> videos) =>
             videos.First();
 
         #region Synchronous wrappers
@@ -31,7 +28,7 @@ namespace VideoLibrary
         public T GetVideo(string videoUri) =>
             GetVideoAsync(videoUri).GetAwaiter().GetResult();
 
-        internal T GetVideo(string videoUri, 
+        internal T GetVideo(string videoUri,
             Func<string, Task<string>> sourceFactory) =>
             GetVideoAsync(videoUri, sourceFactory).GetAwaiter().GetResult();
 
@@ -55,7 +52,7 @@ namespace VideoLibrary
         /// <returns>A <see cref="Task"/> of the <see cref="T"/> representing the information from <paramref name="videoUri"/>.</returns>
         public async Task<T> GetVideoAsync(string videoUri)
         {
-            using (var wrapped = ClientService.For(this))
+            using (var wrapped = Client.For(this))
             {
                 return await wrapped
                     .GetVideoAsync(videoUri)
@@ -75,7 +72,7 @@ namespace VideoLibrary
         /// <returns>A <see cref="Task"/> of the <see cref="IEnumerable{T}"/> representing the information from <paramref name="videoUri"/>.</returns>
         public async Task<IEnumerable<T>> GetAllVideosAsync(string videoUri)
         {
-            using (var wrapped = ClientService.For(this))
+            using (var wrapped = Client.For(this))
             {
                 return await wrapped
                     .GetAllVideosAsync(videoUri)
@@ -86,6 +83,24 @@ namespace VideoLibrary
         internal abstract Task<IEnumerable<T>> GetAllVideosAsync(
             string videoUri, Func<string, Task<string>> sourceFactory);
 
-        internal virtual HttpClient ClientFactory() => new HttpClient();
+        #region ClientFactory
+
+        // Called internally by ClientService to 
+        // initialize the HttpClient.
+
+        private Func<HttpClient> clientFactory = () => new HttpClient();
+
+        public Func<HttpClient> ClientFactory
+        {
+            get { return clientFactory; }
+            set
+            {
+                Require.NotNull(value, nameof(value));
+
+                this.clientFactory = value;
+            }
+        }
+
+        #endregion
     }
 }

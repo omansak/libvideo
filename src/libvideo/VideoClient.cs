@@ -73,8 +73,9 @@ namespace VideoLibrary
         /// <returns>A <see cref="Task"/> of the binary contents of the video.</returns>
         public async Task<byte[]> GetBytesAsync(Video video)
         {
+            string uri = await video.GetUriAsync();
             return await client
-                .GetByteArrayAsync(video.Uri)
+                .GetByteArrayAsync(uri)
                 .ConfigureAwait(false);
         }
 
@@ -92,8 +93,9 @@ namespace VideoLibrary
         /// <returns>A <see cref="Task"/> of a <see cref="System.IO.Stream"/> of the binary contents of the video.</returns>
         public async Task<Stream> StreamAsync(Video video)
         {
+            string uri = await video.GetUriAsync();
             return await client
-                .GetStreamAsync(video.Uri)
+                .GetStreamAsync(uri)
                 .ConfigureAwait(false);
         }
     }
