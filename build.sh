@@ -2,9 +2,11 @@
 
 test=1
 nuget=1
+samples=1
 run=0
 cache=0
 config="Release"
+verbosity="minimal"
 
 scriptroot="$(cd "$(dirname $0)"; pwd -P)"
 nugetpath="$scriptroot/NuGet.exe"
@@ -25,7 +27,10 @@ Options:
 -m, --msbuild                  specify path to MSBuild.exe (required on first run)
 --nocache                      do not cache the path to MSBuild.exe if specified
 --norun                        build nothing unless specified by other options
--n, --nuget                    create NuGet package post-build"
+-n, --nuget                    create NuGet package post-build
+-s, --samples                  build all projects in the samples/ dir
+-t, --test                     compile and run tests after libvideo.sln is built
+-v, --verbosity                set MSBuild verbosity, e.g. quiet"
 
 error() {
     echo "$1" 1>&2
@@ -45,7 +50,7 @@ failerr() {
 }
 
 project() {
-    if [ "$1" != "packages" ] && [ "$1" != ".vs" ] && [ "${1##*.}" != "sln" ]
+    if [ "$1" != "packages" -a "$1" != ".vs" -a "${1##*.}" != "sln" ]
     then
         return 0
     fi
@@ -71,9 +76,9 @@ buildproj() {
     nuget restore
     if [ $windows -eq 0 ]
     then
-        "$msbuildpath" /property:Configuration=$config
+        "$msbuildpath" /property:Configuration=$config /verbosity:$verbosity
     else
-        mono "$msbuildpath" /property:Configuration=$config
+        mono "$msbuildpath" /property:Configuration=$config /verbosity:$verbosity
     fi
 }
 
@@ -122,6 +127,24 @@ do
         --nocache)
             cache=1
             ;;
+        -v|--verbosity)
+            case "${2,,}" in
+                "quiet"|"normal"|"detailed"|"diagnostic")
+                    verbosity="${2,,}"
+                    ;;
+                "minimal")
+                    # enabled by default
+                    ;;
+                *)
+                    usage
+                    exit 1
+                    ;;
+            esac
+            shift
+            ;;
+        -s|--samples)
+            samples=0
+            ;;
         *)
             usage
             exit 1
@@ -143,11 +166,11 @@ then
         # OS X (Darwin)
         monoroot=/Library/Frameworks/Mono.framework/Versions/Current
     fi
-    
+
     referenceassemblyroot=$monoroot/lib/mono/xbuild-frameworks
-    
+
     monoversion=$(mono --version | grep "version 4.[1-9]")
-    
+
     if [ $? -ne 0 ]
     then
         # if built from tarball, Mono only identifies itself as 4.0.1
@@ -160,7 +183,7 @@ then
             error "WARNING: Mono 4.0.1.44 or later is required to build libvideo on Unix. Unable to assess if current version is supported."
         fi
     fi
-    
+
     if [ ! -e "$referenceassemblyroot/.NETPortable" ]
     then
         error "PCL reference assemblies not found! Install 'referenceassemblies-pcl' via your distro's package manager, and try again."
@@ -250,6 +273,20 @@ then
                 failerr "Subtest $subtest failed! Exiting..."
             fi
         done
+    done
+fi
+
+if [ "$samples" -eq 0 ]
+then
+    echo "Building samples..."
+
+    for sample in $scriptroot/samples/*
+    do
+        echo "Building sample $sample..."
+        cd $sample
+        buildproj
+
+        failerr "MSBuild failed on $sample.sln! Exiting..."
     done
 fi
 
