@@ -20,7 +20,8 @@ namespace VideoLibrary.Debug
                 // "http://www.youtube.com/watch?v=6kLq3WMV1nU",
                 // "http://www.youtube.com/watch?v=6kLq3WMV1nU",
                 "https://www.youtube.com/watch?v=IB3lcPjvWLA",
-                "https://www.youtube.com/watch?v=BgpXMA_M98o"
+                "https://www.youtube.com/watch?v=BgpXMA_M98o",
+                "https://www.youtube.com/watch?v=nfWlot6h_JM"
             };
 
             using (var cli = Client.For(YouTube.Default))
