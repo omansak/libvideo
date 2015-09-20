@@ -37,7 +37,7 @@ File.WriteAllBytes(@"C:\" + fullName, bytes);
 YouTube exposes multiple videos for each URL- e.g. when you change the resolution of a video, you're actually watching a different video. libvideo supports downloading multiple of them:
 
 ```csharp
-IEnumerable<YouTubeVideo> videos = youTube.GetAllVideos(uri);
+var videos = youTube.GetAllVideos(uri);
 ```
 
 We also have full support for async:
