@@ -5,22 +5,22 @@ Here you'll find a more in-depth explanation of our API.
 To get information about a video:
 
 ```csharp
-string uri = "https://www.youtube.com/watch?v=vPto6XpRq-U"; // URL we want to use
+string uri = "https://www.youtube.com/watch?v=vPto6XpRq-U";
 var youTube = YouTube.Default;
-var video = youTube.GetVideo(uri); // here we "parse" a YouTubeVideo object from the given URL
+var video = youTube.GetVideo(uri);
 
-string title = video.Title; // gets the title
-string fileExtension = video.FileExtension; // file extension
+string title = video.Title;
+string fileExtension = video.FileExtension;
 string fullName = video.FullName; // same thing as title + fileExtension, but provided for convenience
-int resolution = video.Resolution; // resolution
+int resolution = video.Resolution;
 // etc.
 ```
 
 You can download it like this:
 
 ```csharp
-byte[] bytes = video.GetBytes(); // gets the binary contents of the video
-Stream stream = video.Stream(); // you can stream it as well
+byte[] bytes = video.GetBytes();
+Stream stream = video.Stream();
 ```
 
 And save it to a file:
@@ -50,10 +50,10 @@ var contents = await video.GetBytesAsync();
 In addition, you should be aware that for every time you visit YouTube a new `HttpClient` is created and disposed. To avoid this, use the `Client` class:
 
 ```csharp
-using (var cli = Client.For(new YouTube())) // put this in a using block to not leak resources
+using (var cli = Client.For(new YouTube()))
 {
     cli.GetVideo(uri);
-    cli.GetVideo("[some other video]"); // the service's HttpClient is reused here, saving memory and reducing GC pressure
+    cli.GetVideo("[some other video]");
 }
 ```
 
