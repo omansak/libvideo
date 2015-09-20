@@ -70,4 +70,4 @@ Thanks! I'm flattered, but it's not really necessary. If anything, you should do
 
 ### Where can I contact you?
 
-You can reach me on Twitter at @jameskodev, or /u/Subtle__ on Reddit.
+You can reach me on Twitter at [@jameskodev](https://twitter.com/jameskodev), or [/u/Subtle__](https://www.reddit.com/user/Subtle__/) on Reddit.
