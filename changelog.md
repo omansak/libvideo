@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.0
+
+- Support for custom HTTP configuration when visiting YouTube
+
 ## v1.1.0
 
 - Videos with encrypted signatures are (finally) supported!
