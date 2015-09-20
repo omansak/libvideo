@@ -83,10 +83,7 @@ namespace VideoLibrary
 
         protected virtual HttpClient MakeClient(HttpMessageHandler handler)
         {
-            return new HttpClient(handler)
-            {
-                Timeout = TimeSpan.FromMilliseconds(int.MaxValue) // Longest TimeSpan HttpClient will accept
-            };
+            return new HttpClient(handler);
         }
     }
 }

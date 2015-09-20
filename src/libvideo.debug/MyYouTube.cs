@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VideoLibrary.Debug
 {
-    class CustomYouTube : YouTube
+    class MyYouTube : YouTube
     {
         protected override HttpClient MakeClient(HttpMessageHandler handler)
         {

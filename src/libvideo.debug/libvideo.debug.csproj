@@ -51,7 +51,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomYouTube.cs" />
+    <Compile Include="MyVideoClient.cs" />
+    <Compile Include="MyYouTube.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
