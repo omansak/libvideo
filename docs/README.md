@@ -67,6 +67,61 @@ using (var cli = new VideoClient())
 }
 ```
 
+### Custom HTTP Configurations
+
+If you need to custom-configure the `HttpClient` for some reason- maybe you need to increase the timeout length, or add credentials, or use [a different message handler](https://github.com/paulcbetts/ModernHttpClient)- fear not. Simply derive your class from `YouTube` and configure as necessary:
+
+```csharp
+class MyYouTube : YouTube
+{
+    protected override HttpMessageHandler MakeHandler()
+    {
+        return new BlahBlahMessageHandler();
+    }
+    
+    protected override HttpClient MakeClient(HttpMessageHandler handler)
+    {
+        return new HttpClient(handler)
+        {
+            Timeout = TimeSpan.FromSeconds(12345);
+        };
+    }
+}
+```
+
+Use like so:
+
+```csharp
+var youTube = new MyYouTube();
+youTube.GetVideo("foo");
+
+// --- OR ---
+
+using (var cli = Client.For(new MyYouTube()))
+{
+    // ...
+}
+```
+
+Note that this does not change the HTTP behavior when downloading the video itself. To do that, inherit from `VideoClient`:
+
+```csharp
+class MyVideoClient : VideoClient
+{
+    protected override HttpMessageHandler MakeHandler() { ... }
+    protected override HttpClient MakeClient(HttpMessageHandler handler) { ... }
+}
+```
+
+And to use it:
+
+```csharp
+using (var cli = new MyVideoClient())
+{
+    byte[] contents = cli.GetBytes(video);
+}
+```
+
 ---
 
 That's it, enjoy! If you're looking for more features, feel free to raise an issue and we can discuss it with you.
