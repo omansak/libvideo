@@ -1,8 +1,13 @@
 # Changelog
 
+## v1.3.0
+
+- Support custom HTTP configuration when downloading videos
+ - Fix timeout bug when downloading a large video
+
 ## v1.2.0
 
-- Support for custom HTTP configuration when visiting YouTube
+- Add support for custom HTTP configuration when visiting YouTube
 
 ## v1.1.0
 
