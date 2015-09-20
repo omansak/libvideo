@@ -60,21 +60,16 @@ namespace VideoLibrary
         internal abstract Task<IEnumerable<T>> GetAllVideosAsync(
             string videoUri, Func<string, Task<string>> sourceFactory);
 
-        #region ClientFactory
+        internal HttpClient MakeClient() =>
+            MakeClient(MakeHandler());
 
-        // Called internally by ClientService to 
-        // initialize the HttpClient. Not intended 
-        // for direct consumption.
-
-        // TODO: Refactor?
-
-        internal virtual HttpClient ClientFactory()
+        protected virtual HttpMessageHandler MakeHandler()
         {
             var handler = new HttpClientHandler();
 
             // Be very careful because if any exceptions are 
             // thrown between here && the HttpClient ctor, 
-            // we will leak resources.
+            // we may leak resources.
 
             if (handler.SupportsAutomaticDecompression)
             {
@@ -83,9 +78,15 @@ namespace VideoLibrary
                     DecompressionMethods.Deflate;
             }
 
-            return new HttpClient(handler);
+            return handler;
         }
 
-        #endregion
+        protected virtual HttpClient MakeClient(HttpMessageHandler handler)
+        {
+            return new HttpClient(handler)
+            {
+                Timeout = TimeSpan.FromMilliseconds(int.MaxValue) // Longest TimeSpan HttpClient will accept
+            };
+        }
     }
 }

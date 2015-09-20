@@ -30,7 +30,7 @@ namespace VideoLibrary
             Require.NotNull(baseService, nameof(baseService));
 
             this.baseService = baseService;
-            this.client = baseService.ClientFactory();
+            this.client = baseService.MakeClient();
         }
 
         #region IDisposable
