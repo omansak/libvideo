@@ -58,7 +58,7 @@ libvideo:
 YoutubeExtractor:
 
 - supports Silverlight
-- supports Flash audio extraction
+- supports Flash audio extraction (coming soon)
 
 ### Can I switch from YoutubeExtractor without having to refactor my code?
 
@@ -67,3 +67,7 @@ Absolutely! Check out our [libvideo.compat](https://www.nuget.org/packages/Video
 ### Do you accept donations?
 
 Thanks! I'm flattered, but it's not really necessary. If anything, you should donate to the creator of [YoutubeExtractor](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=daume%2edennis%40gmail%2ecom&lc=US&item_name=YoutubeExtractor&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest), because this project wouldn't have happened if it weren't for him.
+
+### Where can I reach you?
+
+You can contact me on Twitter at @jameskodev, or Reddit at /u/Subtle__.
