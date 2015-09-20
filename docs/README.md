@@ -21,7 +21,7 @@ You can download it like this:
 
 ```csharp
 byte[] bytes = video.GetBytes();
-Stream stream = video.Stream();
+var stream = video.Stream();
 ```
 
 And save it to a file:
@@ -54,7 +54,7 @@ In addition, you should be aware that for every time you visit YouTube a new `Ht
 using (var cli = Client.For(new YouTube()))
 {
     cli.GetVideo(uri);
-    cli.GetVideo("[some other video]");
+    cli.GetVideo("[some other video]"); // HttpClient is reused here
 }
 ```
 
