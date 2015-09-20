@@ -11,8 +11,9 @@ var video = youTube.GetVideo(uri);
 
 string title = video.Title;
 string fileExtension = video.FileExtension;
-string fullName = video.FullName; // same thing as title + fileExtension, but provided for convenience
+string fullName = video.FullName; // same thing as title + fileExtension
 int resolution = video.Resolution;
+
 // etc.
 ```
 
