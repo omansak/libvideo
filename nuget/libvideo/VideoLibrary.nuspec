@@ -6,9 +6,9 @@
     <version>1.3.1</version>
     <authors>James Ko</authors>
     <owners>James Ko</owners>
-    <licenseUrl>https://github.com/James-Ko/libvideo/blob/master/bsd.license</licenseUrl>
-    <projectUrl>https://github.com/James-Ko/libvideo</projectUrl>
-    <iconUrl>https://github.com/James-Ko/libvideo/raw/master/icons/icon_128.png</iconUrl>
+    <licenseUrl>https://github.com/jamesqo/libvideo/blob/master/bsd.license</licenseUrl>
+    <projectUrl>https://github.com/jamesqo/libvideo</projectUrl>
+    <iconUrl>https://github.com/jamesqo/libvideo/raw/master/icons/icon_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>The cleaner way to download from YouTube.</summary>
     <description>libvideo is a fast, clean way to download YouTube videos. It is fully portable and has no dependencies.
