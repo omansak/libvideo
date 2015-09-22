@@ -13,34 +13,36 @@ namespace Core
     {
         private const string YouTubeInvalidUriOne = "https://wikipedia.com";
         private const string YouTubeInvalidUriTwo = "123ABC!@#";
+
         private const string YouTubeUri = "https://www.youtube.com/watch?v=JjCaRS-CABk";
+        private const string YouTubeDecryptSigUri = "https://www.youtube.com/watch?v=09R8_2nJtjg";
+
         // private const string VimeoUri = "https://vimeo.com/131417856";
 
-        [Fact]
-        public void YouTube_GetVideo()
+        [Theory]
+        [InlineData(YouTubeUri)]
+        [InlineData(YouTubeDecryptSigUri)]
+        public void YouTube_GetAllVideos(string uri)
         {
-            var video = YouTube.Default.GetVideo(YouTubeUri);
-
-            Assert.NotNull(video.Uri);
-            Assert.NotEqual(video.FormatCode, -1);
-        }
-
-        [Fact]
-        public void YouTube_GetAllVideos()
-        {
-            var videos = YouTube.Default.GetAllVideos(YouTubeUri);
+            var videos = YouTube.Default.GetAllVideos(uri);
 
             Assert.NotNull(videos);
             Assert.DoesNotContain(null, videos);
+
+            foreach (var video in videos)
+            {
+                Assert.NotNull(video.Uri);
+                Assert.Equal(video.WebSite, WebSites.YouTube);
+            }
         }
 
-        [Fact]
-        public void YouTube_ThrowOnInvalidUri()
+        [Theory]
+        [InlineData(YouTubeInvalidUriOne)]
+        [InlineData(YouTubeInvalidUriTwo)]
+        public void YouTube_ThrowOnInvalidUri(string invalid)
         {
             Assert.Throws<ArgumentException>(() 
-                => YouTube.Default.GetVideo(YouTubeInvalidUriOne));
-            Assert.Throws<ArgumentException>(() 
-                => YouTube.Default.GetVideo(YouTubeInvalidUriTwo));
+                => YouTube.Default.GetVideo(invalid));
         }
     }
 }
