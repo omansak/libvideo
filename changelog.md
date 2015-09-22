@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.1
+
+- Fix `ObjectDisposedException` when getting the URL of an encrypted video (#16)
+
 ## v1.3.0
 
 - Support custom HTTP configuration when downloading videos
