@@ -62,14 +62,14 @@ namespace VideoLibrary
             var queries = map.Split(',').Select(Unscramble);
 
             foreach (var query in queries)
-                yield return new YouTubeVideo(title, query, jsPlayer, sourceFactory);
+                yield return new YouTubeVideo(title, query, jsPlayer);
 
             string adaptiveMap = Json.GetKey("adaptive_fmts", source);
 
             queries = adaptiveMap.Split(',').Select(Unscramble);
 
             foreach (var query in queries)
-                yield return new YouTubeVideo(title, query, jsPlayer, sourceFactory);
+                yield return new YouTubeVideo(title, query, jsPlayer);
         }
 
         // TODO: Consider making this static...

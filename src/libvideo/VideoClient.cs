@@ -70,7 +70,10 @@ namespace VideoLibrary
 
         public async Task<byte[]> GetBytesAsync(Video video)
         {
-            string uri = await video.GetUriAsync();
+            string uri = await
+                video.GetUriAsync()
+                .ConfigureAwait(false);
+
             return await client
                 .GetByteArrayAsync(uri)
                 .ConfigureAwait(false);
@@ -81,7 +84,10 @@ namespace VideoLibrary
 
         public async Task<Stream> StreamAsync(Video video)
         {
-            string uri = await video.GetUriAsync();
+            string uri = await 
+                video.GetUriAsync()
+                .ConfigureAwait(false);
+
             return await client
                 .GetStreamAsync(uri)
                 .ConfigureAwait(false);

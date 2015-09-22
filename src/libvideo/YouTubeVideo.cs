@@ -14,14 +14,12 @@ namespace VideoLibrary
         private bool encrypted;
 
         internal YouTubeVideo(string title, 
-            UnscrambledQuery query, string jsPlayer, 
-            Func<string, Task<string>> sourceFactory)
+            UnscrambledQuery query, string jsPlayer)
         {
             this.Title = title;
             this.uri = query.Uri;
             this.jsPlayer = jsPlayer;
             this.encrypted = query.IsEncrypted;
-            this.sourceFactory = sourceFactory;
             this.FormatCode = int.Parse(new Query(uri)["itag"]);
         }
 
@@ -31,11 +29,19 @@ namespace VideoLibrary
         public override string Uri =>
             GetUriAsync().GetAwaiter().GetResult();
 
-        public async override Task<string> GetUriAsync()
+        public string GetUri(Func<DelegatingClient> makeClient) =>
+            GetUriAsync(makeClient).GetAwaiter().GetResult();
+
+        public override Task<string> GetUriAsync() =>
+            GetUriAsync(() => new DelegatingClient());
+
+        public async Task<string> GetUriAsync(Func<DelegatingClient> makeClient)
         {
             if (encrypted)
             {
-                uri = await DecryptAsync(uri);
+                uri = await 
+                    DecryptAsync(uri, makeClient)
+                    .ConfigureAwait(false);
                 encrypted = false;
             }
 

@@ -52,6 +52,7 @@
     <Compile Include="ServiceBase.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Helpers\UnscrambledQuery.cs" />
+    <Compile Include="DelegatingClient.cs" />
     <Compile Include="YouTubeVideo.cs" />
     <Compile Include="YouTubeVideo.Format.cs" />
     <Compile Include="Video.cs" />

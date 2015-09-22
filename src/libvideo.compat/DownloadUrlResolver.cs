@@ -29,8 +29,14 @@ namespace YoutubeExtractor
         }
 
         public async static Task<IEnumerable<VideoInfo>> GetDownloadUrlsAsync(
-            string videoUrl, bool decryptSignature = true) =>
-            (await Service.GetAllVideosAsync(videoUrl)).Select(v => new VideoInfo(v));
+            string videoUrl, bool decryptSignature = true)
+        {
+            var videos = await Service
+                .GetAllVideosAsync(videoUrl)
+                .ConfigureAwait(false);
+
+            return videos.Select(v => new VideoInfo(v));
+        }
 
         public static bool TryNormalizeYoutubeUrl(string url, out string normalizedUrl)
         {

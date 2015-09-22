@@ -12,9 +12,8 @@ namespace VideoLibrary
         private const string SigTrig = ".sig";
 
         private readonly string jsPlayer;
-        private readonly Func<string, Task<string>> sourceFactory;
 
-        private async Task<string> DecryptAsync(string uri)
+        private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
         {
             var query = new Query(uri);
 
@@ -22,8 +21,9 @@ namespace VideoLibrary
             if (!query.TryGetValue("signature", out signature))
                 return uri;
 
-            string js = 
-				await sourceFactory(jsPlayer)
+            string js =
+                await makeClient()
+                .GetStringAsync(jsPlayer)
                 .ConfigureAwait(false);
 
             query["signature"] = DecryptedSignature(signature, js);
