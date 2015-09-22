@@ -2,7 +2,7 @@
 
 ## v1.3.1
 
-- Fix `ObjectDisposedException` when getting the URL of an encrypted video (#16)
+- Fix `ObjectDisposedException` when getting the URL of an encrypted video ([#16](https://github.com/jamesqo/libvideo/issues/16))
 
 ## v1.3.0
 
