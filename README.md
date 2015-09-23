@@ -21,6 +21,7 @@ Alternatively, you can try [building the repo](docs/building.md) if you like you
 - Portable Class Libraries
 - Xamarin.iOS
 - Xamarin.Android
+- Mono (Mac/Linux)
 - Windows 8.1 and 8.0
 - Windows Phone 8.1
 
