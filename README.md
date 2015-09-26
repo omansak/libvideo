@@ -29,6 +29,7 @@ Alternatively, you can try [building the repo](docs/building.md) if you like you
 
 Here's a small sample to help you get familiar with libvideo:
 
+(C#)
 ```csharp
 using VideoLibrary;
 
@@ -39,6 +40,16 @@ void SaveVideoToDisk(string link)
     File.WriteAllBytes(@"C:\" + video.FullName, video.GetBytes());
 }
 ```
+
+(VB.net)
+```VB
+imports VideoLibrary
+
+Private Sub SaveVideoToDisk(ByVal link as String)
+     Dim Tube as new YouTube
+     Dim Video = Tube.GetVideo(link)
+     File.WriteAllBytes("C:\" & video.FullName, video.GetBytes())
+End Sub
 
 If you'd like to check out some more of our features, take a look at our [docs](docs/README.md). You can also refer to our [example application](samples/Valks/Valks/Program.cs) (named Valks, yes, I know, it's a silly name) if you're looking for a more comprehensive sample.
 
