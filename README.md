@@ -34,8 +34,8 @@ using VideoLibrary;
 
 void SaveVideoToDisk(string link)
 {
-    var youTube = YouTube.Default; // this is the starting point for all of our download actions
-    var video = youTube.GetVideo(link); // gets a Video object containing information about the video
+    var youTube = YouTube.Default; // starting point for YouTube actions
+    var video = youTube.GetVideo(link); // gets a Video object with info about the video
     File.WriteAllBytes(@"C:\" + video.FullName, video.GetBytes());
 }
 ```
