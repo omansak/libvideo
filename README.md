@@ -29,7 +29,6 @@ Alternatively, you can try [building the repo](docs/building.md) if you like you
 
 Here's a small sample to help you get familiar with libvideo:
 
-(C#)
 ```csharp
 using VideoLibrary;
 
@@ -41,11 +40,12 @@ void SaveVideoToDisk(string link)
 }
 ```
 
-(VB.net)
-```VB
+Or if you use Visual Basic:
+
+```vbnet
 imports VideoLibrary
 
-Private Sub SaveVideoToDisk(ByVal link as String)
+Sub SaveVideoToDisk(ByVal link as String)
      Dim Tube as new YouTube
      Dim Video = Tube.GetVideo(link)
      File.WriteAllBytes("C:\" & video.FullName, video.GetBytes())
