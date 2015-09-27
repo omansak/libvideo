@@ -40,7 +40,7 @@ void SaveVideoToDisk(string link)
 }
 ```
 
-Or if you use Visual Basic:
+Or, if you use Visual Basic:
 
 ```vbnet
 imports VideoLibrary
