@@ -46,7 +46,7 @@ Or, if you use Visual Basic:
 Imports VideoLibrary
 
 Sub SaveVideoToDisk(ByVal link As String)
-     Dim video = YouTube.[Default].GetVideo(link)
+     Dim video = YouTube.Default.GetVideo(link)
      File.WriteAllBytes("C:\" & video.FullName, video.GetBytes())
 End Sub
 ```
