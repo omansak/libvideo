@@ -43,11 +43,10 @@ void SaveVideoToDisk(string link)
 Or, if you use Visual Basic:
 
 ```vbnet
-imports VideoLibrary
+Imports VideoLibrary
 
-Sub SaveVideoToDisk(ByVal link as String)
-     Dim Tube as new YouTube
-     Dim Video = Tube.GetVideo(link)
+Sub SaveVideoToDisk(ByVal link As String)
+     Dim Video = YouTube.Default.GetVideo(link)
      File.WriteAllBytes("C:\" & video.FullName, video.GetBytes())
 End Sub
 ```
