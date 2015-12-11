@@ -256,7 +256,7 @@ namespace VideoLibrary
         }
 
         private string DeclaredFunctionPrefix(string function) => 
-            "function " + function + '(';
+            "var " + function + "=function(";
 
         private int LiteralFunctionStart(string function, string js) =>
             js.IndexOf(LiteralFunctionPrefix(function));
