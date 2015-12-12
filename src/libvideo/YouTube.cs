@@ -22,7 +22,7 @@ namespace VideoLibrary
                 sourceFactory(videoUri)
                 .ConfigureAwait(false);
 
-            return ParseVideos(source, sourceFactory);
+            return ParseVideos(source);
         }
 
         private bool TryNormalize(string videoUri, out string normalized)
@@ -51,8 +51,7 @@ namespace VideoLibrary
             return true;
         }
 
-        private IEnumerable<YouTubeVideo> ParseVideos(
-            string source, Func<string, Task<string>> sourceFactory)
+        private IEnumerable<YouTubeVideo> ParseVideos(string source)
         {
             string title = Html.GetNode("title", source);
 
