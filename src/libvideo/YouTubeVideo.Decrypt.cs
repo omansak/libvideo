@@ -243,8 +243,16 @@ namespace VideoLibrary
             return line.Substring(start, end - start);
         }
 
-        private int DeclaredFunctionStart(string function, string js) =>
-            js.IndexOf(DeclaredFunctionPrefix(function));
+        private int DeclaredFunctionStart(string function, string js)
+        {
+            // Match functions with either of the following styles:
+            // function foo(){...}, or
+            // var foo=function(){...}
+            int index = js.IndexOf($"var {function}=function(");
+            if (index != -1)
+                return index;
+            return js.IndexOf($"function {function}(");
+        }
 
         private int NumericParam(string line)
         {
@@ -254,9 +262,6 @@ namespace VideoLibrary
             string result = line.Substring(start, end - start);
             return int.Parse(result);
         }
-
-        private string DeclaredFunctionPrefix(string function) => 
-            "var " + function + "=function(";
 
         private int LiteralFunctionStart(string function, string js) =>
             js.IndexOf(LiteralFunctionPrefix(function));
