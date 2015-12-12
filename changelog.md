@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.2
+
+- Fix `ArgumentOutOfRangeException` being thrown when deciphering encrypted videos ([#25](https://github.com/jamesqo/libvideo/issues/25))
+
 ## v1.3.1
 
 - Fix `ObjectDisposedException` when getting the URL of an encrypted video ([#16](https://github.com/jamesqo/libvideo/issues/16))
