@@ -247,8 +247,9 @@ namespace VideoLibrary
         {
             // Match functions with either of the following styles:
             // function foo(){...}, or
-            // var foo=function(){...}
-            int index = js.IndexOf($"var {function}=function(");
+            // var foo=function(){...}, or
+            // nh.foo=function(){...}
+            int index = js.IndexOf($"{function}=function(");
             if (index != -1)
                 return index;
             return js.IndexOf($"function {function}(");
