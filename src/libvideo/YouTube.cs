@@ -58,48 +58,53 @@ namespace VideoLibrary
             string jsPlayer = "http:" + Json.GetKey("js", source).Replace(@"\/", "/");
 
             string map = Json.GetKey("url_encoded_fmt_stream_map", source);
-            var queries = map.Split(',').Select(Unscramble);
-
+            var queries = Unscramble(map.Split(','));
+            
             foreach (var query in queries)
                 yield return new YouTubeVideo(title, query, jsPlayer);
 
             string adaptiveMap = Json.GetKey("adaptive_fmts", source);
 
-            queries = adaptiveMap.Split(',').Select(Unscramble);
+            queries = Unscramble(adaptiveMap.Split(','));
 
             foreach (var query in queries)
                 yield return new YouTubeVideo(title, query, jsPlayer);
         }
 
         // TODO: Consider making this static...
-        private UnscrambledQuery Unscramble(string queryString)
+        private IEnumerable<UnscrambledQuery> Unscramble(string[] queryStrings)
         {
-            queryString = queryString.Replace(@"\u0026", "&");
-            var query = new Query(queryString);
-            string uri = query["url"];
-
-            bool encrypted = false;
-            string signature;
-
-            if (query.TryGetValue("s", out signature))
+            foreach (var queryString in queryStrings)
             {
-                encrypted = true;
-                uri += GetSignatureAndHost(signature, query);
+                var query = new Query(queryString.Replace(@"\u0026", "&"));
+                if (query.ContainsKey("url"))
+                {
+                    string uri = query["url"];
+
+                    bool encrypted = false;
+                    string signature;
+
+                    if (query.TryGetValue("s", out signature))
+                    {
+                        encrypted = true;
+                        uri += GetSignatureAndHost(signature, query);
+                    }
+                    else if (query.TryGetValue("sig", out signature))
+                        uri += GetSignatureAndHost(signature, query);
+
+                    uri = WebUtility.UrlDecode(
+                        WebUtility.UrlDecode(uri));
+
+                    var uriQuery = new Query(uri);
+
+                    if (!uriQuery.ContainsKey("ratebypass"))
+                        uri += "&ratebypass=yes";
+
+                    yield return new UnscrambledQuery(uri, encrypted);
+                }
             }
-            else if (query.TryGetValue("sig", out signature))
-                uri += GetSignatureAndHost(signature, query);
-
-            uri = WebUtility.UrlDecode(
-                WebUtility.UrlDecode(uri));
-
-            var uriQuery = new Query(uri);
-
-            if (!uriQuery.ContainsKey("ratebypass"))
-                uri += "&ratebypass=yes";
-
-            return new UnscrambledQuery(uri, encrypted);
-        }
-
+        } 
+        
         private string GetSignatureAndHost(string signature, Query query)
         {
             string result = "&signature=" + signature;
