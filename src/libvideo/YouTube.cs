@@ -65,7 +65,7 @@ namespace VideoLibrary
 
             string adaptiveMap = Json.GetKey("adaptive_fmts", source);
 
-            queries = adaptiveMap.Split(',').Select(Unscramble);
+            queries = adaptiveMap.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(Unscramble);
 
             foreach (var query in queries)
                 yield return new YouTubeVideo(title, query, jsPlayer);

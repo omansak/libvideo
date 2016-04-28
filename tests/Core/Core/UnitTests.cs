@@ -15,12 +15,14 @@ namespace Core
         private const string YouTubeInvalidUriTwo = "123ABC!@#";
 
         private const string YouTubeUri = "https://www.youtube.com/watch?v=JjCaRS-CABk";
+        private const string YouTubeUriWithoutAdaptiveMap = "https://www.youtube.com/watch?v=kp8u_Yrw76Q";
         private const string YouTubeDecryptSigUri = "https://www.youtube.com/watch?v=09R8_2nJtjg";
 
         // private const string VimeoUri = "https://vimeo.com/131417856";
 
         [Theory]
         [InlineData(YouTubeUri)]
+        [InlineData(YouTubeUriWithoutAdaptiveMap)]
         [InlineData(YouTubeDecryptSigUri)]
         public void YouTube_GetAllVideos(string uri)
         {
