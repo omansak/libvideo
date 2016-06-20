@@ -14,13 +14,21 @@ namespace VideoLibrary
         private bool encrypted;
 
         internal YouTubeVideo(string title, 
-            UnscrambledQuery query, string jsPlayer)
+            UnscrambledQuery query, string jsPlayer, bool manifestExist = false)
         {
             this.Title = title;
             this.uri = query.Uri;
             this.jsPlayer = jsPlayer;
             this.encrypted = query.IsEncrypted;
-            this.FormatCode = int.Parse(new Query(uri)["itag"]);
+            if (manifestExist)
+            {
+                // Link contain "key/value"
+                // separated by slash
+                string x = uri.Substring(uri.IndexOf("itag/") + 5, 3);
+                x = x.TrimEnd('/'); // In case format is 2-digit
+                this.FormatCode = int.Parse(x);
+            }
+            else this.FormatCode = int.Parse(new Query(uri)["itag"]);
         }
 
         public override string Title { get; }
