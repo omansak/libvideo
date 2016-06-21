@@ -16,12 +16,14 @@ namespace Core
 
         private const string YouTubeUri = "https://www.youtube.com/watch?v=JjCaRS-CABk";
         private const string YouTubeDecryptSigUri = "https://www.youtube.com/watch?v=09R8_2nJtjg";
+        private const string YouTubeWithDataManifest = "https://www.youtube.com/watch?v=EphGWZKtXvE";
 
         // private const string VimeoUri = "https://vimeo.com/131417856";
 
         [Theory]
         [InlineData(YouTubeUri)]
         [InlineData(YouTubeDecryptSigUri)]
+        [InlineData(YouTubeWithDataManifest)]
         public void YouTube_GetAllVideos(string uri)
         {
             var videos = YouTube.Default.GetAllVideos(uri);

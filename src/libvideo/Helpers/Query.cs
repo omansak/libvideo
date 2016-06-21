@@ -48,11 +48,18 @@ namespace VideoLibrary.Helpers
             {
                 string pair = keyValues[i];
                 int equals = pair.IndexOf('=');
+                string key;
+                string value;
                 if (equals != pair.LastIndexOf('='))
-                    throw new BadQueryException();
-
-                string key = pair.Substring(0, equals);
-                string value = pair.Substring(equals + 1);
+                {
+                    key = pair.Substring(0, equals);
+                    value = String.Empty;
+                }
+                else
+                {
+                    key = pair.Substring(0, equals);
+                    value = pair.Substring(equals + 1);
+                }
 
                 pairs[i] = new KeyValuePair<string, string>(key, value);
             }

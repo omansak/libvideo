@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,7 +66,32 @@ namespace VideoLibrary
 
             string adaptiveMap = Json.GetKey("adaptive_fmts", source);
 
-            queries = adaptiveMap.Split(',').Select(Unscramble);
+            // If there is no adaptive_fmts key, then in the file
+            // will be dashmpd key containing link to a XML
+            // file containing links and other data
+            if (adaptiveMap == String.Empty)
+            {
+                using (HttpClient hc = new HttpClient())
+                {
+                    string temp = Json.GetKey("dashmpd", source);
+                    temp = WebUtility.UrlDecode(temp).Replace(@"\/", "/");
+
+                    var manifest = hc.GetStringAsync(temp)
+                        .GetAwaiter().GetResult()
+                        .Replace(@"\/", "/")
+                        .Replace("%2F", "/");
+
+                    var Uris = Html.GetUrisFromManifest(manifest);
+
+                    foreach (var v in Uris)
+                    {
+                        yield return new YouTubeVideo(title,
+                            new UnscrambledQuery(v, false),
+                            jsPlayer, true);
+                    }
+                }
+            }
+            else queries = adaptiveMap.Split(',').Select(Unscramble);
 
             foreach (var query in queries)
                 yield return new YouTubeVideo(title, query, jsPlayer);
