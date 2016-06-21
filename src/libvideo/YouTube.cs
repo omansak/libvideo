@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,9 +75,9 @@ namespace VideoLibrary
                 {
                     string temp = Json.GetKey("dashmpd", source);
                     temp = WebUtility.UrlDecode(temp).Replace(@"\/", "/");
-                    
+
                     var manifest = hc.GetStringAsync(temp)
-                        .GetAwaiter.GetResult()
+                        .GetAwaiter().GetResult()
                         .Replace(@"\/", "/")
                         .Replace("%2F", "/");
 

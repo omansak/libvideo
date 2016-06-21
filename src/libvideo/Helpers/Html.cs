@@ -14,7 +14,7 @@ namespace VideoLibrary.Helpers
             WebUtility.HtmlDecode(
                 Text.StringBetween(
                     '<' + name + '>', "</" + name + '>', source));
-        
+
         public static IEnumerable<string> GetUrisFromManifest(string source)
         {
             string opening = "<BaseURL>";
@@ -28,5 +28,6 @@ namespace VideoLibrary.Helpers
                 return Uris;
             }
             throw new NotSupportedException();
+        }
     }
 }
