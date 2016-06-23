@@ -81,9 +81,9 @@ namespace VideoLibrary
                         .Replace(@"\/", "/")
                         .Replace("%2F", "/");
 
-                    var Uris = Html.GetUrisFromManifest(manifest);
+                    var uris = Html.GetUrisFromManifest(manifest);
 
-                    foreach (var v in Uris)
+                    foreach (var v in uris)
                     {
                         yield return new YouTubeVideo(title,
                             new UnscrambledQuery(v, false),

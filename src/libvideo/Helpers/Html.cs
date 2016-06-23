@@ -18,14 +18,14 @@ namespace VideoLibrary.Helpers
         public static IEnumerable<string> GetUrisFromManifest(string source)
         {
             string opening = "<BaseURL>";
-            string closing = "</BaseURL";
+            string closing = "</BaseURL>";
             int start = source.IndexOf(opening);
             if (start != -1)
             {
                 string temp = source.Substring(start);
-                var Uris = temp.Split(new string[] { opening }, StringSplitOptions.RemoveEmptyEntries)
+                var uris = temp.Split(new string[] { opening }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(v => v.Substring(0, v.IndexOf(closing)));
-                return Uris;
+                return uris;
             }
             throw new NotSupportedException();
         }
