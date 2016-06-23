@@ -30,7 +30,7 @@ namespace VideoLibrary.Debug
                 "https://www.youtube.com/watch?v=pG_euGOe0ww"
             };
 
-            TestLibCompat(queries);
+            TestYoutubeExtractor(queries);
             TestVideoLib(queries);
             Console.WriteLine("Done.");
             Console.ReadKey();
@@ -44,15 +44,27 @@ namespace VideoLibrary.Debug
                 for (int i = 0; i < queries.Length; i++)
                 {
                     string uri = queries[i];
-                    var videoInfos = cli.GetAllVideosAsync(uri).Result;
 
-                    Console.WriteLine($"Link #{i + 1}");
-                    foreach (var v in videoInfos) Console.WriteLine(v.Uri + "\n");
+                    try
+                    {
+                        var videoInfos = cli.GetAllVideosAsync(uri).GetAwaiter().GetResult();
+
+                        Console.WriteLine($"Link #{i + 1}");
+                        foreach (var v in videoInfos)
+                        {
+                            Console.WriteLine(v.Uri);
+                            Console.WriteLine();
+                        }
+                    }
+                    catch
+                    {
+                        Debugger.Break();
+                    }
                 }
             }
         }
 
-        public static void TestLibCompat(string[] queries)
+        public static void TestYoutubeExtractor(string[] queries)
         {
             using (var cli = Client.For(YouTube.Default))
             {
@@ -63,12 +75,20 @@ namespace VideoLibrary.Debug
                     var video = cli.GetVideo(query);
                     string uri = video.Uri;
 
-                    var Uris = DownloadUrlResolver
-                        .GetDownloadUrls(query)
-                        .Select(v => v.DownloadUrl);
+                    try
+                    {
+                        var uris = DownloadUrlResolver
+                            .GetDownloadUrls(query)
+                            .Select(v => v.DownloadUrl);
 
-                    Console.WriteLine($"Link #{i + 1}");
-                    foreach (var v in Uris) Console.WriteLine(v + "\n");
+                        Console.WriteLine($"Link #{i + 1}");
+                        foreach (var v in uris)
+                        {
+                            Console.WriteLine(v);
+                            Console.WriteLine();
+                        }
+                    }
+                    catch { }
                 }
             }
         }
