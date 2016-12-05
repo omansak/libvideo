@@ -59,6 +59,13 @@ namespace VideoLibraryNetCore
             string jsPlayer = "http:" + Json.GetKey("js", source).Replace(@"\/", "/");
 
             string map = Json.GetKey("url_encoded_fmt_stream_map", source);
+            if (String.IsNullOrEmpty(map))
+            {
+                string mapYPCVid = Json.GetKey("ypc_vid", source);
+                if (!String.IsNullOrEmpty(mapYPCVid))
+                    yield return GetVideo("https://youtube.com/watch?v=" + mapYPCVid);
+            }
+
             var queries = map.Split(',').Select(Unscramble);
 
             foreach (var query in queries)
