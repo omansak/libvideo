@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C5534970-EDDB-4D0D-AD71-142D696E3962}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D7CC68DE-759A-4244-A345-28D197EE0BDF}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "libvideo-netcore", "libvideo-netcore\libvideo-netcore.xproj", "{59AEFB64-6CEF-418C-8A47-2C616FB8A72E}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "libvideo-netcore.debug", "libvideo-netcore.debug\libvideo-netcore.debug.xproj", "{EB22BD39-432C-4CBA-B15F-8835855C6C3E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59AEFB64-6CEF-418C-8A47-2C616FB8A72E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59AEFB64-6CEF-418C-8A47-2C616FB8A72E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59AEFB64-6CEF-418C-8A47-2C616FB8A72E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59AEFB64-6CEF-418C-8A47-2C616FB8A72E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB22BD39-432C-4CBA-B15F-8835855C6C3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB22BD39-432C-4CBA-B15F-8835855C6C3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB22BD39-432C-4CBA-B15F-8835855C6C3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB22BD39-432C-4CBA-B15F-8835855C6C3E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{59AEFB64-6CEF-418C-8A47-2C616FB8A72E} = {C5534970-EDDB-4D0D-AD71-142D696E3962}
+		{EB22BD39-432C-4CBA-B15F-8835855C6C3E} = {C5534970-EDDB-4D0D-AD71-142D696E3962}
+	EndGlobalSection
+EndGlobal

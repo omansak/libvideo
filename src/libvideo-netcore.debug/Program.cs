@@ -17,7 +17,7 @@ namespace libvideo_netcore.debug
 
         static void WriteVideos()
         {
-            string localPath = @"C:\Users\atorris\Documents\Nouveau dossier (2)\videos\";
+            string localPath = @"";
 
             string[] queries =
                {
