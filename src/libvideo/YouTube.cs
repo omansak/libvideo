@@ -92,10 +92,12 @@ namespace VideoLibrary
                     }
                 }
             }
-            else queries = adaptiveMap.Split(',').Select(Unscramble);
-
-            foreach (var query in queries)
-                yield return new YouTubeVideo(title, query, jsPlayer);
+            else
+            {
+                queries = adaptiveMap.Split(',').Select(Unscramble);
+                foreach (var query in queries)
+                    yield return new YouTubeVideo(title, query, jsPlayer);
+            }
         }
 
         // TODO: Consider making this static...
