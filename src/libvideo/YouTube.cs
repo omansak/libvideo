@@ -11,6 +11,8 @@ namespace VideoLibrary
 {
     public class YouTube : ServiceBase<YouTubeVideo>
     {
+        private const string Playback = "videoplayback";
+
         public static YouTube Default { get; } = new YouTube();
 
         internal async override Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(
@@ -78,16 +80,15 @@ namespace VideoLibrary
 
                     var manifest = hc.GetStringAsync(temp)
                         .GetAwaiter().GetResult()
-                        .Replace(@"\/", "/")
-                        .Replace("%2F", "/");
+                        .Replace(@"\/", "/");
 
                     var uris = Html.GetUrisFromManifest(manifest);
 
                     foreach (var v in uris)
                     {
                         yield return new YouTubeVideo(title,
-                            new UnscrambledQuery(v, false),
-                            jsPlayer, true);
+                            UnscrambleManifestUri(v),
+                            jsPlayer);
                     }
                 }
             }
@@ -136,6 +137,29 @@ namespace VideoLibrary
                 result += "&fallback_host=" + host;
 
             return result;
+        }
+
+        private UnscrambledQuery UnscrambleManifestUri(string manifestUri)
+        {
+            int start = manifestUri.IndexOf(Playback) + Playback.Length;
+            string baseUri = manifestUri.Substring(0, start);
+            string parametersString = manifestUri.Substring(start, manifestUri.Length - start);
+            var parameters = parametersString.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var builder = new StringBuilder(baseUri);
+            builder.Append("?");
+            for (var i = 0; i < parameters.Length; i += 2)
+            {
+                builder.Append(parameters[i]);
+                builder.Append('=');
+                builder.Append(parameters[i + 1].Replace("%2F", "/"));
+                if (i < parameters.Length - 2)
+                {
+                    builder.Append('&');
+                }
+            }
+
+            return new UnscrambledQuery(builder.ToString(), false);
         }
     }
 }
