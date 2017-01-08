@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VideoLibrary.Helpers;
+using System.Text.RegularExpressions;
 
 namespace VideoLibrary
 {
@@ -249,10 +250,7 @@ namespace VideoLibrary
             // function foo(){...}, or
             // var foo=function(){...}, or
             // nh.foo=function(){...}
-            int index = js.IndexOf($"{function}=function(");
-            if (index != -1)
-                return index;
-            return js.IndexOf($"function {function}(");
+            return Regex.Match(js, @"(?!h\.)" + function + @"=function\(\w+\)\{.*?\}", RegexOptions.Singleline).Index;
         }
 
         private int NumericParam(string line)
