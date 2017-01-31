@@ -13,14 +13,16 @@ namespace VideoLibrary
         {
         }
 
-        public abstract string Uri { get; }
+        public string GetUri()
+        {
+            return GetUriAsync().GetAwaiter().GetResult();
+        }
+        public abstract Task<string> GetUriAsync();
         public abstract string Title { get; }
         public abstract WebSites WebSite { get; }
         public virtual VideoFormat Format => VideoFormat.Unknown;
         // public virtual AudioFormat AudioFormat => AudioFormat.Unknown;
 
-        public virtual Task<string> GetUriAsync() =>
-            Task.FromResult(Uri);
 
         public byte[] GetBytes() =>
             GetBytesAsync().GetAwaiter().GetResult();

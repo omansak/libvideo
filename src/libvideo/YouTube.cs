@@ -1,6 +1,7 @@
 ﻿using VideoLibrary.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -56,10 +57,27 @@ namespace VideoLibrary
         {
             string title = Html.GetNode("title", source);
 
-            string jsPlayer = "http:" + Json.GetKey("js", source).Replace(@"\/", "/");
+            string jsPlayer;
+            string basejsPlayer = Json.GetKey("js", source).Replace(@"\/", "/");
+            if (basejsPlayer.StartsWith("//"))
+            {
+                jsPlayer = "https:" + basejsPlayer;
+            }
+            else if (basejsPlayer.StartsWith("/"))
+            {
+                jsPlayer = "https://www.youtube.com" + basejsPlayer;
+            }
+            else if (basejsPlayer.StartsWith("http"))
+            {
+                jsPlayer = basejsPlayer;
+            }
+            else
+            {
+                jsPlayer = "https://youtube.com/" + basejsPlayer;
+            }
 
             string map = Json.GetKey("url_encoded_fmt_stream_map", source);
-            var queries = map.Split(',').Select(Unscramble);
+            var queries = map.Split(new[] { ',' },StringSplitOptions.RemoveEmptyEntries).Select(Unscramble).ToList();
 
             foreach (var query in queries)
                 yield return new YouTubeVideo(title, query, jsPlayer);
@@ -69,32 +87,48 @@ namespace VideoLibrary
             // If there is no adaptive_fmts key, then in the file
             // will be dashmpd key containing link to a XML
             // file containing links and other data
-            if (adaptiveMap == String.Empty)
+            if (String.IsNullOrEmpty(adaptiveMap))
             {
                 using (HttpClient hc = new HttpClient())
                 {
-                    string temp = Json.GetKey("dashmpd", source);
-                    temp = WebUtility.UrlDecode(temp).Replace(@"\/", "/");
-
-                    var manifest = hc.GetStringAsync(temp)
-                        .GetAwaiter().GetResult()
-                        .Replace(@"\/", "/")
-                        .Replace("%2F", "/");
-
-                    var uris = Html.GetUrisFromManifest(manifest);
-
-                    foreach (var v in uris)
+                    IEnumerable<string> uris = null;
+                    try
                     {
-                        yield return new YouTubeVideo(title,
-                            new UnscrambledQuery(v, false),
-                            jsPlayer, true);
+                        string temp = Json.GetKey("dashmpd", source);
+                        temp = WebUtility.UrlDecode(temp).Replace(@"\/", "/");
+
+                        var manifest = hc.GetStringAsync(temp)
+                                         .GetAwaiter().GetResult()
+                                         .Replace(@"\/", "/")
+                                         .Replace("%2F", "/");
+
+                        uris = Html.GetUrisFromManifest(manifest);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
+
+                    if (uris != null)
+                    {
+                        foreach (var v in uris)
+                        {
+                            yield return new YouTubeVideo(title,
+                                new UnscrambledQuery(v, false),
+                                jsPlayer, true);
+                        }
                     }
                 }
             }
-            else queries = adaptiveMap.Split(',').Select(Unscramble);
+            else
+            {
 
-            foreach (var query in queries)
-                yield return new YouTubeVideo(title, query, jsPlayer);
+                var queries2 = adaptiveMap.Split(new[] { ',' },StringSplitOptions.RemoveEmptyEntries).Select(Unscramble).ToList();
+                foreach (var query in queries2)
+                    yield return new YouTubeVideo(title,query,jsPlayer);
+            }
+
+
         }
 
         // TODO: Consider making this static...

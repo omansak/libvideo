@@ -34,14 +34,10 @@ namespace VideoLibrary
         public override string Title { get; }
         public override WebSites WebSite => WebSites.YouTube;
 
-        public override string Uri =>
-            GetUriAsync().GetAwaiter().GetResult();
-
-        public string GetUri(Func<DelegatingClient> makeClient) =>
-            GetUriAsync(makeClient).GetAwaiter().GetResult();
-
-        public override Task<string> GetUriAsync() =>
-            GetUriAsync(() => new DelegatingClient());
+        public override Task<string> GetUriAsync()
+        {
+            return GetUriAsync(() => new DelegatingClient());
+        }
 
         public async Task<string> GetUriAsync(Func<DelegatingClient> makeClient)
         {

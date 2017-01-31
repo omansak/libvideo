@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VideoLibrary.Helpers;
 
@@ -25,8 +26,8 @@ namespace VideoLibrary
                 await makeClient()
                 .GetStringAsync(jsPlayer)
                 .ConfigureAwait(false);
-
-            query["signature"] = DecryptedSignature(signature, js);
+            string decryptedSignature = DecryptedSignature(signature, js);
+            query["signature"] = decryptedSignature;
             return query.ToString();
         }
 
@@ -169,7 +170,20 @@ namespace VideoLibrary
 			while (true)
             {
                 index = js.IndexOf(SigTrig, index);
-                if (index == -1) return string.Empty;
+                if (index == -1)
+                {
+                    // Didn't find function in the old way -> Try the new way
+                    var regex = new Regex(@"([""\'])signature\1\s*,\s*(?<sig>[a-zA-Z0-9$]+)\(",RegexOptions.IgnoreCase);
+                    var match = regex.Match(js);
+                    if (match != null && match.Success)
+                    {
+                        string funcname = match.Groups["sig"].Value;
+                        // Return found function
+                        return funcname;
+                    }
+                    //Didn't find function
+                    return String.Empty;
+                }
                 index += SigTrig.Length;
                 int start = index;
 
@@ -200,6 +214,17 @@ namespace VideoLibrary
 				// 'b' and '('
                 return js.Substring(start, end - start);
             }
+
+
+            // Alternative for finding old function
+
+            //var regex2 = new Regex(@"\.sig\|\|(?<sig>[a-zA-Z0-9$]+)\(",RegexOptions.IgnoreCase);
+            //var match2 = regex.Match(js);
+            //if (match2 != null && match2.Success)
+            //{
+            //    string funcname2 = match2.Groups["sig"].Value;
+            //    return funcname2;
+            //}
         }
 
         private string FunctionBody(string function, string js, int start)
@@ -249,10 +274,7 @@ namespace VideoLibrary
             // function foo(){...}, or
             // var foo=function(){...}, or
             // nh.foo=function(){...}
-            int index = js.IndexOf($"{function}=function(");
-            if (index != -1)
-                return index;
-            return js.IndexOf($"function {function}(");
+            return Regex.Match(js,@"(?!h\.)" + function + @"=function\(\w+\)\{.*?\}",RegexOptions.Singleline).Index;
         }
 
         private int NumericParam(string line)
