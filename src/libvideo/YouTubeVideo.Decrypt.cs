@@ -173,16 +173,23 @@ namespace VideoLibrary
                 if (index == -1)
                 {
                     // Didn't find function in the old way -> Try the new way
-                    var regex = new Regex(@"([""\'])signature\1\s*,\s*(?<sig>[a-zA-Z0-9$]+)\(",RegexOptions.IgnoreCase);
-                    var match = regex.Match(js);
+
+                    //Find "C" in this: var A = B.sig||C (B.s)
+                    string functNamePattern = @"\""signature"",\s?([a-zA-Z0-9\$]+)\("; //Regex Formed To Find Word or DollarSign
+                    var match = Regex.Match(js,functNamePattern);
                     if (match != null && match.Success)
                     {
-                        string funcname = match.Groups["sig"].Value;
+                        var funcName = match.Groups[1].Value;
+                        if (funcName.Contains("$"))
+                        {
+                            funcName = "\\" + funcName; //Due To Dollar Sign Introduction, Need To Escape
+                        }
                         // Return found function
-                        return funcname;
+                        return funcName;
                     }
                     //Didn't find function
                     return String.Empty;
+                    
                 }
                 index += SigTrig.Length;
                 int start = index;
