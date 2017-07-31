@@ -1,3 +1,5 @@
+**ATTENTION:** This project is no longer actively maintained. I apologize to everyone that took a dependency on this library only for it to become inactive. If you're interested in becoming the maintainer, please contact me at jamesqko@gmail.com, and I will get back to you.
+
 # libvideo
 
 ![icon](icons/icon_200.png)
