@@ -4,16 +4,16 @@
     <title>libvideo.compat</title>
     <id>VideoLibrary.Compat</id>
     <version>1.3.3</version>
-    <authors>James Ko</authors>
-    <owners>James Ko</owners>
-    <licenseUrl>https://github.com/jamesqo/libvideo/blob/master/bsd.license</licenseUrl>
-    <projectUrl>https://github.com/jamesqo/libvideo</projectUrl>
-    <iconUrl>https://github.com/jamesqo/libvideo/raw/master/icons/icon_128.png</iconUrl>
+    <authors>Bar Arnon</authors>
+    <owners>Bar Arnon</owners>
+    <licenseUrl>https://github.com/i3arnon/libvideo/blob/master/bsd.license</licenseUrl>
+    <projectUrl>https://github.com/i3arnon/libvideo</projectUrl>
+    <iconUrl>https://github.com/i3arnon/libvideo/raw/master/icons/icon_128.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>An easy way to make the switch from YoutubeExtractor to libvideo.</summary>
     <description>Are you a user of YoutubeExtractor looking to switch to libvideo? libvideo.compat is a compatibility API that helps you to make the move, without having to change a single line of code.
 
-    Find us on GitHub at https://github.com/jamesqo/libvideo</description>
+    Find us on GitHub at https://github.com/i3arnon/libvideo</description>
     <releaseNotes></releaseNotes>
     <copyright></copyright>
     <tags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</tags>
