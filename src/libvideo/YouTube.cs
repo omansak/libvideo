@@ -112,17 +112,19 @@ namespace VideoLibrary
 
                     if (uris != null)
                     {
-
-                        yield return new YouTubeVideo(title,
+                        foreach (var v in uris)
+                        {
+                            yield return new YouTubeVideo(title,
                             UnscrambleManifestUri(v),
                             jsPlayer);
+                        }
                     }
                 }
             }
             else
             {
-                var queries = adaptiveMap.Split(new[] { ',' },StringSplitOptions.RemoveEmptyEntries).Select(Unscramble).ToList();
-                foreach (var query in queries)
+                var queries2 = adaptiveMap.Split(new[] { ',' },StringSplitOptions.RemoveEmptyEntries).Select(Unscramble).ToList();
+                foreach (var query in queries2)
                     yield return new YouTubeVideo(title,query,jsPlayer);
             }
 
