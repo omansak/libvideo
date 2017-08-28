@@ -35,7 +35,7 @@ First, make sure you've cloned the repoistory:
 
 ```
 cd ~
-git clone https://github.com/jamesqo/libvideo.git
+git clone https://github.com/i3arnon/libvideo.git
 cd libvideo
 ```
 
