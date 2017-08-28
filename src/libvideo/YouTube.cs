@@ -12,6 +12,8 @@ namespace VideoLibrary
 {
     public class YouTube : ServiceBase<YouTubeVideo>
     {
+        private const string Playback = "videoplayback";
+
         public static YouTube Default { get; } = new YouTube();
 
         internal async override Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(
@@ -98,9 +100,8 @@ namespace VideoLibrary
                         temp = WebUtility.UrlDecode(temp).Replace(@"\/", "/");
 
                         var manifest = hc.GetStringAsync(temp)
-                                         .GetAwaiter().GetResult()
-                                         .Replace(@"\/", "/")
-                                         .Replace("%2F", "/");
+                        .GetAwaiter().GetResult()
+                        .Replace(@"\/", "/");
 
                         uris = Html.GetUrisFromManifest(manifest);
                     }
@@ -111,22 +112,20 @@ namespace VideoLibrary
 
                     if (uris != null)
                     {
-                        foreach (var v in uris)
-                        {
-                            yield return new YouTubeVideo(title,
-                                new UnscrambledQuery(v, false),
-                                jsPlayer, true);
-                        }
+
+                        yield return new YouTubeVideo(title,
+                            UnscrambleManifestUri(v),
+                            jsPlayer);
                     }
                 }
             }
             else
             {
-
-                var queries2 = adaptiveMap.Split(new[] { ',' },StringSplitOptions.RemoveEmptyEntries).Select(Unscramble).ToList();
-                foreach (var query in queries2)
+                var queries = adaptiveMap.Split(new[] { ',' },StringSplitOptions.RemoveEmptyEntries).Select(Unscramble).ToList();
+                foreach (var query in queries)
                     yield return new YouTubeVideo(title,query,jsPlayer);
             }
+
 
 
         }
@@ -170,6 +169,29 @@ namespace VideoLibrary
                 result += "&fallback_host=" + host;
 
             return result;
+        }
+
+        private UnscrambledQuery UnscrambleManifestUri(string manifestUri)
+        {
+            int start = manifestUri.IndexOf(Playback) + Playback.Length;
+            string baseUri = manifestUri.Substring(0, start);
+            string parametersString = manifestUri.Substring(start, manifestUri.Length - start);
+            var parameters = parametersString.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var builder = new StringBuilder(baseUri);
+            builder.Append("?");
+            for (var i = 0; i < parameters.Length; i += 2)
+            {
+                builder.Append(parameters[i]);
+                builder.Append('=');
+                builder.Append(parameters[i + 1].Replace("%2F", "/"));
+                if (i < parameters.Length - 2)
+                {
+                    builder.Append('&');
+                }
+            }
+
+            return new UnscrambledQuery(builder.ToString(), false);
         }
     }
 }
