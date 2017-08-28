@@ -34,6 +34,9 @@ namespace VideoLibrary
         public override string Title { get; }
         public override WebSites WebSite => WebSites.YouTube;
 
+        [Obsolete("Uri property is deprecated, please use the method GetUri() instead.")]
+        public override string Uri => GetUri();
+
         public override Task<string> GetUriAsync()
         {
             return GetUriAsync(() => new DelegatingClient());

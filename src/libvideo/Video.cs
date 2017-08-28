@@ -13,6 +13,9 @@ namespace VideoLibrary
         {
         }
 
+        [Obsolete("Uri property is deprecated, please use the method GetUri() instead.")]
+        public abstract string Uri { get; }
+
         public string GetUri()
         {
             return GetUriAsync().GetAwaiter().GetResult();
