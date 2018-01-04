@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VideoLibrary.Helpers;
 
@@ -10,6 +11,8 @@ namespace VideoLibrary
     public partial class YouTubeVideo
     {
         private const string SigTrig = ".sig";
+        
+        private static readonly Regex _signatureRegex = new Regex(@"([""\'])signature\1\s*,\s*(?<sig>[a-zA-Z0-9$]+)\(", RegexOptions.IgnoreCase);
 
         private readonly string jsPlayer;
 
@@ -169,7 +172,14 @@ namespace VideoLibrary
 			while (true)
             {
                 index = js.IndexOf(SigTrig, index);
-                if (index == -1) return string.Empty;
+                if (index == -1)
+                {
+                    var match = _signatureRegex.Match(js);
+                    return match.Success
+                        ? match.Groups["sig"].Value
+                        : string.Empty;
+                }
+
                 index += SigTrig.Length;
                 int start = index;
 
