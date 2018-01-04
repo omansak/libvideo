@@ -58,7 +58,11 @@ namespace VideoLibrary
         {
             string title = Html.GetNode("title", source);
 
-            string jsPlayer = "http:" + Json.GetKey("js", source).Replace(@"\/", "/");
+            string jsPlayer = ParseJsPlayer(source);
+            if (jsPlayer == null)
+            {
+                yield break;
+            }
 
             string map = Json.GetKey("url_encoded_fmt_stream_map", source);
             var queries = map.Split(',').Select(Unscramble);
@@ -98,6 +102,28 @@ namespace VideoLibrary
                 foreach (var query in queries)
                     yield return new YouTubeVideo(title, query, jsPlayer);
             }
+        }
+
+        private string ParseJsPlayer(string source)
+        {
+            string jsPlayer = Json.GetKey("js", source).Replace(@"\/", "/");
+            if (string.IsNullOrWhiteSpace(jsPlayer))
+            {
+                return null;
+            }
+
+            if (jsPlayer.StartsWith("/yts"))
+            {
+                return $"https://www.youtube.com{jsPlayer}";
+            }
+
+            // Fall back on old implementation (not sure it's needed)
+            if (!jsPlayer.StartsWith("http"))
+            {
+                jsPlayer = $"https:{jsPlayer}";
+            }
+            
+            return jsPlayer;
         }
 
         // TODO: Consider making this static...
