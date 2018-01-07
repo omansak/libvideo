@@ -2,7 +2,9 @@
 
 ![icon](icons/icon_200.png)
 
+[![NuGet](https://img.shields.io/nuget/dt/VideoLibrary.svg)](https://www.nuget.org/packages/VideoLibrary)
 [![NuGet](https://img.shields.io/nuget/v/VideoLibrary.svg)](https://www.nuget.org/packages/VideoLibrary)
+[![license](https://img.shields.io/github/license/i3arnon/VideoLibrary.svg)](LICENSE)
 [![Join the chat at https://gitter.im/jamesqo/libvideo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jamesqo/libvideo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 libvideo (aka VideoLibrary) is a modern .NET library for downloading YouTube videos. It is portable to most platforms and is very lightweight.
@@ -56,7 +58,7 @@ If you'd like to check out some more of our features, take a look at our [docs](
 
 ## License
 
-libvideo is licensed under the [BSD 2-clause license](bsd.license).
+libvideo is licensed under the [BSD 2-clause license](LICENSE).
 
 ## FAQ
 
