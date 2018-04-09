@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,11 +10,8 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        private const string SigTrig = ".sig";
-        
-        private static readonly Regex _signatureRegex = new Regex(@"([""\'])signature\1\s*,\s*(?<sig>[a-zA-Z0-9$]+)\(", RegexOptions.IgnoreCase);
-
-        private readonly string jsPlayer;
+        private static readonly Regex DecryptionFunctionRegex = new Regex(@"\""signature"",\s?([a-zA-Z0-9\$]+)\(");
+        private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
 
         private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
         {
@@ -29,255 +26,158 @@ namespace VideoLibrary
                 .GetStringAsync(jsPlayer)
                 .ConfigureAwait(false);
 
-            query["signature"] = DecryptedSignature(signature, js);
+            query["signature"] = DecryptSignature(js, signature);
             return query.ToString();
         }
 
-        private string DecryptedSignature(string signature, string js)
+        private string DecryptSignature(string js, string signature)
         {
-            string[] lines;
-            var operations = Operations(js, out lines);
-
-            var result = signature.ToCharArray();
-
-            // Apply the operations once known
-            for (int i = 1; i < lines.Length - 1; i++)
+            var functionLines = GetDecryptionFunctionLines(js);
+            
+            var decryptor = new Decryptor();
+            foreach (var functionLine in functionLines)
             {
-                string line = lines[i];
-                string name = SubDecryptFunction(line);
-
-                if (name == operations.Reverse)
+                if (decryptor.IsComplete)
                 {
-                    Array.Reverse(result, 0, result.Length);
-                }
-                else if (name == operations.Splice)
-                {
-                    // Cut the first N chars
-                    int index = NumericParam(line);
-                    char[] resized = new char[result.Length - index];
-                    Array.Copy(result, index, resized, 0, resized.Length);
-                    result = resized;
-                }
-                else // if (name == operations.Swap)
-                {
-                    // Swap first char
-                    int index = NumericParam(line);
-
-                    char displaced = result[0];
-                    result[0] = result[index % result.Length];
-                    result[index] = displaced;
-                }
-            }
-
-            return new string(result);
-        }
-
-        private Operations Operations(string js, out string[] lines)
-        {
-            // NOTE: We have to be careful from here on out, 
-            // as the typical size for js is about 1 MB. 
-            // Unnecessary string allocations could cost 
-            // megabytes of memory.
-
-            string function = DecryptFunction(js);
-            int index = DeclaredFunctionStart(function, js);
-            string body = FunctionBody(function, js, index);
-            lines = body.Split(';');
-
-            // We have to find the identifiers 
-            // for three cipher functions. One 
-            // does a reverse, one does a 
-            // splice, and one does a char swap.
-
-            string reverse = null, splice = null, swap = null;
-
-            // Skip the first and last statements; 
-            // they're only split and join statements
-            for (int i = 1; i < lines.Length - 1; i++)
-            {
-                string line = lines[i];
-                string name = SubDecryptFunction(line);
-
-                /* Here we have to look into the
-                JavaScript and determine which
-                operations the function corresponds
-                to. To do this, we have to identify
-                each function based on its
-                characteristics, e.g:
-                
-                - Reverse takes 1 parameter
-                - Swap contains "var" and "c=a", 2 parameters
-                - Splice also has 2 parameters, has "return" */
-
-                // Have we already dealt with this function?
-                if (name == reverse || name == splice || name == swap)
-                    continue;
-
-                int start = LiteralFunctionStart(name, js); // "bar:function"
-
-                // check for Reverse
-                int open = start + LiteralFunctionPrefix(name).Length; // just after '('
-                int close = js.IndexOf(')', open); // ')'
-                if (js.IndexOf(',', open) > close) // No ',' between ( and )
-                {
-                    // it's Reverse
-                    reverse = name;
-                    if (splice != null && swap != null)
-                        break;
-                    continue;
-                }
-
-                // If we got here there are at least 
-                // 2 parameters in the method, so 
-                // it has to be either Swap or Splice.
-
-                // check for Swap
-                string swapCode = FunctionBody(name, js, start);
-                index = swapCode.IndexOf("var");
-                if (index != 1 && swapCode.IndexOf("c=a") != -1)
-                {
-                    // it's Swap
-                    swap = name;
-                    if (reverse != null && splice != null)
-                        break;
-                    continue;
-                }
-
-                // it's Splice
-                splice = name;
-                if (reverse != null && swap != null)
                     break;
+                }
+
+                var match = FunctionRegex.Match(functionLine);
+                if (match.Success)
+                {
+                    decryptor.AddFunction(js, match.Groups[1].Value);
+                }
             }
 
-            return new Operations(reverse, swap, splice);
-        }
-
-        private string DecryptFunction(string js)
-        {
-            /*
-			Somewhere within the JavaScript source code 
-			is an expression that looks like this:
-
-			foo.sig || bar(baz)
-
-			or this:
-
-			foo.sig||bar(baz)
-
-			We want to match "bar".
-			*/
-
-            int index = 0;
-
-			while (true)
+            foreach (var functionLine in functionLines)
             {
-                index = js.IndexOf(SigTrig, index);
-                if (index == -1)
+                var match = FunctionRegex.Match(functionLine);
+                if (match.Success)
                 {
-                    var match = _signatureRegex.Match(js);
-                    return match.Success
-                        ? match.Groups["sig"].Value
-                        : string.Empty;
+                    signature = decryptor.ExecuteFunction(signature, functionLine, match.Groups[1].Value);
                 }
-
-                index += SigTrig.Length;
-                int start = index;
-
-				// ' ' or '|'
-                bool succeeded = false;
-				switch (js[start])
-                {
-                    case ' ':
-                        start = js.SkipWhitespace(start);
-                        if (js[start] != '|') break;
-                        goto case '|';
-                    case '|':
-                        if (js[++start] != '|') break;
-                        start = js.SkipWhitespace(++start);
-                        char first = js[start];
-                        succeeded = char.IsLetterOrDigit(first) | first == '$';
-                        break;
-                }
-                if (!succeeded) continue;
-
-				// 'b'
-                int end = start;
-                char current = js[end];
-				while (char.IsLetterOrDigit(current) | current == '$')
-                    current = js[++end];
-                if (current != '(') continue;
-
-				// 'b' and '('
-                return js.Substring(start, end - start);
             }
+
+            return signature;
         }
 
-        private string FunctionBody(string function, string js, int start)
+        private string[] GetDecryptionFunctionLines(string js)
         {
-            start = js.IndexOf('{', start);
-            int end = Closure(js, start++);
-            return js.Substring(start, end - start);
-        }
-
-        private int Closure(string js, int index)
-        {
-            int depth = 1; // number of {s in, 1 b/c right now js[index] should == '{'
-
-            while (true)
+            var decryptionFunction = GetDecryptionFunction(js);
+            var match =
+                Regex.Match(
+                    js,
+                    $@"(?!h\.){Regex.Escape(decryptionFunction)}=function\(\w+\)\{{(.*?)\}}",
+                    RegexOptions.Singleline);
+            if (!match.Success)
             {
-                switch (js[++index])
+                throw new Exception($"{nameof(GetDecryptionFunctionLines)} failed");
+            }
+
+            return match.Groups[1].Value.Split(';');
+        }
+
+        private string GetDecryptionFunction(string js)
+        {
+            var match = DecryptionFunctionRegex.Match(js);
+            if (!match.Success)
+            {
+                throw new Exception($"{nameof(GetDecryptionFunction)} failed");
+            }
+
+            return match.Groups[1].Value;
+        }
+
+        private class Decryptor
+        {
+            private static readonly Regex ParametersRegex = new Regex(@"\(\w+,(\d+)\)");
+
+            private readonly Dictionary<string, FunctionType> _functionTypes = new Dictionary<string, FunctionType>();
+            private readonly StringBuilder _stringBuilder = new StringBuilder();
+
+            public bool IsComplete =>
+                _functionTypes.Count == Enum.GetValues(typeof(FunctionType)).Length;
+
+            public void AddFunction(string js, string function)
+            {
+                var escapedFunction = Regex.Escape(function);
+                FunctionType? type = null;
+                if (Regex.IsMatch(js, $@"{escapedFunction}:\bfunction\b\(\w+\)"))
                 {
-                    case '{':
-                        depth++;
-                        break;
-                    case '}':
-                        if (--depth == 0)
-                            return index;
-                        break;
+                    type = FunctionType.Reverse;
+                }
+                else if (Regex.IsMatch(js, $@"{escapedFunction}:\bfunction\b\([a],b\).(\breturn\b)?.?\w+\."))
+                {
+                    type = FunctionType.Slice;
+                }
+                else if (Regex.IsMatch(js, $@"{escapedFunction}:\bfunction\b\(\w+\,\w\).\bvar\b.\bc=a\b"))
+                {
+                    type = FunctionType.Swap;
+                }
+
+                if (type.HasValue)
+                {
+                    _functionTypes[function] = type.Value;
                 }
             }
+
+            public string ExecuteFunction(string signature, string line, string function)
+            {
+                FunctionType type;
+                if (!_functionTypes.TryGetValue(function, out type))
+                {
+                    return signature;
+                }
+
+                switch (type)
+                {
+                    case FunctionType.Reverse:
+                        return Reverse(signature);
+                    case FunctionType.Slice:
+                    case FunctionType.Swap:
+                        var index =
+                            int.Parse(
+                                ParametersRegex.Match(line).Groups[1].Value,
+                                NumberStyles.AllowThousands,
+                                NumberFormatInfo.InvariantInfo);
+                        return
+                            type == FunctionType.Slice
+                                ? Slice(signature, index)
+                                : Swap(signature, index);
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(type));
+                }
+            }
+
+            private string Reverse(string signature)
+            {
+                _stringBuilder.Clear();
+                for (var index = signature.Length - 1; index >= 0; index--)
+                {
+                    _stringBuilder.Append(signature[index]);
+                }
+
+                return _stringBuilder.ToString();
+            }
+
+            private string Slice(string signature, int index) =>
+                signature.Substring(index);
+
+            private string Swap(string signature, int index)
+            {
+                _stringBuilder.Clear();
+                _stringBuilder.Append(signature);
+                _stringBuilder[0] = signature[index];
+                _stringBuilder[index] = signature[0];
+                return _stringBuilder.ToString();
+            }
+
+            private enum FunctionType
+            {
+                Reverse,
+                Slice,
+                Swap
+            }
         }
-
-        private string SubDecryptFunction(string line)
-        {
-            // Sample code:
-            // 
-            // function gs(a){a=a.split("");fs.yy(a,40);fs.Q2(a,3);
-            // fs.yy(a,53);fs.yy(a,11);fs.Q2(a,3);fs.cK(a,8);fs.Q2(a,3);
-            // fs.yy(a,16);fs.cK(a,75);return a.join("")}
-            // 
-            // Our goal here is to find "yy", "Q2", and "cK".
-
-            int start = line.IndexOf('.') + 1;
-            int end = line.IndexOf('(', start);
-            return line.Substring(start, end - start);
-        }
-
-        private int DeclaredFunctionStart(string function, string js)
-        {
-            // Match functions with either of the following styles:
-            // function foo(){...}, or
-            // var foo=function(){...}, or
-            // nh.foo=function(){...}
-            int index = js.IndexOf($"{function}=function(");
-            if (index != -1)
-                return index;
-            return js.IndexOf($"function {function}(");
-        }
-
-        private int NumericParam(string line)
-        {
-            int start = line.IndexOf(',') + 1;
-            start = line.SkipWhitespace(start);
-            int end = line.IndexOf(')', start);
-            string result = line.Substring(start, end - start);
-            return int.Parse(result);
-        }
-
-        private int LiteralFunctionStart(string function, string js) =>
-            js.IndexOf(LiteralFunctionPrefix(function));
-
-        private string LiteralFunctionPrefix(string function) =>
-            function + ":function(";
     }
 }

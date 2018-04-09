@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using VideoLibrary.Helpers;
 
@@ -10,6 +6,8 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo : Video
     {
+        private readonly string jsPlayer;
+
         private string uri;
         private bool encrypted;
 
