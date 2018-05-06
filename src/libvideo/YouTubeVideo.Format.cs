@@ -53,6 +53,7 @@ namespace VideoLibrary
                     case 271:
                     case 272:
                     case 278:
+                    case 313:
                         return AdaptiveKind.Video;
                     case 139:
                     case 140:
@@ -163,6 +164,7 @@ namespace VideoLibrary
                         return 520;
                     case 138:
                     case 272:
+                    case 313:
                         return 2160;
                     case 264:
                     case 271:
@@ -225,6 +227,7 @@ namespace VideoLibrary
                     case 278:
                     case 171:
                     case 172:
+                    case 313:
                         return VideoFormat.WebM;
                     default:
                         return VideoFormat.Unknown;
