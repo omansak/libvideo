@@ -1,45 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D9C4B036-84AF-4B84-9C5A-A4481E653F63}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VideoLibrary.Compat</RootNamespace>
-    <AssemblyName>libvideo.compat</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFramework>netstandard1.1</TargetFramework>
+    <RootNamespace>YoutubeExtractor</RootNamespace>
+    <PackageId>VideoLibrary.Compat</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.0.0-beta</Version>
+    <Authors>Bar Arnon</Authors>
+    <Description>Are you a user of YoutubeExtractor looking to switch to libvideo? libvideo.compat is a compatibility API that helps you to make the move, without having to change a single line of code.
+
+Find us on GitHub at https://github.com/i3arnon/libvideo</Description>
+    <Copyright>Copyright 2018 Bar Arnon</Copyright>
+    <PackageLicenseUrl>https://github.com/i3arnon/libvideo/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/i3arnon/libvideo</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/i3arnon/libvideo/raw/master/icons/icon_128.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/i3arnon/libvideo</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
+    <Title>libvideo.compat</Title>
+    <PackageReleaseNotes>Move to .NET Standard</PackageReleaseNotes>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\libvideo\libvideo.csproj">
-      <Project>{4dfedf29-6cb3-4369-8ed9-104a34b8a045}</Project>
-      <Name>libvideo</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\libvideo\libvideo.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile Include="..\libvideo\Exceptions\BadQueryException.cs">
       <Link>Exceptions\BadQueryException.cs</Link>
@@ -59,23 +44,6 @@
     <Compile Include="..\libvideo\Helpers\ValueCollection.cs">
       <Link>Helpers\ValueCollection.cs</Link>
     </Compile>
-    <Compile Include="AdaptiveType.cs" />
-    <Compile Include="AudioExtractionException.cs" />
-    <Compile Include="AudioType.cs" />
-    <Compile Include="DownloadUrlResolver.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VideoInfo.cs" />
-    <Compile Include="VideoNotAvailableException.cs" />
-    <Compile Include="VideoType.cs" />
-    <Compile Include="YoutubeParseException.cs" />
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

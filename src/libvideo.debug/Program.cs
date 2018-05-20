@@ -4,13 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using YoutubeExtractor;
 
 namespace VideoLibrary.Debug
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             string[] queries =
             {
@@ -30,7 +29,6 @@ namespace VideoLibrary.Debug
                 "https://www.youtube.com/watch?v=pG_euGOe0ww"
             };
 
-            TestYoutubeExtractor(queries);
             TestVideoLib(queries);
             Console.WriteLine("Done.");
             Console.ReadKey();
@@ -60,35 +58,6 @@ namespace VideoLibrary.Debug
                     {
                         Debugger.Break();
                     }
-                }
-            }
-        }
-
-        public static void TestYoutubeExtractor(string[] queries)
-        {
-            using (var cli = Client.For(YouTube.Default))
-            {
-                for (int i = 0; i < queries.Length; i++)
-                {
-                    string query = queries[i];
-
-                    var video = cli.GetVideo(query);
-                    string uri = video.Uri;
-
-                    try
-                    {
-                        var uris = DownloadUrlResolver
-                            .GetDownloadUrls(query)
-                            .Select(v => v.DownloadUrl);
-
-                        Console.WriteLine($"Link #{i + 1}");
-                        foreach (var v in uris)
-                        {
-                            Console.WriteLine(v);
-                            Console.WriteLine();
-                        }
-                    }
-                    catch { }
                 }
             }
         }
