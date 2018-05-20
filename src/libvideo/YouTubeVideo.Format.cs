@@ -60,6 +60,9 @@ namespace VideoLibrary
                     case 141:
                     case 171:
                     case 172:
+                    case 249:
+                    case 250:
+                    case 251:
                         return AdaptiveKind.Audio;
                     default:
                         return AdaptiveKind.None;
@@ -75,6 +78,7 @@ namespace VideoLibrary
                 {
                     case 5:
                     case 6:
+                    case 250:
                         return 64;
                     case 17:
                         return 24;
@@ -104,7 +108,10 @@ namespace VideoLibrary
                     case 84:
                     case 85:
                         return 152;
+                    case 251:
+                        return 160;
                     case 139:
+                    case 249:
                         return 48;
                     case 141:
                         return 256;
@@ -227,6 +234,9 @@ namespace VideoLibrary
                     case 278:
                     case 171:
                     case 172:
+                    case 249:
+                    case 250:
+                    case 251:
                     case 313:
                         return VideoFormat.WebM;
                     default:
@@ -271,6 +281,10 @@ namespace VideoLibrary
                     case 171:
                     case 172:
                         return AudioFormat.Vorbis;
+                    case 249:
+                    case 250:
+                    case 251:
+                        return AudioFormat.Opus;
                     default:
                         return AudioFormat.Unknown;
                 }
