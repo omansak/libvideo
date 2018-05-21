@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.1</TargetFramework>
-    <RootNamespace>YoutubeExtractor</RootNamespace>
-    <PackageId>VideoLibrary.Compat</PackageId>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.0.0-beta</Version>
     <Authors>Bar Arnon</Authors>
+    <Copyright>Copyright 2018 Bar Arnon</Copyright>
     <Description>Are you a user of YoutubeExtractor looking to switch to libvideo? libvideo.compat is a compatibility API that helps you to make the move, without having to change a single line of code.
 
 Find us on GitHub at https://github.com/i3arnon/libvideo</Description>
-    <Copyright>Copyright 2018 Bar Arnon</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIconUrl>https://github.com/i3arnon/libvideo/raw/master/icons/icon_128.png</PackageIconUrl>
+    <PackageId>VideoLibrary.Compat</PackageId>
     <PackageLicenseUrl>https://github.com/i3arnon/libvideo/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/i3arnon/libvideo</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/i3arnon/libvideo/raw/master/icons/icon_128.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/i3arnon/libvideo</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
-    <Title>libvideo.compat</Title>
     <PackageReleaseNotes>Move to .NET Standard</PackageReleaseNotes>
+    <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/i3arnon/libvideo</RepositoryUrl>
+    <RootNamespace>YoutubeExtractor</RootNamespace>
+    <Version>2.0.0-beta</Version>
+    <TargetFramework>netstandard1.1</TargetFramework>
+    <Title>libvideo.compat</Title>
   </PropertyGroup>
 
   <ItemGroup>

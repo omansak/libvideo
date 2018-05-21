@@ -1,24 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.1</TargetFramework>
-    <Version>2.0.0-beta</Version>
     <Authors>Bar Arnon</Authors>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Copyright>Copyright 2018 Bar Arnon</Copyright>
     <Description>libvideo is a fast, clean way to download YouTube videos. It is fully portable and has no dependencies.
 
 Find us on GitHub at https://github.com/i3arnon/libvideo</Description>
-    <Copyright>Copyright 2018 Bar Arnon</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIconUrl>https://github.com/i3arnon/libvideo/raw/master/icons/icon_128.png</PackageIconUrl>
+    <PackageId>VideoLibrary</PackageId>
     <PackageLicenseUrl>https://github.com/i3arnon/libvideo/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/i3arnon/libvideo</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/i3arnon/libvideo/raw/master/icons/icon_128.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/i3arnon/libvideo</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
-    <PackageId>VideoLibrary</PackageId>
-    <Title>libvideo</Title>
-    <RootNamespace>VideoLibrary</RootNamespace>
     <PackageReleaseNotes>Move to .NET Standard</PackageReleaseNotes>
+    <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/i3arnon/libvideo</RepositoryUrl>
+    <RootNamespace>VideoLibrary</RootNamespace>
+    <Version>2.0.0-beta</Version>
+    <TargetFramework>netstandard1.1</TargetFramework>
+    <Title>libvideo</Title>
   </PropertyGroup>
 
 </Project>
