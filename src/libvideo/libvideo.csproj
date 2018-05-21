@@ -19,6 +19,7 @@ Find us on GitHub at https://github.com/i3arnon/libvideo</Description>
     <Version>2.0.0-beta</Version>
     <TargetFramework>netstandard1.1</TargetFramework>
     <Title>libvideo</Title>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
 </Project>
