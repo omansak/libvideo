@@ -34,11 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="libvideo">
-      <HintPath>..\..\..\src\libvideo\bin\$(Configuration)\libvideo.dll</HintPath>
+      <HintPath>..\..\..\src\libvideo\bin\$(Configuration)\netstandard1.1\libvideo.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,9 +47,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="YoutubeExtractor, Version=0.10.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\YoutubeExtractor.0.10.6\lib\net35\YoutubeExtractor.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="YoutubeExtractor, Version=0.10.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\YoutubeExtractor.0.10.11\lib\net35\YoutubeExtractor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -59,7 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

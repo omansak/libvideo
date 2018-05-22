@@ -15,7 +15,7 @@ You can grab a copy of the library [on NuGet](https://www.nuget.org/packages/Vid
 
     Install-Package VideoLibrary
 
-Alternatively, you can try [building the repo](docs/building.md) if you like your assemblies extra-fresh.
+Alternatively, you can try building the repo if you like your assemblies extra-fresh.
 
 ## Supported Platforms
 
@@ -66,14 +66,14 @@ libvideo is licensed under the [BSD 2-clause license](LICENSE).
 
 libvideo:
 
-- can be used in Portable Class Libraries
-- supports WinRT projects (e.g. Windows 10)
-- is roughly 400% faster ([yes, it's true](tests/Speed.Test/Speed.Test/Program.cs))
+- Can be used in Portable Class Libraries
+- Supports WinRT projects (e.g. Windows 10)
+- Is roughly 400% faster ([yes, it's true](tests/Speed.Test/Speed.Test/Program.cs))
 
 YoutubeExtractor:
 
-- supports Silverlight
-- supports Flash audio extraction
+- Supports Silverlight
+- Supports Flash audio extraction
 
 ### Can I switch from YoutubeExtractor without having to refactor my code?
 

@@ -34,7 +34,7 @@
   <ItemGroup>
     <Reference Include="libvideo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\src\libvideo\bin\Release\libvideo.dll</HintPath>
+      <HintPath>..\..\..\src\libvideo\bin\Release\netstandard1.1\libvideo.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
