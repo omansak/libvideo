@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -33,7 +33,7 @@ namespace VideoLibrary
         private string DecryptSignature(string js, string signature)
         {
             var functionLines = GetDecryptionFunctionLines(js);
-            
+
             var decryptor = new Decryptor();
             foreach (var functionLine in functionLines)
             {
@@ -42,7 +42,7 @@ namespace VideoLibrary
                     break;
                 }
 
-                var match = FunctionRegex.Match(functionLine);
+                var match = FunctionRegex.Match(functionLine.Replace("[\"", ".").Replace("\"]", ""));
                 if (match.Success)
                 {
                     decryptor.AddFunction(js, match.Groups[1].Value);
@@ -51,7 +51,7 @@ namespace VideoLibrary
 
             foreach (var functionLine in functionLines)
             {
-                var match = FunctionRegex.Match(functionLine);
+                var match = FunctionRegex.Match(functionLine.Replace("[\"", ".").Replace("\"]", ""));
                 if (match.Success)
                 {
                     signature = decryptor.ExecuteFunction(signature, functionLine, match.Groups[1].Value);
@@ -102,7 +102,7 @@ namespace VideoLibrary
             {
                 var escapedFunction = Regex.Escape(function);
                 FunctionType? type = null;
-                if (Regex.IsMatch(js, $@"{escapedFunction}:\bfunction\b\(\w+\)"))
+                if (Regex.IsMatch(js, $@"\""{escapedFunction}\"":\bfunction\b\(\w+\)"))
                 {
                     type = FunctionType.Reverse;
                 }
@@ -167,8 +167,8 @@ namespace VideoLibrary
             {
                 _stringBuilder.Clear();
                 _stringBuilder.Append(signature);
-                _stringBuilder[0] = signature[index];
-                _stringBuilder[index] = signature[0];
+                _stringBuilder[0] = _stringBuilder[index % _stringBuilder.Length];
+                _stringBuilder[index % _stringBuilder.Length] = signature[0];
                 return _stringBuilder.ToString();
             }
 
