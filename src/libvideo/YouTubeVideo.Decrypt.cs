@@ -33,7 +33,6 @@ namespace VideoLibrary
         private string DecryptSignature(string js, string signature)
         {
             var functionLines = GetDecryptionFunctionLines(js);
-
             var decryptor = new Decryptor();
             foreach (var functionLine in functionLines)
             {
@@ -41,7 +40,7 @@ namespace VideoLibrary
                 {
                     break;
                 }
-
+                /* Pass  TK["do"](a, 36); or TK.BH(a, 1); */
                 var match = FunctionRegex.Match(functionLine.Replace("[\"", ".").Replace("\"]", ""));
                 if (match.Success)
                 {
@@ -102,15 +101,16 @@ namespace VideoLibrary
             {
                 var escapedFunction = Regex.Escape(function);
                 FunctionType? type = null;
-                if (Regex.IsMatch(js, $@"\""{escapedFunction}\"":\bfunction\b\(\w+\)"))
+                /* Pass  "do":function(a){} or xa:function(a,b){} */
+                if (Regex.IsMatch(js, $@"(\"")?{escapedFunction}(\"")?:\bfunction\b\(\w+\)"))
                 {
                     type = FunctionType.Reverse;
                 }
-                else if (Regex.IsMatch(js, $@"{escapedFunction}:\bfunction\b\([a],b\).(\breturn\b)?.?\w+\."))
+                else if (Regex.IsMatch(js, $@"(\"")?{escapedFunction}(\"")?:\bfunction\b\([a],b\).(\breturn\b)?.?\w+\."))
                 {
                     type = FunctionType.Slice;
                 }
-                else if (Regex.IsMatch(js, $@"{escapedFunction}:\bfunction\b\(\w+\,\w\).\bvar\b.\bc=a\b"))
+                else if (Regex.IsMatch(js, $@"(\"")?{escapedFunction}(\"")?:\bfunction\b\(\w+\,\w\).\bvar\b.\bc=a\b"))
                 {
                     type = FunctionType.Swap;
                 }
