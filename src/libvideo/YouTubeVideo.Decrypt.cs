@@ -10,7 +10,7 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        private static readonly Regex DecryptionFunctionRegex = new Regex(@"\""signature"",\s?([a-zA-Z0-9\$]+)\(");
+        private static readonly Regex DecryptionFunctionRegex = new Regex(@"(.*?)=function\((.*?)\){.=.\.split\(""""\);(.*?).\.join\(""""\)};");
         private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
 
         private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
