@@ -13,7 +13,8 @@ namespace VideoLibrary
         private string uri;
         private bool encrypted;
         //Your Service
-        private static string DFuctionRegexService = "http://omansak.azurewebsites.net/dfunctionregex.html";
+        // https://libvideo.azurewebsites.net/dfunctionregex.html is not reliable please use own server
+        private static string DFuctionRegexService = "https://libvideo.azurewebsites.net/dfunctionregex.html";
         internal YouTubeVideo(string title,
             UnscrambledQuery query, string jsPlayer)
         {
