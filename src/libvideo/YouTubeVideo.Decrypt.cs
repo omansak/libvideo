@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,9 +11,9 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        private static readonly Regex DecryptionFunctionRegex = new Regex(@"\""signature"",\s?([a-zA-Z0-9\$]+)\(");
+        //private static readonly Regex DecryptionFunctionRegex = new Regex(@"\""signature"",\s?([a-zA-Z0-9\$]+)\(");
+        private static Regex DFunctionRegex;
         private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
-
         private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
         {
             var query = new Query(uri);
@@ -29,11 +30,9 @@ namespace VideoLibrary
             query["signature"] = DecryptSignature(js, signature);
             return query.ToString();
         }
-
         private string DecryptSignature(string js, string signature)
         {
             var functionLines = GetDecryptionFunctionLines(js);
-            
             var decryptor = new Decryptor();
             foreach (var functionLine in functionLines)
             {
@@ -41,8 +40,8 @@ namespace VideoLibrary
                 {
                     break;
                 }
-
-                var match = FunctionRegex.Match(functionLine);
+                /* Pass  TK["do"](a, 36); or TK.BH(a, 1); */
+                var match = FunctionRegex.Match(functionLine.Replace("[\"", ".").Replace("\"]", ""));
                 if (match.Success)
                 {
                     decryptor.AddFunction(js, match.Groups[1].Value);
@@ -51,7 +50,7 @@ namespace VideoLibrary
 
             foreach (var functionLine in functionLines)
             {
-                var match = FunctionRegex.Match(functionLine);
+                var match = FunctionRegex.Match(functionLine.Replace("[\"", ".").Replace("\"]", ""));
                 if (match.Success)
                 {
                     signature = decryptor.ExecuteFunction(signature, functionLine, match.Groups[1].Value);
@@ -60,7 +59,6 @@ namespace VideoLibrary
 
             return signature;
         }
-
         private string[] GetDecryptionFunctionLines(string js)
         {
             var decryptionFunction = GetDecryptionFunction(js);
@@ -76,10 +74,9 @@ namespace VideoLibrary
 
             return match.Groups[1].Value.Split(';');
         }
-
         private string GetDecryptionFunction(string js)
         {
-            var match = DecryptionFunctionRegex.Match(js);
+            var match = DFunctionRegex.Match(js);
             if (!match.Success)
             {
                 throw new Exception($"{nameof(GetDecryptionFunction)} failed");
@@ -87,7 +84,6 @@ namespace VideoLibrary
 
             return match.Groups[1].Value;
         }
-
         private class Decryptor
         {
             private static readonly Regex ParametersRegex = new Regex(@"\(\w+,(\d+)\)");
@@ -102,15 +98,16 @@ namespace VideoLibrary
             {
                 var escapedFunction = Regex.Escape(function);
                 FunctionType? type = null;
-                if (Regex.IsMatch(js, $@"{escapedFunction}:\bfunction\b\(\w+\)"))
+                /* Pass  "do":function(a){} or xa:function(a,b){} */
+                if (Regex.IsMatch(js, $@"(\"")?{escapedFunction}(\"")?:\bfunction\b\(\w+\)"))
                 {
                     type = FunctionType.Reverse;
                 }
-                else if (Regex.IsMatch(js, $@"{escapedFunction}:\bfunction\b\([a],b\).(\breturn\b)?.?\w+\."))
+                else if (Regex.IsMatch(js, $@"(\"")?{escapedFunction}(\"")?:\bfunction\b\([a],b\).(\breturn\b)?.?\w+\."))
                 {
                     type = FunctionType.Slice;
                 }
-                else if (Regex.IsMatch(js, $@"{escapedFunction}:\bfunction\b\(\w+\,\w\).\bvar\b.\bc=a\b"))
+                else if (Regex.IsMatch(js, $@"(\"")?{escapedFunction}(\"")?:\bfunction\b\(\w+\,\w\).\bvar\b.\bc=a\b"))
                 {
                     type = FunctionType.Swap;
                 }
@@ -167,8 +164,8 @@ namespace VideoLibrary
             {
                 _stringBuilder.Clear();
                 _stringBuilder.Append(signature);
-                _stringBuilder[0] = signature[index];
-                _stringBuilder[index] = signature[0];
+                _stringBuilder[0] = _stringBuilder[index % _stringBuilder.Length];
+                _stringBuilder[index % _stringBuilder.Length] = signature[0];
                 return _stringBuilder.ToString();
             }
 
