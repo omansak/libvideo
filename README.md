@@ -1,3 +1,7 @@
+#About this fork
+This is a fork of https://github.com/i3arnon/libvideo.
+NuGet: https://www.nuget.org/packages/VideoLibraryHIG/
+
 # libvideo
 
 ![icon](icons/icon_200.png)
