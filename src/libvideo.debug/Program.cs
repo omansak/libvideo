@@ -54,8 +54,9 @@ namespace VideoLibrary.Debug
                             Console.WriteLine();
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        System.Diagnostics.Debug.WriteLine(e);
                         Debugger.Break();
                     }
                 }
