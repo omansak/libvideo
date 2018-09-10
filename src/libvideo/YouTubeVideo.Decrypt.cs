@@ -12,7 +12,9 @@ namespace VideoLibrary
     public partial class YouTubeVideo
     {
         //Static 
-        //private static readonly Regex DecryptionFunctionRegex = new Regex(@"(?!h\.)(.*?)=function\(\w\){.*\.split\(""""\);.*\.join\(""""\)}");
+        //private static readonly Regex DecryptionFunctionRegex_1 = new Regex(@"(?!h\.)(.*?)=function\(\w\){.*\.split\(""""\);.*\.join\(""""\)}");
+        //or Static @hig-dev
+        //private static readonly Regex DecryptionFunctionRegex_2 = Regex.Match(js, @"(\w+)&&(\w+)\.set\(\w+,(\w+)\(\1\)\);return\s+\2").Groups[3].Value;
         //Dynamic with Service
         private static Regex DFunctionRegex;
         private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
@@ -78,13 +80,14 @@ namespace VideoLibrary
         }
         private string GetDecryptionFunction(string js)
         {
-            //var match = DecryptionFunctionRegex.Match(js);
+            //var match = DecryptionFunctionRegex_1.Match(js);
+            //var match = DecryptionFunctionRegex_2.Match(js);
             var match = DFunctionRegex.Match(js);
             if (!match.Success)
             {
                 throw new Exception($"{nameof(GetDecryptionFunction)} failed");
             }
-
+            //return match.Groups[3].Value; // for DecryptionFunctionRegex_2;
             return match.Groups[1].Value;
         }
         private class Decryptor
