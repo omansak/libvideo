@@ -13,7 +13,7 @@ namespace VideoLibrary
     {
         //Static 
         //private static readonly Regex DecryptionFunctionRegex_1 = new Regex(@"(?!h\.)(.*?)=function\(\w\){.+\.split\(""""\);.+\.join\(""""\)}");
-        //or Static @hig-dev
+        //or Static @smartbracker
         //private static readonly Regex DecryptionFunctionRegex_2 = new Regex(@"\w+&&\w+\.set\(\w+,(\w+)\(\w\)\);return\s+");
         //Dynamic with Service
         private static Regex DFunctionRegex;
