@@ -16,7 +16,7 @@ Find us on GitHub at https://github.com/i3arnon/libvideo</Description>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/i3arnon/libvideo</RepositoryUrl>
     <RootNamespace>YoutubeExtractor</RootNamespace>
-    <Version>2.0.0</Version>
+    <Version>2.0.1</Version>
     <TargetFramework>netstandard1.1</TargetFramework>
     <Title>libvideo.compat</Title>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
