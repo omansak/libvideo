@@ -85,7 +85,7 @@ namespace VideoLibrary
                 throw new Exception($"{nameof(GetDecryptionFunction)} failed");
             }
 
-            return match.Groups[1].Value;
+            return match.Groups[3].Value;
         }
 
         private class Decryptor
