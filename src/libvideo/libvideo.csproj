@@ -11,12 +11,12 @@ Find us on GitHub at https://github.com/i3arnon/libvideo</Description>
     <PackageId>VideoLibrary</PackageId>
     <PackageLicenseUrl>https://github.com/i3arnon/libvideo/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/i3arnon/libvideo</PackageProjectUrl>
-    <PackageReleaseNotes>Move to .NET Standard</PackageReleaseNotes>
+    <PackageReleaseNotes>Fix decryption to match YouTube</PackageReleaseNotes>
     <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/i3arnon/libvideo</RepositoryUrl>
     <RootNamespace>VideoLibrary</RootNamespace>
-    <Version>2.0.1</Version>
+    <Version>2.0.2</Version>
     <TargetFramework>netstandard1.1</TargetFramework>
     <Title>libvideo</Title>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
