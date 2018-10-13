@@ -17,11 +17,10 @@ namespace VideoLibrary
         {
             var query = new Query(uri);
 
-            string signature;
-            if (!query.TryGetValue("signature", out signature))
+            if (!query.TryGetValue("signature", out var signature))
                 return uri;
 
-            string js =
+            var js =
                 await makeClient()
                 .GetStringAsync(jsPlayer)
                 .ConfigureAwait(false);
@@ -123,8 +122,7 @@ namespace VideoLibrary
 
             public string ExecuteFunction(string signature, string line, string function)
             {
-                FunctionType type;
-                if (!_functionTypes.TryGetValue(function, out type))
+                if (!_functionTypes.TryGetValue(function, out var type))
                 {
                     return signature;
                 }
