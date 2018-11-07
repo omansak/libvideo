@@ -12,9 +12,9 @@ namespace VideoLibrary
     public partial class YouTubeVideo
     {
         //Static 
-        //private static readonly Regex DecryptionFunctionRegex_1 = new Regex(@"(?!h\.)(.*?)=function\(\w\){.+\.split\(""""\);.+\.join\(""""\)}");
+        //private static readonly Regex DecryptionFunctionRegex_1 = new Regex(@"\((\w+)\(\([a-zA-Z0-9$]*,window.decodeURIComponent\)\(\w+\)\)\)");
         //or Static @smartbracker
-        //private static readonly Regex DecryptionFunctionRegex_2 = new Regex(@"\w+&&\w+\.set\(\w+,(\w+)\(\w\)\);return\s+");
+        //private static readonly Regex DecryptionFunctionRegex_2 = new Regex(@"\bc\s*&&\s*d\.set\([^,]+\s*,\s*\([^)]*\)\s*\(\s*([a-zA-Z0-9$]+)\(");
         //Dynamic with Service
         private static Regex DFunctionRegex;
         private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
