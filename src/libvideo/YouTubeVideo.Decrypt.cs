@@ -10,7 +10,7 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        private static readonly Regex DecryptionFunctionRegex = new Regex(@"(\w+)&&(\w+)\.set\(\w+,(\w+)\(\1\)\);return\s+\2");
+        private static readonly Regex DecryptionFunctionRegex = new Regex(@"\bc\s*&&\s*d\.set\([^,]+\s*,\s*\([^)]*\)\s*\(\s*([a-zA-Z0-9$]+)\(");
         private static readonly Regex FunctionRegex = new Regex(@"\w+(?:.|\[)(\""?\w+(?:\"")?)\]?\(");
 
         private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
@@ -84,7 +84,7 @@ namespace VideoLibrary
                 throw new Exception($"{nameof(GetDecryptionFunction)} failed");
             }
 
-            return match.Groups[3].Value;
+            return match.Groups[1].Value;
         }
 
         private class Decryptor
