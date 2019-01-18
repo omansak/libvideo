@@ -10,7 +10,14 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        private static readonly Regex DecryptionFunctionRegex = new Regex(@"\bc\s*&&\s*d\.set\([^,]+\s*,\s*\([^)]*\)\s*\(\s*([a-zA-Z0-9$]+)\(");
+        /*
+         * 
+         * c&&d.set(b,encodeURIComponent(fv(decodeURIComponent(c))));return d};
+         * we must find 'fv' with regex
+         * \bc\s*&&\s*d\.set\([^,]+\s*,[^(]*\(([a-zA-Z0-9$]+)\(
+         *                                                                         19.01.2019
+         */
+        private static readonly Regex DecryptionFunctionRegex = new Regex(@"\bc\s*&&\s*d\.set\([^,]+\s*,[^(]*\(([a-zA-Z0-9$]+)\(");
         private static readonly Regex FunctionRegex = new Regex(@"\w+(?:.|\[)(\""?\w+(?:\"")?)\]?\(");
 
         private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
