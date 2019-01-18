@@ -13,22 +13,22 @@ namespace VideoLibrary
         private string uri;
         private bool encrypted;
         //Your Service
-        // https://libvideo.azurewebsites.net/dfunctionregex.html is not reliable please use own server
-        private static string DFuctionRegexService = "https://libvideo.azurewebsites.net/dfunctionregex.html";
+        // https://dl.dropboxusercontent.com/s/ccmwnfmcmmwdspf/dfunctionregex.txt is not reliable please use own file
+        private static string DFuctionRegexService = "https://dl.dropboxusercontent.com/s/ccmwnfmcmmwdspf/dfunctionregex.txt"; //For Dynamic Service
         internal YouTubeVideo(string title,
             UnscrambledQuery query, string jsPlayer)
         {
             this.Title = title;
             this.uri = query.Uri;
             this.jsPlayer = jsPlayer;
-            if (DFunctionRegex == null)
+            if (DFunctionRegex_Dynamic == null) //For Dynamic
             {
-                DFunctionRegex = new Regex(Task.Run(GetDecryptRegex).Result);
+                DFunctionRegex_Dynamic = new Regex(Task.Run(GetDecryptRegex).Result);
             }
             this.encrypted = query.IsEncrypted;
             this.FormatCode = int.Parse(new Query(uri)["itag"]);
         }
-        private async Task<string> GetDecryptRegex()
+        private async Task<string> GetDecryptRegex() // For Dynamic
         {
             try
             {

@@ -11,12 +11,10 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        //Static 
-        //private static readonly Regex DecryptionFunctionRegex_1 = new Regex(@"\((\w+)\(\([a-zA-Z0-9$]*,window.decodeURIComponent\)\(\w+\)\)\)");
-        //or Static @smartbracker
-        //private static readonly Regex DecryptionFunctionRegex_2 = new Regex(@"\bc\s*&&\s*d\.set\([^,]+\s*,\s*\([^)]*\)\s*\(\s*([a-zA-Z0-9$]+)\(");
+        //Static @omansak
+        private static readonly Regex DecryptionFunctionRegex_Static_1 = new Regex(@"\bc\s*&&\s*d\.set\([^,]+\s*,[^(]*\(([a-zA-Z0-9$]+)\(");       
         //Dynamic with Service
-        private static Regex DFunctionRegex;
+        private static Regex DFunctionRegex_Dynamic;
         private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
         private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
         {
@@ -80,9 +78,9 @@ namespace VideoLibrary
         }
         private string GetDecryptionFunction(string js)
         {
-            //var match = DecryptionFunctionRegex_1.Match(js);
-            //var match = DecryptionFunctionRegex_2.Match(js);
-            var match = DFunctionRegex.Match(js);
+            // Dynamic or Static Get Regex For Decryption
+            var match = DecryptionFunctionRegex_Static_1.Match(js);
+            //var match = DFunctionRegex_Dynamic.Match(js);
             if (!match.Success)
             {
                 throw new Exception($"{nameof(GetDecryptionFunction)} failed");
