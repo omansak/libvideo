@@ -11,7 +11,7 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        //Static @omansak
+        //Static
         private static readonly Regex DecryptionFunctionRegex_Static_1 = new Regex(@"\bc\s*&&\s*d\.set\([^,]+\s*,[^(]*\(([a-zA-Z0-9$]+)\(");       
         //Dynamic with Service
         private static Regex DFunctionRegex_Dynamic;
