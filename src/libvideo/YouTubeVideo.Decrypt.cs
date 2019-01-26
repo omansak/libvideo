@@ -37,7 +37,7 @@ namespace VideoLibrary
         private string DecryptedSignature(string signature, string js)
         {
             // Find the name of the function that handles deciphering
-            var entryPoint = Regex.Match(js, @"\bc\s*&&\s*d\.set\([^,]+\s*,\s*\([^)]*\)\s*\(\s*([a-zA-Z0-9$]+)\(").Groups[1].Value;
+            var entryPoint = Regex.Match(js, @"\bc\s*&&\s*d\.set\([^,]+\s*,[^(]*\(([a-zA-Z0-9$]+)\(").Groups[1].Value;
             if (String.IsNullOrWhiteSpace(entryPoint))
                 throw new Exception("Could not find the entry function for signature deciphering.");
 
