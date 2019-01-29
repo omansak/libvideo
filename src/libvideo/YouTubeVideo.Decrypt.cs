@@ -78,14 +78,20 @@ namespace VideoLibrary
         }
         private string GetDecryptionFunction(string js)
         {
-            // Dynamic or Static Get Regex For Decryption
+            // Dynamic or Static Regex if get which available
             var match = DecryptionFunctionRegex_Static_1.Match(js);
-            //var match = DFunctionRegex_Dynamic.Match(js);
-            if (!match.Success)
+            if (match.Success)
+            {
+                return match.Groups[1].Value;
+            }
+            else if((match = DFunctionRegex_Dynamic.Match(js)).Success)
+            {
+                return match.Groups[1].Value;
+            }
+            else
             {
                 throw new Exception($"{nameof(GetDecryptionFunction)} failed");
             }
-            return match.Groups[1].Value;
         }
         private class Decryptor
         {
