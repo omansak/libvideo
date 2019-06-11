@@ -21,15 +21,18 @@ namespace VideoLibrary
             var query = new Query(uri);
 
             string signature;
-            if (!query.TryGetValue("signature", out signature))
+            if (!query.TryGetValue(YouTube.GetSignatureKey(), out signature))
                 return uri;
+
+            if (string.IsNullOrWhiteSpace(signature))
+                throw new Exception("Signature not found.");
 
             string js =
                 await makeClient()
-                .GetStringAsync(jsPlayer)
-                .ConfigureAwait(false);
+                    .GetStringAsync(jsPlayer)
+                    .ConfigureAwait(false);
 
-            query["signature"] = DecryptSignature(js, signature);
+            query[YouTube.GetSignatureKey()] = DecryptSignature(js, signature);
             return query.ToString();
         }
         private string DecryptSignature(string js, string signature)
