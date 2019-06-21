@@ -12,7 +12,7 @@ namespace VideoLibrary
     public partial class YouTubeVideo
     {
         //Static
-        private static readonly Regex DecryptionFunctionRegex_Static_1 = new Regex(@"\bc\s*&&\s*d\.set\([^,]+\s*,[^(]*\(([a-zA-Z0-9$]+)\(");       
+        private static readonly Regex DecryptionFunctionRegex_Static_1 = new Regex(@"\bc\s*&&\s*a\.set\([^,]+,\s*(?:encodeURIComponent\s*\()?\s*([\w$]+)\(");       
         //Dynamic with Service
         private static Regex DFunctionRegex_Dynamic;
         private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
