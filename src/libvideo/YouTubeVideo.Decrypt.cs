@@ -11,10 +11,7 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        //Static
-        private static readonly Regex DecryptionFunctionRegex_Static_1 = new Regex(@"\bc\s*&&\s*a\.set\([^,]+,\s*(?:encodeURIComponent\s*\()?\s*([\w$]+)\(");       
-        //Dynamic with Service
-        private static Regex DFunctionRegex_Dynamic;
+        private static Regex DFunctionRegex;
         private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
         private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
         {
@@ -29,8 +26,8 @@ namespace VideoLibrary
 
             string js =
                 await makeClient()
-                    .GetStringAsync(jsPlayer)
-                    .ConfigureAwait(false);
+                .GetStringAsync(jsPlayer)
+                .ConfigureAwait(false);
 
             query[YouTube.GetSignatureKey()] = DecryptSignature(js, signature);
             return query.ToString();
@@ -45,10 +42,14 @@ namespace VideoLibrary
                 {
                     break;
                 }
+
+                // var functionsMatch = Regex.Match(js, $"var {Regex.Match(functionLine, "(\\w+)\\.").Groups[1]}={{(.*)}};", RegexOptions.Singleline);
                 /* Pass  TK["do"](a, 36); or TK.BH(a, 1); */
                 var match = FunctionRegex.Match(functionLine.Replace("[\"", ".").Replace("\"]", ""));
+                // if (match.Success && functionsMatch.Success)
                 if (match.Success)
                 {
+                    //decryptor.AddFunction(functionsMatch.Groups[1].Value, match.Groups[1].Value);
                     decryptor.AddFunction(js, match.Groups[1].Value);
                 }
             }
@@ -81,20 +82,13 @@ namespace VideoLibrary
         }
         private string GetDecryptionFunction(string js)
         {
-            // Dynamic or Static Regex if get which available
-            var match = DecryptionFunctionRegex_Static_1.Match(js);
-            if (match.Success)
-            {
-                return match.Groups[1].Value;
-            }
-            else if((match = DFunctionRegex_Dynamic.Match(js)).Success)
-            {
-                return match.Groups[1].Value;
-            }
-            else
+            var match = DFunctionRegex.Match(js);
+            if (!match.Success)
             {
                 throw new Exception($"{nameof(GetDecryptionFunction)} failed");
             }
+
+            return match.Groups[1].Value;
         }
         private class Decryptor
         {
@@ -111,11 +105,7 @@ namespace VideoLibrary
                 var escapedFunction = Regex.Escape(function);
                 FunctionType? type = null;
                 /* Pass  "do":function(a){} or xa:function(a,b){} */
-                if (Regex.IsMatch(js, $@"(\"")?{escapedFunction}(\"")?:\bfunction\b\(\w+\)"))
-                {
-                    type = FunctionType.Reverse;
-                }
-                else if (Regex.IsMatch(js, $@"(\"")?{escapedFunction}(\"")?:\bfunction\b\([a],b\).(\breturn\b)?.?\w+\."))
+                if (Regex.IsMatch(js, $@"(\"")?{escapedFunction}(\"")?:\bfunction\b\([a],b\).(\breturn\b)?.?\w+\."))
                 {
                     type = FunctionType.Slice;
                 }
@@ -123,7 +113,10 @@ namespace VideoLibrary
                 {
                     type = FunctionType.Swap;
                 }
-
+                if (Regex.IsMatch(js, $@"(\"")?{escapedFunction}(\"")?:\bfunction\b\(\w+\){{\w+\.reverse"))
+                {
+                    type = FunctionType.Reverse;
+                }
                 if (type.HasValue)
                 {
                     _functionTypes[function] = type.Value;
@@ -132,7 +125,8 @@ namespace VideoLibrary
 
             public string ExecuteFunction(string signature, string line, string function)
             {
-                if (!_functionTypes.TryGetValue(function, out var type))
+                FunctionType type;
+                if (!_functionTypes.TryGetValue(function, out type))
                 {
                     return signature;
                 }
