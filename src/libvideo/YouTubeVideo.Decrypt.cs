@@ -11,7 +11,9 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        private static Regex DFunctionRegex;
+        private static readonly Regex DecryptionFunctionRegex_Static_1 = new Regex(@"\bc\s*&&\s*a\.set\([^,]+,\s*(?:encodeURIComponent\s*\()?\s*([\w$]+)\(");
+        //Dynamic with Service	
+        private static Regex DFunctionRegex_Dynamic;
         private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
         private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
         {
@@ -36,6 +38,16 @@ namespace VideoLibrary
         {
             var functionLines = GetDecryptionFunctionLines(js);
             var decryptor = new Decryptor();
+            var deciphererDefinitionName = Regex.Match(string.Join(";", functionLines), "(\\w+).\\w+\\(\\w+,\\d+\\);").Groups[1].Value;
+            if (string.IsNullOrEmpty(deciphererDefinitionName))
+            {
+                throw new Exception("Could not find signature decipherer definition name. Please report this issue to us.");
+            }
+            var deciphererDefinitionBody = Regex.Match(js, @"var\s+" + Regex.Escape(deciphererDefinitionName) + @"=\{(\w+:function\(\w+(,\w+)?\)\{(.*?)\}),?\};", RegexOptions.Singleline).Groups[0].Value;
+            if (string.IsNullOrEmpty(deciphererDefinitionBody))
+            {
+                throw new Exception("Could not find signature decipherer definition body. Please report this issue to us.");
+            }
             foreach (var functionLine in functionLines)
             {
                 if (decryptor.IsComplete)
@@ -43,20 +55,16 @@ namespace VideoLibrary
                     break;
                 }
 
-                // var functionsMatch = Regex.Match(js, $"var {Regex.Match(functionLine, "(\\w+)\\.").Groups[1]}={{(.*)}};", RegexOptions.Singleline);
-                /* Pass  TK["do"](a, 36); or TK.BH(a, 1); */
-                var match = FunctionRegex.Match(functionLine.Replace("[\"", ".").Replace("\"]", ""));
-                // if (match.Success && functionsMatch.Success)
+                var match = FunctionRegex.Match(functionLine);
                 if (match.Success)
                 {
-                    //decryptor.AddFunction(functionsMatch.Groups[1].Value, match.Groups[1].Value);
-                    decryptor.AddFunction(js, match.Groups[1].Value);
+                    decryptor.AddFunction(deciphererDefinitionBody, match.Groups[1].Value);
                 }
             }
 
             foreach (var functionLine in functionLines)
             {
-                var match = FunctionRegex.Match(functionLine.Replace("[\"", ".").Replace("\"]", ""));
+                var match = FunctionRegex.Match(functionLine);
                 if (match.Success)
                 {
                     signature = decryptor.ExecuteFunction(signature, functionLine, match.Groups[1].Value);
@@ -67,29 +75,48 @@ namespace VideoLibrary
         }
         private string[] GetDecryptionFunctionLines(string js)
         {
-            var decryptionFunction = GetDecryptionFunction(js);
-            var match =
-                Regex.Match(
-                    js,
-                    $@"(?!h\.){Regex.Escape(decryptionFunction)}=function\(\w+\)\{{(.*?)\}}",
-                    RegexOptions.Singleline);
-            if (!match.Success)
+            var deciphererFuncName = Regex.Match(js, @"(\w+)=function\(\w+\){(\w+)=\2\.split\(\x22{2}\);.*?return\s+\2\.join\(\x22{2}\)}");
+            if (deciphererFuncName.Success)
             {
-                throw new Exception($"{nameof(GetDecryptionFunctionLines)} failed");
+                var deciphererFuncBody = Regex.Match(js, @"(?!h\.)" + Regex.Escape(deciphererFuncName.Groups[1].Value) + @"=function\(\w+\)\{(.*?)\}", RegexOptions.Singleline);
+                if (deciphererFuncBody.Success)
+                {
+                    return deciphererFuncBody.Groups[1].Value.Split(';');
+                }
             }
+            throw new Exception("Could not find signature DecryptionFunctionLines. Please report this issue to us.");
 
-            return match.Groups[1].Value.Split(';');
+            //OLD
+            //var decryptionFunction = GetDecryptionFunction(js);
+            //var match =
+            //    Regex.Match(
+            //        js,
+            //        $@"(?!h\.){Regex.Escape(decryptionFunction)}=function\(\w+\)\{{(.*?)\}}",
+            //        RegexOptions.Singleline);
+            //if (!match.Success)
+            //{
+            //    throw new Exception($"{nameof(GetDecryptionFunctionLines)} failed");
+            //}
+            //return match.Groups[1].Value.Split(';');
         }
+
         private string GetDecryptionFunction(string js)
         {
-            var match = DFunctionRegex.Match(js);
-            if (!match.Success)
+            var match = DecryptionFunctionRegex_Static_1.Match(js);
+            if (match.Success)
+            {
+                return match.Groups[1].Value;
+            }
+            else if ((match = DFunctionRegex_Dynamic.Match(js)).Success)
+            {
+                return match.Groups[1].Value;
+            }
+            else
             {
                 throw new Exception($"{nameof(GetDecryptionFunction)} failed");
             }
-
-            return match.Groups[1].Value;
         }
+
         private class Decryptor
         {
             private static readonly Regex ParametersRegex = new Regex(@"\(\w+,(\d+)\)");
