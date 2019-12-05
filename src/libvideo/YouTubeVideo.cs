@@ -14,7 +14,11 @@ namespace VideoLibrary
         private bool encrypted;
         //Your Service
         // https://dl.dropboxusercontent.com/s/ccmwnfmcmmwdspf/dfunctionregex.txt is not reliable please use own file
-        private static string DFuctionRegexService = "https://dl.dropboxusercontent.com/s/ccmwnfmcmmwdspf/dfunctionregex.txt"; //For Dynamic Service
+        /// <summary>
+        /// <para>Url to a remote txt file. The file contains the current Regex-string for decrypting some videos.</para> 
+        /// Used as fallback in case of a breaking update of Youtubes javascript. This allows an update of the Regex even after deployment of the application.
+        /// </summary>
+        public static string DFunctionRegexService = "https://dl.dropboxusercontent.com/s/ccmwnfmcmmwdspf/dfunctionregex.txt"; //For Dynamic Service
         internal YouTubeVideo(string title,
             UnscrambledQuery query, string jsPlayer)
         {
@@ -33,7 +37,7 @@ namespace VideoLibrary
             try
             {
                 HttpClient httpClient = new HttpClient();
-                var r = await httpClient.GetAsync(DFuctionRegexService);
+                var r = await httpClient.GetAsync(DFunctionRegexService);
                 return await r.Content.ReadAsStringAsync();
             }
             catch (Exception e)
