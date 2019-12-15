@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VideoLibrary.Helpers
+﻿namespace VideoLibrary.Helpers
 {
     internal static class Json
     {
@@ -29,8 +23,10 @@ namespace VideoLibrary.Helpers
                 if (source[start++] != '"') // 'v'
                     continue;
                 int end = start;
-                while (source[end] != '"') // "value\""
+                while ((source[end - 1] == '\\' && source[end] == '"') || source[end] != '"') // "value\""
+                {
                     end++;
+                }
                 return source.Substring(start, end - start);
             }
         }
