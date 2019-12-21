@@ -26,8 +26,8 @@ namespace VideoLibrary.Debug
                 "https://www.youtube.com/watch?v=pG_euGOe0ww",
                 "https://www.youtube.com/watch?v=-zCkhuFqpFc",
                 "https://www.youtube.com/watch?v=2vjPBrBU-TM",
-                "https://www.youtube.com/watch?v=Alr26K0F4EQ",
-                "https://www.youtube.com/watch?v=ADxntEqPysA",
+                "https://www.youtube.com/watch?v=Alr26K0F4EQ", //player_response
+                "https://www.youtube.com/watch?v=ADxntEqPysA", //encrypted player_response
             };
 
             TestVideoLib(queries);
