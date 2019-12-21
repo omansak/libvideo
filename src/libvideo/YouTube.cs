@@ -1,19 +1,25 @@
-﻿using VideoLibrary.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using VideoLibrary.Exceptions;
+using VideoLibrary.Helpers;
+
 
 namespace VideoLibrary
 {
     public class YouTube : ServiceBase<YouTubeVideo>
     {
         private const string Playback = "videoplayback";
-
+        private static string _signatureKey;
         public static YouTube Default { get; } = new YouTube();
+
 
         internal async override Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(
             string videoUri, Func<string, Task<string>> sourceFactory)
@@ -57,50 +63,111 @@ namespace VideoLibrary
         private IEnumerable<YouTubeVideo> ParseVideos(string source)
         {
             string title = Html.GetNode("title", source);
-
+            IEnumerable<UnscrambledQuery> queries;
             string jsPlayer = ParseJsPlayer(source);
             if (jsPlayer == null)
             {
                 yield break;
             }
-
-            string map = Json.GetKey("url_encoded_fmt_stream_map", source);
-            var queries = map.Split(',').Select(Unscramble);
-
-            foreach (var query in queries)
-                yield return new YouTubeVideo(title, query, jsPlayer);
-
-            string adaptiveMap = Json.GetKey("adaptive_fmts", source);
-
-            // If there is no adaptive_fmts key, then in the file
-            // will be dashmpd key containing link to a XML
-            // file containing links and other data
-            if (adaptiveMap == String.Empty)
+            var playerResponseMap = Json.GetKey("player_response", source);
+            var playerResponseJson = JToken.Parse(Regex.Unescape(playerResponseMap).Replace(@"\u0026", "&"));
+            if (string.Equals(playerResponseJson.SelectToken("playabilityStatus.status")?.Value<string>(), "error", StringComparison.OrdinalIgnoreCase))
             {
-                using (HttpClient hc = new HttpClient())
+                throw new UnavailableStreamException($"Video has unavailable stream.");
+            }
+            var errorReason = playerResponseJson.SelectToken("playabilityStatus.reason")?.Value<string>();
+            if (string.IsNullOrWhiteSpace(errorReason))
+            {
+                var isLiveStream = playerResponseJson.SelectToken("videoDetails.isLive")?.Value<bool>() == true;
+                if (isLiveStream)
                 {
-                    string temp = Json.GetKey("dashmpd", source);
-                    temp = WebUtility.UrlDecode(temp).Replace(@"\/", "/");
-
-                    var manifest = hc.GetStringAsync(temp)
-                        .GetAwaiter().GetResult()
-                        .Replace(@"\/", "/");
-
-                    var uris = Html.GetUrisFromManifest(manifest);
-
-                    foreach (var v in uris)
+                    throw new UnavailableStreamException($"This is live stream so unavailable stream.");
+                }
+                // url_encoded_fmt_stream_map
+                string map = Json.GetKey("url_encoded_fmt_stream_map", source);
+                if (!string.IsNullOrWhiteSpace(map))
+                {
+                    queries = map.Split(',').Select(Unscramble);
+                    foreach (var query in queries)
+                        yield return new YouTubeVideo(title, query, jsPlayer);
+                }
+                else // player_response
+                {
+                    List<JToken> streamObjects = new List<JToken>();
+                    // Extract Muxed streams
+                    var streamFormat = playerResponseJson.SelectToken("streamingData.formats");
+                    if (streamFormat != null)
                     {
-                        yield return new YouTubeVideo(title,
-                            UnscrambleManifestUri(v),
-                            jsPlayer);
+                        streamObjects.AddRange(streamFormat.ToArray());
+                    }
+                    // Extract AdaptiveFormat streams
+                    var streamAdaptiveFormats = playerResponseJson.SelectToken("streamingData.adaptiveFormats");
+                    if (streamAdaptiveFormats != null)
+                    {
+                        streamObjects.AddRange(streamAdaptiveFormats.ToArray());
+                    }
+
+                    foreach (var item in streamObjects)
+                    {
+                        var urlValue = item.SelectToken("url")?.Value<string>();
+                        if (!string.IsNullOrEmpty(urlValue))
+                        {
+                            var query = new UnscrambledQuery(urlValue, false);
+                            yield return new YouTubeVideo(title, query, jsPlayer);
+                            continue;
+                        }
+                        var cipherValue = item.SelectToken("cipher")?.Value<string>();
+                        if (!string.IsNullOrEmpty(cipherValue))
+                        {
+                            yield return new YouTubeVideo(title, Unscramble(cipherValue), jsPlayer);
+                        }
                     }
                 }
-            }
-            else
-            {
-                queries = adaptiveMap.Split(',').Select(Unscramble);
-                foreach (var query in queries)
-                    yield return new YouTubeVideo(title, query, jsPlayer);
+                // adaptive_fmts
+                string adaptiveMap = Json.GetKey("adaptive_fmts", source);
+                if (!string.IsNullOrWhiteSpace(adaptiveMap))
+                {
+                    queries = adaptiveMap.Split(',').Select(Unscramble);
+                    foreach (var query in queries)
+                        yield return new YouTubeVideo(title, query, jsPlayer);
+                }
+                else
+                {
+                    // dashmpd
+                    string dashmpdMap = Json.GetKey("dashmpd", source);
+                    if (!string.IsNullOrWhiteSpace(adaptiveMap))
+                    {
+                        using (HttpClient hc = new HttpClient())
+                        {
+                            IEnumerable<string> uris = null;
+                            try
+                            {
+
+                                dashmpdMap = WebUtility.UrlDecode(dashmpdMap).Replace(@"\/", "/");
+
+                                var manifest = hc.GetStringAsync(dashmpdMap)
+                                    .GetAwaiter().GetResult()
+                                    .Replace(@"\/", "/");
+
+                                uris = Html.GetUrisFromManifest(manifest);
+                            }
+                            catch (Exception e)
+                            {
+                                throw new UnavailableStreamException(e.Message);
+                            }
+
+                            if (uris != null)
+                            {
+                                foreach (var v in uris)
+                                {
+                                    yield return new YouTubeVideo(title,
+                                        UnscrambleManifestUri(v),
+                                        jsPlayer);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -122,16 +189,17 @@ namespace VideoLibrary
             {
                 jsPlayer = $"https:{jsPlayer}";
             }
-            
+
             return jsPlayer;
         }
 
-        // TODO: Consider making this static...
         private UnscrambledQuery Unscramble(string queryString)
         {
             queryString = queryString.Replace(@"\u0026", "&");
             var query = new Query(queryString);
             string uri = query["url"];
+
+            query.TryGetValue("sp", out _signatureKey);
 
             bool encrypted = false;
             string signature;
@@ -139,10 +207,10 @@ namespace VideoLibrary
             if (query.TryGetValue("s", out signature))
             {
                 encrypted = true;
-                uri += GetSignatureAndHost(signature, query);
+                uri += GetSignatureAndHost(GetSignatureKey(), signature, query);
             }
             else if (query.TryGetValue("sig", out signature))
-                uri += GetSignatureAndHost(signature, query);
+                uri += GetSignatureAndHost(GetSignatureKey(), signature, query);
 
             uri = WebUtility.UrlDecode(
                 WebUtility.UrlDecode(uri));
@@ -155,9 +223,9 @@ namespace VideoLibrary
             return new UnscrambledQuery(uri, encrypted);
         }
 
-        private string GetSignatureAndHost(string signature, Query query)
+        private string GetSignatureAndHost(string key, string signature, Query query)
         {
-            string result = "&signature=" + signature;
+            string result = $"&{key}={signature}";
 
             string host;
 
@@ -188,6 +256,11 @@ namespace VideoLibrary
             }
 
             return new UnscrambledQuery(builder.ToString(), false);
+        }
+
+        public static string GetSignatureKey()
+        {
+            return string.IsNullOrWhiteSpace(_signatureKey) ? "signature" : _signatureKey;
         }
     }
 }

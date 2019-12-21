@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VideoLibrary.Helpers;
 
@@ -10,7 +12,6 @@ namespace VideoLibrary
 
         private string uri;
         private bool encrypted;
-
         internal YouTubeVideo(string title,
             UnscrambledQuery query, string jsPlayer)
         {
@@ -20,7 +21,6 @@ namespace VideoLibrary
             this.encrypted = query.IsEncrypted;
             this.FormatCode = int.Parse(new Query(uri)["itag"]);
         }
-
         public override string Title { get; }
         public override WebSites WebSite => WebSites.YouTube;
 
