@@ -59,26 +59,3 @@ If you'd like to check out some more of our features, take a look at our [docs](
 ## License
 
 libvideo is licensed under the [BSD 2-clause license](LICENSE).
-
-## FAQ
-
-### What's the difference between libvideo and YoutubeExtractor?
-
-libvideo:
-
-- Can be used in Portable Class Libraries
-- Supports WinRT projects (e.g. Windows 10)
-- Is roughly 400% faster ([yes, it's true](tests/Speed.Test/Speed.Test/Program.cs))
-
-YoutubeExtractor:
-
-- Supports Silverlight
-- Supports Flash audio extraction
-
-### Can I switch from YoutubeExtractor without having to refactor my code?
-
-Absolutely! Check out our [libvideo.compat](https://www.nuget.org/packages/VideoLibrary.Compat/) package. It has the same API as YoutubeExtractor, but uses libvideo as its backend so your application will get a major speed boost.
-
-### Do you accept donations?
-
-Thanks! I'm flattered, but it's not really necessary. If anything, you should donate to the creator of [YoutubeExtractor](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=daume%2edennis%40gmail%2ecom&lc=US&item_name=YoutubeExtractor&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest), because this project wouldn't have happened if it weren't for him.
