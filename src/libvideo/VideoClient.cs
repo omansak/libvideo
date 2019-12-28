@@ -49,11 +49,9 @@ namespace VideoLibrary
 
         #region MakeClient/MakeHandler
 
-        private HttpClient MakeClient() =>
-            MakeClient(MakeHandler());
+        private HttpClient MakeClient() => MakeClient(MakeHandler());
 
-        protected virtual HttpMessageHandler MakeHandler() 
-            => new HttpClientHandler();
+        protected virtual HttpMessageHandler MakeHandler() => new HttpClientHandler();
 
         protected virtual HttpClient MakeClient(HttpMessageHandler handler)
         {
@@ -65,8 +63,7 @@ namespace VideoLibrary
 
         #endregion
 
-        public byte[] GetBytes(Video video) => 
-            GetBytesAsync(video).GetAwaiter().GetResult();
+        public byte[] GetBytes(Video video) => GetBytesAsync(video).GetAwaiter().GetResult();
 
         public async Task<byte[]> GetBytesAsync(Video video)
         {
@@ -79,18 +76,30 @@ namespace VideoLibrary
                 .ConfigureAwait(false);
         }
 
-        public Stream Stream(Video video) => 
-            StreamAsync(video).GetAwaiter().GetResult();
+        public Stream Stream(Video video) => StreamAsync(video).GetAwaiter().GetResult();
 
         public async Task<Stream> StreamAsync(Video video)
         {
-            string uri = await 
+            string uri = await
                 video.GetUriAsync()
                 .ConfigureAwait(false);
 
             return await client
                 .GetStreamAsync(uri)
                 .ConfigureAwait(false);
+        }
+
+        public async Task<long?> GetContentLengthAsync(string requestUri)
+        {
+            using (var response = await HeadAsync(requestUri))
+            {
+                return response.Content.Headers.ContentLength;
+            }
+        }
+        public async Task<HttpResponseMessage> HeadAsync(string requestUri)
+        {
+            using (var request = new HttpRequestMessage(HttpMethod.Head, requestUri))
+                return await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 
 namespace VideoLibrary.Debug
@@ -47,11 +48,11 @@ namespace VideoLibrary.Debug
                     try
                     {
                         var videoInfos = cli.GetAllVideosAsync(uri).GetAwaiter().GetResult();
-
                         Console.WriteLine($"Link #{i + 1}");
                         foreach (var v in videoInfos)
                         {
                             Console.WriteLine(v.Uri);
+                            Console.WriteLine("Success : " + v.Head().CanRead);
                             Console.WriteLine();
                         }
                     }

@@ -1,20 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Authors>Bar Arnon</Authors>
+    <Authors>Bar Arnon,OMANSAK</Authors>
     <Copyright>Copyright 2018 Bar Arnon</Copyright>
     <Description>libvideo is a fast, clean way to download YouTube videos. It is fully portable and has no dependencies.
 
     Find us on GitHub at https://github.com/i3arnon/libvideo</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageIconUrl>https://github.com/i3arnon/libvideo/raw/master/icons/icon_128.png</PackageIconUrl>
+    <PackageIconUrl>https://github.com/omansak/libvideo/raw/master/icons/icon_128.png</PackageIconUrl>
     <PackageId>VideoLibrary</PackageId>
-    <PackageLicenseUrl>https://github.com/i3arnon/libvideo/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/i3arnon/libvideo</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/omansak/libvideo/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
     <PackageReleaseNotes>Bump to 3.0.0</PackageReleaseNotes>
     <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/i3arnon/libvideo</RepositoryUrl>
+    <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
     <RootNamespace>VideoLibrary</RootNamespace>
     <Version>3.0.0</Version>
     <TargetFramework>netstandard1.1</TargetFramework>

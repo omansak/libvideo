@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,8 +33,7 @@ namespace VideoLibrary
             }
         }
 
-        public Stream Stream() =>
-            StreamAsync().GetAwaiter().GetResult();
+        public Stream Stream() => StreamAsync().GetAwaiter().GetResult();
 
         public async Task<Stream> StreamAsync()
         {
@@ -47,7 +44,16 @@ namespace VideoLibrary
                     .ConfigureAwait(false);
             }
         }
-
+        public Stream Head() => HeadAsync().GetAwaiter().GetResult();
+        public async Task<Stream> HeadAsync()
+        {
+            using (var client = new VideoClient())
+            {
+                return await client
+                    .StreamAsync(this)
+                    .ConfigureAwait(false);
+            }
+        }
         public virtual string FileExtension
         {
             get
@@ -69,7 +75,7 @@ namespace VideoLibrary
         {
             get
             {
-                var builder = 
+                var builder =
                     new StringBuilder(Title)
                     .Append(FileExtension);
 
