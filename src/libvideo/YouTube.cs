@@ -179,7 +179,7 @@ namespace VideoLibrary
                 return null;
             }
 
-            if (jsPlayer.StartsWith("/yts"))
+            if (jsPlayer.StartsWith("/yts") || jsPlayer.StartsWith("/s"))
             {
                 return $"https://www.youtube.com{jsPlayer}";
             }
