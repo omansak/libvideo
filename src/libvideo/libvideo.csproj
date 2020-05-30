@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Authors>Bar Arnon,OMANSAK</Authors>
-    <Copyright>Copyright 2018 Bar Arnon</Copyright>
+    <Copyright>Copyright 2018 Bar Arnon | 2020 OMANSAK</Copyright>
     <Description>libvideo is a fast, clean way to download YouTube videos. It is fully portable and has no dependencies.
 
     Find us on GitHub at https://github.com/i3arnon/libvideo</Description>
@@ -11,15 +11,17 @@
     <PackageId>VideoLibrary</PackageId>
     <PackageLicenseUrl>https://github.com/omansak/libvideo/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-    <PackageReleaseNotes>Bump to 3.0.0</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed cipher bug</PackageReleaseNotes>
     <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
     <RootNamespace>VideoLibrary</RootNamespace>
-    <Version>3.0.0</Version>
+    <Version>3.0.2</Version>
     <TargetFramework>netstandard1.1</TargetFramework>
     <Title>libvideo</Title>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyVersion>3.0.2.0</AssemblyVersion>
+    <FileVersion>3.0.2.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -116,7 +116,7 @@ namespace VideoLibrary
                             yield return new YouTubeVideo(title, query, jsPlayer);
                             continue;
                         }
-                        var cipherValue = item.SelectToken("cipher")?.Value<string>();
+                        var cipherValue = (item.SelectToken("cipher") ?? item.SelectToken("signatureCipher")).Value<string>();
                         if (!string.IsNullOrEmpty(cipherValue))
                         {
                             yield return new YouTubeVideo(title, Unscramble(cipherValue), jsPlayer);
