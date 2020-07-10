@@ -62,7 +62,6 @@ namespace VideoLibrary
 
         private IEnumerable<YouTubeVideo> ParseVideos(string source)
         {
-            string title = Html.GetNode("title", source);
             IEnumerable<UnscrambledQuery> queries;
             string jsPlayer = ParseJsPlayer(source);
             if (jsPlayer == null)
@@ -79,6 +78,7 @@ namespace VideoLibrary
             if (string.IsNullOrWhiteSpace(errorReason))
             {
                 var isLiveStream = playerResponseJson.SelectToken("videoDetails.isLive")?.Value<bool>() == true;
+                string title = playerResponseJson.SelectToken("videoDetails.title")?.Value<string>();
                 if (isLiveStream)
                 {
                     throw new UnavailableStreamException($"This is live stream so unavailable stream.");
