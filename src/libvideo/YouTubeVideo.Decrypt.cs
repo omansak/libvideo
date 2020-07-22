@@ -46,15 +46,16 @@ namespace VideoLibrary
         {
             var functionLines = GetDecryptionFunctionLines(js);
             var decryptor = new Decryptor();
-            var deciphererDefinitionName = Regex.Match(string.Join(";", functionLines), "(\\w+).\\w+\\(\\w+,\\d+\\);").Groups[1].Value;
-            if (string.IsNullOrEmpty(deciphererDefinitionName))
+            var decipherDefinitionName = Regex.Match(string.Join(";", functionLines), "([\\$_\\w]+).\\w+\\(\\w+,\\d+\\);").Groups[1].Value;
+            if (string.IsNullOrEmpty(decipherDefinitionName))
             {
-                throw new Exception("Could not find signature decipherer definition name. Please report this issue to us.");
+                throw new Exception("Could not find signature decipher definition name. Please report this issue to us.");
             }
-            var deciphererDefinitionBody = Regex.Match(js, @"var\s+" + Regex.Escape(deciphererDefinitionName) + @"=\{(\w+:function\(\w+(,\w+)?\)\{(.*?)\}),?\};", RegexOptions.Singleline).Groups[0].Value;
-            if (string.IsNullOrEmpty(deciphererDefinitionBody))
+
+            var decipherDefinitionBody = Regex.Match(js, $@"var\s+{Regex.Escape(decipherDefinitionName)}=\{{(\w+:function\(\w+(,\w+)?\)\{{(.*?)\}}),?\}};", RegexOptions.Singleline).Groups[0].Value;
+            if (string.IsNullOrEmpty(decipherDefinitionBody))
             {
-                throw new Exception("Could not find signature decipherer definition body. Please report this issue to us.");
+                throw new Exception("Could not find signature decipher definition body. Please report this issue to us.");
             }
             foreach (var functionLine in functionLines)
             {
@@ -66,7 +67,7 @@ namespace VideoLibrary
                 var match = FunctionRegex.Match(functionLine);
                 if (match.Success)
                 {
-                    decryptor.AddFunction(deciphererDefinitionBody, match.Groups[1].Value);
+                    decryptor.AddFunction(decipherDefinitionBody, match.Groups[1].Value);
                 }
             }
 
