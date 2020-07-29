@@ -11,17 +11,6 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        // Your Service
-        // https://dl.dropboxusercontent.com/s/ccmwnfmcmmwdspf/dfunctionregex.txt is not reliable please use own file
-        /// <summary>
-        /// <para>Url to a remote txt file. The file contains the current Regex-string for decrypting some videos.</para> 
-        /// Used as fallback in case of a breaking update of Youtubes javascript. This allows an update of the Regex even after deployment of the application.
-        /// </summary>
-        public static string DFunctionRegexService = "https://dl.dropboxusercontent.com/s/ccmwnfmcmmwdspf/dfunctionregex.txt";
-        // Dynamic Regex with Service	
-        private static Regex DecryptionFunctionDynamicRegex;
-        // Static Regex
-        private static readonly Regex DecryptionFunctionStaticRegex = new Regex(@"\bc\s*&&\s*a\.set\([^,]+,\s*(?:encodeURIComponent\s*\()?\s*([\w$]+)\(");
         private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
         private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
         {
@@ -84,60 +73,20 @@ namespace VideoLibrary
         }
         private string[] GetDecryptionFunctionLines(string js)
         {
-            var deciphererFuncName = Regex.Match(js, @"(\w+)=function\(\w+\){(\w+)=\2\.split\(\x22{2}\);.*?return\s+\2\.join\(\x22{2}\)}");
-            if (deciphererFuncName.Success)
+            var decipherFuncName = Regex.Match(js, @"(\w+)=function\(\w+\){(\w+)=\2\.split\(\x22{2}\);.*?return\s+\2\.join\(\x22{2}\)}");
+            if (decipherFuncName.Success)
             {
-                var deciphererFuncBody = Regex.Match(js, @"(?!h\.)" + Regex.Escape(deciphererFuncName.Groups[1].Value) + @"=function\(\w+\)\{(.*?)\}", RegexOptions.Singleline);
-                if (deciphererFuncBody.Success)
-                {
-                    return deciphererFuncBody.Groups[1].Value.Split(';');
-                }
-            }
-            // TODO Remove
-            var decryptionFunction = GetDecryptionFunction(js);
-            var match = Regex.Match(js, $@"(?!h\.){Regex.Escape(decryptionFunction)}=function\(\w+\)\{{(.*?)\}}", RegexOptions.Singleline);
-            if (match.Success)
-            {
-                return match.Groups[1].Value.Split(';');
+                return decipherFuncName.Groups[0].Value.Split(';');
+                //Match decipherFuncBody = Regex.Match(decipherFuncName.Groups[0].Value, @"(?!h\.)" + Regex.Escape(decipherFuncName.Groups[1].Value) + @"=function\(\w+\)\{(.*?)\}", RegexOptions.Singleline);
+                //if (decipherFuncBody.Success)
+                //{
+                //    return decipherFuncBody.Groups[1].Value.Split(';');
+                //}
             }
 
-            throw new Exception("Could not find signature DecryptionFunctionLines. Please report this issue to us.");
+            return null;
         }
-        // TODO Remove
-        private string GetDecryptionFunction(string js)
-        {
-            //Static
-            var match = DecryptionFunctionStaticRegex.Match(js);
-            if (match.Success)
-            {
-                return match.Groups[1].Value;
-            }
-            //Dynamic
-            if (DecryptionFunctionDynamicRegex == null)
-            {
-                DecryptionFunctionDynamicRegex = new Regex(Task.Run(GetDecryptRegex).Result);
-            }
-            if ((match = DecryptionFunctionDynamicRegex.Match(js)).Success)
-            {
-                return match.Groups[1].Value;
-            }
-            throw new Exception($"{nameof(GetDecryptionFunction)} failed");
-        }
-        // TODO Remove
-        // For Dynamic Regex Service
-        private async Task<string> GetDecryptRegex()
-        {
-            try
-            {
-                HttpClient httpClient = new HttpClient();
-                var r = await httpClient.GetAsync(DFunctionRegexService);
-                return await r.Content.ReadAsStringAsync();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+
         private class Decryptor
         {
             private static readonly Regex ParametersRegex = new Regex(@"\(\w+,(\d+)\)");
