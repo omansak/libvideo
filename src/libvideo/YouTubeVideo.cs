@@ -22,6 +22,7 @@ namespace VideoLibrary
             this.jsPlayer = jsPlayer;
             this.encrypted = query.IsEncrypted;
             this.FormatCode = int.Parse(uriQuery["itag"]);
+            ;
         }
         public override string Title { get; }
         public override WebSites WebSite => WebSites.YouTube;
