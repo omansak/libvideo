@@ -5,23 +5,23 @@
     <Copyright>Copyright 2018 Bar Arnon | 2020 OMANSAK</Copyright>
     <Description>Are you a user of YoutubeExtractor looking to switch to libvideo? libvideo.compat is a compatibility API that helps you to make the move, without having to change a single line of code.
 
-Find us on GitHub at https://github.com/i3arnon/libvideo</Description>
+Find us on GitHub at https://github.com/omansak/libvideo</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl>https://github.com/omansak/libvideo/raw/master/icons/icon_128.png</PackageIconUrl>
     <PackageId>VideoLibrary.Compat</PackageId>
     <PackageLicenseUrl>https://github.com/omansak/libvideo/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-    <PackageReleaseNotes>Fixed decipher regex</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed js player bug</PackageReleaseNotes>
     <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
     <RootNamespace>YoutubeExtractor</RootNamespace>
-    <Version>3.0.5</Version>
+    <Version>3.0.7</Version>
     <TargetFramework>netstandard1.1</TargetFramework>
     <Title>libvideo.compat</Title>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AssemblyVersion>3.0.2.0</AssemblyVersion>
-    <FileVersion>3.0.2.0</FileVersion>
+    <AssemblyVersion>3.0.7.0</AssemblyVersion>
+    <FileVersion>3.0.7.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
