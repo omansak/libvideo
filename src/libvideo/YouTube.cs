@@ -173,7 +173,7 @@ namespace VideoLibrary
 
         private string ParseJsPlayer(string source)
         {
-            if (Json.TryGetKey("jsUrl1", source, out var jsPlayer) || Json.TryGetKey("PLAYER_JS_URL1", source, out jsPlayer))
+            if (Json.TryGetKey("jsUrl", source, out var jsPlayer) || Json.TryGetKey("PLAYER_JS_URL", source, out jsPlayer))
             {
                 jsPlayer = jsPlayer.Replace(@"\/", "/");
             }
