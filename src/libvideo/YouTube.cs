@@ -173,10 +173,22 @@ namespace VideoLibrary
 
         private string ParseJsPlayer(string source)
         {
-            string jsPlayer = Json.GetKey("js", source).Replace(@"\/", "/");
-            if (string.IsNullOrWhiteSpace(jsPlayer))
+            if (Json.TryGetKey("jsUrl1", source, out var jsPlayer) || Json.TryGetKey("PLAYER_JS_URL1", source, out jsPlayer))
             {
-                return null;
+                jsPlayer = jsPlayer.Replace(@"\/", "/");
+            }
+            else
+            {
+                // Alternative solution
+                Match match = Regex.Match(source, "<script\\s*src=\"([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)\".*name=\"player_ias/base\".*>\\s*</script>");
+                if (match.Success)
+                {
+                    jsPlayer = match.Groups[1].Value.Replace(@"\/", "/");
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             if (jsPlayer.StartsWith("/yts") || jsPlayer.StartsWith("/s"))
