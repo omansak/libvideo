@@ -68,8 +68,9 @@ namespace VideoLibrary
             {
                 yield break;
             }
-            var playerResponseMap = Json.GetKey("player_response", source);
-            var playerResponseJson = JToken.Parse(Regex.Unescape(playerResponseMap).Replace(@"\u0026", "&"));
+
+            var asd = ParsePlayerJson(source);
+            var playerResponseJson = JToken.Parse(asd);
             if (string.Equals(playerResponseJson.SelectToken("playabilityStatus.status")?.Value<string>(), "error", StringComparison.OrdinalIgnoreCase))
             {
                 throw new UnavailableStreamException($"Video has unavailable stream.");
@@ -169,8 +170,34 @@ namespace VideoLibrary
                     }
                 }
             }
+            else
+            {
+                throw new UnavailableStreamException($"Error caused by Youtube.({errorReason}))");
+            }
         }
 
+        private string ParsePlayerJson(string source)
+        {
+            string playerResponseMap = null, ytInitialPlayerPattern = @"<script .*>\s*var\s*ytInitialPlayerResponse\s*=\s*(\{\""responseContext\"".*\});<\/script>", ytWindowInitialPlayerResponse = @"\[\""ytInitialPlayerResponse\""\]\s*=\s*(\{.*\});", ytPlayerPattern = @"ytplayer\.config\s*=\s*(\{.*\}\});";
+            Match match;
+            if ((match = Regex.Match(source, ytPlayerPattern)).Success)
+            {
+                playerResponseMap = Regex.Unescape(Json.GetKey("player_response", match.Groups[1].Value));
+            }
+            if (string.IsNullOrWhiteSpace(playerResponseMap) && (match = Regex.Match(source, ytInitialPlayerPattern)).Success)
+            {
+                playerResponseMap = match.Groups[1].Value;
+            }
+            if (string.IsNullOrWhiteSpace(playerResponseMap) && (match = Regex.Match(source, ytWindowInitialPlayerResponse)).Success)
+            {
+                playerResponseMap = match.Groups[1].Value;
+            }
+            if (string.IsNullOrWhiteSpace(playerResponseMap))
+            {
+                throw new UnavailableStreamException("Player json has no found.");
+            }
+            return playerResponseMap.Replace(@"\u0026", "&").Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty);
+        }
         private string ParseJsPlayer(string source)
         {
             if (Json.TryGetKey("jsUrl", source, out var jsPlayer) || Json.TryGetKey("PLAYER_JS_URL", source, out jsPlayer))
