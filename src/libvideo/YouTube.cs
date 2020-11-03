@@ -178,25 +178,34 @@ namespace VideoLibrary
 
         private string ParsePlayerJson(string source)
         {
-            string playerResponseMap = null, ytInitialPlayerPattern = @"<script .*>\s*var\s*ytInitialPlayerResponse\s*=\s*(\{\""responseContext\"".*\});<\/script>", ytWindowInitialPlayerResponse = @"\[\""ytInitialPlayerResponse\""\]\s*=\s*(\{.*\});", ytPlayerPattern = @"ytplayer\.config\s*=\s*(\{.*\}\});";
-            Match match;
-            if ((match = Regex.Match(source, ytPlayerPattern)).Success)
+            try
             {
-                playerResponseMap = Regex.Unescape(Json.GetKey("player_response", match.Groups[1].Value));
+                string playerResponseMap = null, ytInitialPlayerPattern = @"<script .*>\s*var\s*ytInitialPlayerResponse\s*=\s*(\{\""responseContext\"".*\});<\/script>", ytWindowInitialPlayerResponse = @"\[\""ytInitialPlayerResponse\""\]\s*=\s*(\{.*\});", ytPlayerPattern = @"ytplayer\.config\s*=\s*(\{\"".*\""\}\});";
+                Match match;
+                if ((match = Regex.Match(source, ytPlayerPattern)).Success && Json.TryGetKey("player_response", match.Groups[1].Value, out string json))
+                {
+                    playerResponseMap = Regex.Unescape(json);
+                }
+                if (string.IsNullOrWhiteSpace(playerResponseMap) && (match = Regex.Match(source, ytInitialPlayerPattern)).Success)
+                {
+                    playerResponseMap = match.Groups[1].Value;
+                }
+                if (string.IsNullOrWhiteSpace(playerResponseMap) && (match = Regex.Match(source, ytWindowInitialPlayerResponse)).Success)
+                {
+                    playerResponseMap = match.Groups[1].Value;
+                }
+                if (string.IsNullOrWhiteSpace(playerResponseMap))
+                {
+                    throw new UnavailableStreamException("Player json has no found.");
+                }
+                return playerResponseMap.Replace(@"\u0026", "&").Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty);
             }
-            if (string.IsNullOrWhiteSpace(playerResponseMap) && (match = Regex.Match(source, ytInitialPlayerPattern)).Success)
+            catch (Exception e)
             {
-                playerResponseMap = match.Groups[1].Value;
+                Console.WriteLine(e);
+                throw;
             }
-            if (string.IsNullOrWhiteSpace(playerResponseMap) && (match = Regex.Match(source, ytWindowInitialPlayerResponse)).Success)
-            {
-                playerResponseMap = match.Groups[1].Value;
-            }
-            if (string.IsNullOrWhiteSpace(playerResponseMap))
-            {
-                throw new UnavailableStreamException("Player json has no found.");
-            }
-            return playerResponseMap.Replace(@"\u0026", "&").Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty);
+
         }
         private string ParseJsPlayer(string source)
         {
