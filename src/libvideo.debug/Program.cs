@@ -14,8 +14,8 @@ namespace VideoLibrary.Debug
                 // test queries, borrowed from 
                 // github.com/rg3/youtube-dl/blob/master/youtube_dl/extractor/youtube.py
 
-                //"http://www.youtube.com/watch?v=6kLq3WMV1nU", // VEVO => KeyNotFound
-                //"https://www.youtube.com/watch?v=B3eAMGXFw1o", // VEVO video, KeyNotFound
+                "http://www.youtube.com/watch?v=6kLq3WMV1nU", // VEVO => KeyNotFound
+                "https://www.youtube.com/watch?v=B3eAMGXFw1o", // VEVO video, KeyNotFound
                 "https://www.youtube.com/watch?v=IB3lcPjvWLA",
                 "https://www.youtube.com/watch?v=BgpXMA_M98o",
                 "https://www.youtube.com/watch?v=nfWlot6h_JM",
@@ -29,6 +29,7 @@ namespace VideoLibrary.Debug
                 "https://www.youtube.com/watch?v=2vjPBrBU-TM",
                 "https://www.youtube.com/watch?v=Alr26K0F4EQ", //player_response
                 "https://www.youtube.com/watch?v=ADxntEqPysA", //encrypted player_response
+                "https://www.youtube.com/watch?v=mCeF-IF7JMg"
             };
 
             TestVideoLib(queries);

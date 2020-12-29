@@ -11,17 +11,18 @@
     <PackageId>VideoLibrary</PackageId>
     <PackageLicenseUrl>https://github.com/omansak/libvideo/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-    <PackageReleaseNotes>Fixed js player bug</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed  player json bug</PackageReleaseNotes>
     <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
     <RootNamespace>VideoLibrary</RootNamespace>
-    <Version>3.0.7</Version>
+    <Version>3.0.9</Version>
     <TargetFramework>netstandard1.1</TargetFramework>
     <Title>libvideo</Title>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AssemblyVersion>3.0.7.0</AssemblyVersion>
-    <FileVersion>3.0.7.0</FileVersion>
+    <AssemblyVersion>3.0.9.0</AssemblyVersion>
+    <FileVersion>3.0.9.0</FileVersion>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

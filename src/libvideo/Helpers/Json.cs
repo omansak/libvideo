@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Text;
 
 namespace VideoLibrary.Helpers
 {
@@ -7,7 +8,7 @@ namespace VideoLibrary.Helpers
     {
         public static string GetKey(string key, string source)
         {
-            if(GetKey(key, source, out string result))
+            if (GetKey(key, source, out string result))
             {
                 return result;
             }
@@ -17,6 +18,25 @@ namespace VideoLibrary.Helpers
         public static bool TryGetKey(string key, string source, out string target)
         {
             return GetKey(key, source, out target);
+        }
+
+        public static string Extract(string source)
+        {
+            StringBuilder sb = new StringBuilder();
+            int depth = 0;
+            char lastChar = default;
+            foreach (var ch in source)
+            {
+                sb.Append(ch);
+                if (ch == '{' && lastChar != '\\')
+                    depth++;
+                else if (ch == '}' && lastChar != '\\')
+                    depth--;
+                if (depth == 0)
+                    break;
+                lastChar = ch;
+            }
+            return sb.ToString();
         }
 
         private static bool GetKey(string key, string source, out string target)
@@ -33,7 +53,7 @@ namespace VideoLibrary.Helpers
                 {
                     target = string.Empty;
                     return false;
-                } 
+                }
                 index += quotedKey.Length; // ' '
 
                 int start = index;

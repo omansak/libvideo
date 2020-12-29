@@ -21,7 +21,7 @@ namespace VideoLibrary
         public static YouTube Default { get; } = new YouTube();
 
 
-        internal async override Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(
+        internal override async Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(
             string videoUri, Func<string, Task<string>> sourceFactory)
         {
             if (!TryNormalize(videoUri, out videoUri))
@@ -68,7 +68,8 @@ namespace VideoLibrary
             {
                 yield break;
             }
-            var playerResponseJson = JToken.Parse(ParsePlayerJson(source));
+
+            var playerResponseJson = JToken.Parse(Json.Extract(ParsePlayerJson(source)));
             if (string.Equals(playerResponseJson.SelectToken("playabilityStatus.status")?.Value<string>(), "error", StringComparison.OrdinalIgnoreCase))
             {
                 throw new UnavailableStreamException($"Video has unavailable stream.");
@@ -176,7 +177,7 @@ namespace VideoLibrary
 
         private string ParsePlayerJson(string source)
         {
-            string playerResponseMap = null, ytInitialPlayerPattern = @"<script .*>\s*var\s*ytInitialPlayerResponse\s*=\s*(\{\""responseContext\"".*\});<\/script>", ytWindowInitialPlayerResponse = @"\[\""ytInitialPlayerResponse\""\]\s*=\s*(\{.*\});", ytPlayerPattern = @"ytplayer\.config\s*=\s*(\{\"".*\""\}\});";
+            string playerResponseMap = null, ytInitialPlayerPattern = @"\s*var\s*ytInitialPlayerResponse\s*=\s*(\{\""responseContext\"".*\});", ytWindowInitialPlayerResponse = @"\[\""ytInitialPlayerResponse\""\]\s*=\s*(\{.*\});", ytPlayerPattern = @"ytplayer\.config\s*=\s*(\{\"".*\""\}\});";
             Match match;
             if ((match = Regex.Match(source, ytPlayerPattern)).Success && Json.TryGetKey("player_response", match.Groups[1].Value, out string json))
             {
