@@ -24,7 +24,7 @@ namespace VideoLibrary.Helpers
         {
             StringBuilder sb = new StringBuilder();
             int depth = 0;
-            char lastChar = default;
+            char lastChar = '\u0000';
             foreach (var ch in source)
             {
                 sb.Append(ch);
