@@ -17,7 +17,7 @@
     <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
     <RootNamespace>VideoLibrary</RootNamespace>
     <Version>3.0.9</Version>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFramework>netstandard1.0</TargetFramework>
     <Title>libvideo</Title>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyVersion>3.0.9.0</AssemblyVersion>
