@@ -10,6 +10,7 @@ var youTube = YouTube.Default;
 var video = youTube.GetVideo(uri);
 
 string title = video.Title;
+VideoInfo info = video.Info; (Title,Author,LengthSeconds)
 string fileExtension = video.FileExtension;
 string fullName = video.FullName; // same thing as title + fileExtension
 int resolution = video.Resolution;
@@ -38,6 +39,25 @@ YouTube exposes multiple videos for each URL- e.g. when you change the resolutio
 
 ```csharp
 var videos = youTube.GetAllVideos(uri);
+```
+
+Some Informations of Video
+```csharp
+var videoInfos = Client.For(YouTube.Default).GetAllVideosAsync(uri).GetAwaiter().GetResult();
+var resolutions = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.Video).Select(j => j.Resolution);
+var bitRates = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.Audio).Select(j => j.AudioBitrate);
+var unknownFormats = videoInfos.Where(j => j.AdaptiveKind == AdaptiveKind.None).Select(j => j.Resolution);
+```
+
+Get specific resolution, bitrate, format
+```csharp
+var youTube = YouTube.Default; // starting point for YouTube actions
+var videoInfos = youTube.GetAllVideosAsync(link).GetAwaiter().GetResult();
+var maxResolution = videoInfos.First(i => i.Resolution == videoInfos.Max(j => j.Resolution));
+var minBitrate = videoInfos.First(i => i.AudioBitrate == videoInfos.Min(j => j.AudioBitrate));
+var audioFormat = videoInfos.First(i => i.AudioFormat == AudioFormat.Aac);
+var videoFormat = videoInfos.First(i => i.Format == VideoFormat.Mp4);
+var adaptive = videoInfos.First(i => i.IsAdaptive);
 ```
 
 We also have full support for async:
