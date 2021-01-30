@@ -78,7 +78,11 @@ namespace VideoLibrary
             if (string.IsNullOrWhiteSpace(errorReason))
             {
                 var isLiveStream = playerResponseJson.SelectToken("videoDetails.isLive")?.Value<bool>() == true;
-                string title = playerResponseJson.SelectToken("videoDetails.title")?.Value<string>();
+                var videoInfo = new VideoInfo(
+                    playerResponseJson.SelectToken("videoDetails.title")?.Value<string>(),
+                    playerResponseJson.SelectToken("videoDetails.lengthSeconds")?.Value<int>(),
+                    playerResponseJson.SelectToken("videoDetails.author")?.Value<string>());
+
                 if (isLiveStream)
                 {
                     throw new UnavailableStreamException($"This is live stream so unavailable stream.");
@@ -89,7 +93,7 @@ namespace VideoLibrary
                 {
                     queries = map.Split(',').Select(Unscramble);
                     foreach (var query in queries)
-                        yield return new YouTubeVideo(title, query, jsPlayer);
+                        yield return new YouTubeVideo(videoInfo, query, jsPlayer);
                 }
                 else // player_response
                 {
@@ -113,13 +117,13 @@ namespace VideoLibrary
                         if (!string.IsNullOrEmpty(urlValue))
                         {
                             var query = new UnscrambledQuery(urlValue, false);
-                            yield return new YouTubeVideo(title, query, jsPlayer);
+                            yield return new YouTubeVideo(videoInfo, query, jsPlayer);
                             continue;
                         }
                         var cipherValue = (item.SelectToken("cipher") ?? item.SelectToken("signatureCipher")).Value<string>();
                         if (!string.IsNullOrEmpty(cipherValue))
                         {
-                            yield return new YouTubeVideo(title, Unscramble(cipherValue), jsPlayer);
+                            yield return new YouTubeVideo(videoInfo, Unscramble(cipherValue), jsPlayer);
                         }
                     }
                 }
@@ -129,7 +133,7 @@ namespace VideoLibrary
                 {
                     queries = adaptiveMap.Split(',').Select(Unscramble);
                     foreach (var query in queries)
-                        yield return new YouTubeVideo(title, query, jsPlayer);
+                        yield return new YouTubeVideo(videoInfo, query, jsPlayer);
                 }
                 else
                 {
@@ -160,7 +164,7 @@ namespace VideoLibrary
                             {
                                 foreach (var v in uris)
                                 {
-                                    yield return new YouTubeVideo(title,
+                                    yield return new YouTubeVideo(videoInfo,
                                         UnscrambleManifestUri(v),
                                         jsPlayer);
                                 }

@@ -14,16 +14,21 @@ namespace VideoLibrary
         private string uri;
         private Query uriQuery;
         private bool encrypted;
-        internal YouTubeVideo(string title, UnscrambledQuery query, string jsPlayer)
+        internal YouTubeVideo(VideoInfo info, UnscrambledQuery query, string jsPlayer)
         {
-            this.Title = title;
+            this.Info = info;
+            this.Title = info?.Title;
             this.uri = query.Uri;
             this.uriQuery = new Query(uri);
             this.jsPlayer = jsPlayer;
             this.encrypted = query.IsEncrypted;
             this.FormatCode = int.Parse(uriQuery["itag"]);
         }
+
         public override string Title { get; }
+
+        public override VideoInfo Info { get; }
+
         public override WebSites WebSite => WebSites.YouTube;
 
         public override string Uri => GetUriAsync().GetAwaiter().GetResult();

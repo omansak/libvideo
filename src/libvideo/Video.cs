@@ -5,14 +5,26 @@ using System.Threading.Tasks;
 
 namespace VideoLibrary
 {
+    public class VideoInfo
+    {
+        public VideoInfo(string title, int? second, string author)
+        {
+            this.Title = title;
+            this.LengthSeconds = second;
+            this.Author = author;
+        }
+        public string Title { get; }
+        public int? LengthSeconds { get; }
+        public string Author { get; }
+    }
     public abstract class Video
     {
         internal Video()
         {
         }
-
         public abstract string Uri { get; }
         public abstract string Title { get; }
+        public abstract VideoInfo Info { get; }
         public abstract WebSites WebSite { get; }
         public virtual VideoFormat Format => VideoFormat.Unknown;
         // public virtual AudioFormat AudioFormat => AudioFormat.Unknown;

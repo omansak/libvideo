@@ -27,7 +27,8 @@ namespace VideoLibrary.Debug
                 "https://www.youtube.com/watch?v=2vjPBrBU-TM",
                 "https://www.youtube.com/watch?v=Alr26K0F4EQ", //player_response
                 "https://www.youtube.com/watch?v=ADxntEqPysA", //encrypted player_response
-                "https://www.youtube.com/watch?v=mCeF-IF7JMg"
+                "https://www.youtube.com/watch?v=mCeF-IF7JMg",
+                "https://www.youtube.com/watch?v=F2d2hEM1N6k"
             };
 
             TestVideoLib(queries);
@@ -47,6 +48,7 @@ namespace VideoLibrary.Debug
                     try
                     {
                         var videoInfos = cli.GetAllVideosAsync(uri).GetAwaiter().GetResult();
+                        Console.WriteLine($"Link #{i + 1}");
                         Console.WriteLine($"Link #{i + 1}");
                         foreach (var v in videoInfos)
                         {
