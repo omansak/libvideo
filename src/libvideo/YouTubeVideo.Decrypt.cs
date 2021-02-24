@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo
     {
-        private static readonly Regex FunctionRegex = new Regex(@"\w+\.(\w+)\(");
         private async Task<string> DecryptAsync(string uri, Func<DelegatingClient> makeClient)
         {
             var query = new Query(uri);
@@ -33,6 +31,7 @@ namespace VideoLibrary
         }
         private string DecryptSignature(string js, string signature)
         {
+            var functionNameRegex = new Regex(@"\w+(?:.|\[)(\""?\w+(?:\"")?)\]?\(");
             var functionLines = GetDecryptionFunctionLines(js);
             var decryptor = new Decryptor();
             var decipherDefinitionName = Regex.Match(string.Join(";", functionLines), "([\\$_\\w]+).\\w+\\(\\w+,\\d+\\);").Groups[1].Value;
@@ -53,7 +52,7 @@ namespace VideoLibrary
                     break;
                 }
 
-                var match = FunctionRegex.Match(functionLine);
+                var match = functionNameRegex.Match(functionLine);
                 if (match.Success)
                 {
                     decryptor.AddFunction(decipherDefinitionBody, match.Groups[1].Value);
@@ -62,7 +61,7 @@ namespace VideoLibrary
 
             foreach (var functionLine in functionLines)
             {
-                var match = FunctionRegex.Match(functionLine);
+                var match = functionNameRegex.Match(functionLine);
                 if (match.Success)
                 {
                     signature = decryptor.ExecuteFunction(signature, functionLine, match.Groups[1].Value);
@@ -74,17 +73,7 @@ namespace VideoLibrary
         private string[] GetDecryptionFunctionLines(string js)
         {
             var decipherFuncName = Regex.Match(js, @"(\w+)=function\(\w+\){(\w+)=\2\.split\(\x22{2}\);.*?return\s+\2\.join\(\x22{2}\)}");
-            if (decipherFuncName.Success)
-            {
-                return decipherFuncName.Groups[0].Value.Split(';');
-                //Match decipherFuncBody = Regex.Match(decipherFuncName.Groups[0].Value, @"(?!h\.)" + Regex.Escape(decipherFuncName.Groups[1].Value) + @"=function\(\w+\)\{(.*?)\}", RegexOptions.Singleline);
-                //if (decipherFuncBody.Success)
-                //{
-                //    return decipherFuncBody.Groups[1].Value.Split(';');
-                //}
-            }
-
-            return null;
+            return decipherFuncName.Success ? decipherFuncName.Groups[0].Value.Split(';') : null;
         }
 
         private class Decryptor
@@ -122,8 +111,7 @@ namespace VideoLibrary
 
             public string ExecuteFunction(string signature, string line, string function)
             {
-                FunctionType type;
-                if (!_functionTypes.TryGetValue(function, out type))
+                if (!_functionTypes.TryGetValue(function, out var type))
                 {
                     return signature;
                 }
