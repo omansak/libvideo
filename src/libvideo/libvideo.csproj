@@ -11,18 +11,17 @@
     <PackageId>VideoLibrary</PackageId>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-    <PackageReleaseNotes>fixed #194 (cipher function name regex)
-Added Info property (Info.Title Info.Author Info.LenghtSeconds)</PackageReleaseNotes>
+    <PackageReleaseNotes>added cookie consest and user-agent</PackageReleaseNotes>
     <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
     <RootNamespace>VideoLibrary</RootNamespace>
-    <Version>3.1.0</Version>
+    <Version>3.1.1</Version>
     <TargetFramework>netstandard1.1</TargetFramework>
     <Title>libvideo</Title>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AssemblyVersion>3.1.0.0</AssemblyVersion>
-    <FileVersion>3.1.0.0</FileVersion>
+    <AssemblyVersion>3.1.1.0</AssemblyVersion>
+    <FileVersion>3.1.1.0</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>icon_586.png</PackageIcon>
   </PropertyGroup>
