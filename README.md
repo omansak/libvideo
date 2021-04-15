@@ -18,7 +18,7 @@ You can grab a copy of the library [on NuGet](https://www.nuget.org/packages/Vid
 Alternatively, you can try building the repo if you like your assemblies extra-fresh.
 
 ## Supported Platforms
-
+- .NET Core Web/Console/ClassLibrary
 - .NET Framework 4.5+
 - Windows 10 Universal apps
 - Portable Class Libraries
