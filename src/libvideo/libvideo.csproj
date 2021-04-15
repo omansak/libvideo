@@ -7,9 +7,9 @@
 
     Find us on GitHub at https://github.com/omansak/libvideo</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageIconUrl>https://github.com/omansak/libvideo/raw/master/icons/icon_128.png</PackageIconUrl>
+    <PackageIconUrl></PackageIconUrl>
     <PackageId>VideoLibrary</PackageId>
-    <PackageLicenseUrl>https://github.com/omansak/libvideo/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
     <PackageReleaseNotes>fixed #194 (cipher function name regex)
 Added Info property (Info.Title Info.Author Info.LenghtSeconds)</PackageReleaseNotes>
@@ -23,10 +23,23 @@ Added Info property (Info.Title Info.Author Info.LenghtSeconds)</PackageReleaseN
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyVersion>3.1.0.0</AssemblyVersion>
     <FileVersion>3.1.0.0</FileVersion>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>icon_586.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\icons\icon_586.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

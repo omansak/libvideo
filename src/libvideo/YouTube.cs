@@ -19,7 +19,7 @@ namespace VideoLibrary
         private const string Playback = "videoplayback";
         private static string _signatureKey;
         public static YouTube Default { get; } = new YouTube();
-
+        public const string YoutubeUrl = "https://youtube.com/";
 
         internal override async Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(
             string videoUri, Func<string, Task<string>> sourceFactory)
@@ -56,7 +56,7 @@ namespace VideoLibrary
             if (!query.TryGetValue("v", out value))
                 return false;
 
-            normalized = "https://youtube.com/watch?v=" + value;
+            normalized = $"{YoutubeUrl}watch?v=" + value;
             return true;
         }
 

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using VideoLibrary.Helpers;
+
 
 namespace VideoLibrary
 {
@@ -27,7 +25,7 @@ namespace VideoLibrary
         public IEnumerable<T> GetAllVideos(string videoUri) =>
             GetAllVideosAsync(videoUri).GetAwaiter().GetResult();
 
-        internal IEnumerable<T> GetAllVideos(string videoUri, 
+        internal IEnumerable<T> GetAllVideos(string videoUri,
             Func<string, Task<string>> sourceFactory) =>
             GetAllVideosAsync(videoUri, sourceFactory).GetAwaiter().GetResult();
         #endregion
@@ -65,24 +63,27 @@ namespace VideoLibrary
 
         protected virtual HttpMessageHandler MakeHandler()
         {
-            var handler = new HttpClientHandler();
-
-            // Be very careful because if any exceptions are 
-            // thrown between here && the HttpClient ctor, 
-            // we may leak resources.
-
-            if (handler.SupportsAutomaticDecompression)
+            // Cookie
+            var cookieContainer = new CookieContainer();
+            cookieContainer.Add(new Uri(YouTube.YoutubeUrl), new Cookie("CONSENT", "YES+cb", "/", ".youtube.com"));
+            // Handler
+            var handler = new HttpClientHandler
             {
-                handler.AutomaticDecompression =
-                    DecompressionMethods.GZip |
-                    DecompressionMethods.Deflate;
-            }
-
+                UseCookies = true,
+                CookieContainer = cookieContainer
+            };
+            if (handler.SupportsAutomaticDecompression)
+                handler.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             return handler;
         }
 
         protected virtual HttpClient MakeClient(HttpMessageHandler handler)
         {
+            var httpClient = new HttpClient(handler);
+            httpClient.DefaultRequestHeaders.Add(
+                "User-Agent",
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36 Edg/89.0.774.76"
+            );
             return new HttpClient(handler);
         }
     }
