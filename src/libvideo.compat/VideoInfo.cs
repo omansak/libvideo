@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VideoLibrary;
 
 namespace YoutubeExtractor
@@ -37,7 +33,6 @@ namespace YoutubeExtractor
             get
             {
                 int result = video.AudioBitrate;
-
                 return result == -1 ? 0 : result;
             }
         }
@@ -51,9 +46,9 @@ namespace YoutubeExtractor
                     case AudioFormat.Aac: return ".aac";
                     case AudioFormat.Mp3: return ".mp3";
                     case AudioFormat.Vorbis: return ".ogg";
+                    case AudioFormat.Opus: return ".ogg";
                     case AudioFormat.Unknown: return String.Empty;
                     default:
-                        // TODO: Consider a var format = AudioFormat; statement at beginning of getter.
                         throw new NotImplementedException($"Audio format {video.AudioFormat} is unrecognized! Please file an issue at libvideo on GitHub.");
                 }
             }
@@ -71,6 +66,8 @@ namespace YoutubeExtractor
                         return AudioType.Mp3;
                     case AudioFormat.Vorbis:
                         return AudioType.Vorbis;
+                    case AudioFormat.Opus:
+                        return AudioType.Opus;
                     default:
                         return AudioType.Unknown;
                 }
@@ -86,12 +83,18 @@ namespace YoutubeExtractor
             get
             {
                 int result = video.FormatCode;
-
                 return result == -1 ? 0 : result;
             }
         }
 
-        public bool Is3D => video.Is3D;
+        public int Fps
+        {
+            get
+            {
+                int fps = video.Fps;
+                return fps == -1 ? 0 : fps;
+            }
+        }
 
         public bool RequiresDecryption => false;
 
@@ -100,7 +103,6 @@ namespace YoutubeExtractor
             get
             {
                 int result = video.Resolution;
-
                 return result == -1 ? 0 : result;
             }
         }
@@ -115,10 +117,6 @@ namespace YoutubeExtractor
             {
                 switch (video.Format)
                 {
-                    case VideoFormat.Flash:
-                        return VideoType.Flash;
-                    case VideoFormat.Mobile:
-                        return VideoType.Mobile;
                     case VideoFormat.Mp4:
                         return VideoType.Mp4;
                     case VideoFormat.WebM:
@@ -130,9 +128,8 @@ namespace YoutubeExtractor
         }
 
         public override string ToString()
-        { 
-            return string.Format("Full Title: {0}, Type: {1}, Resolution: {2}p", 
-                Title + VideoExtension, VideoType, Resolution); 
+        {
+            return string.Format($"Full Title\t{Title + VideoExtension}\nType\t{VideoType}\nResolution\t{Resolution}p\nFormat\t{FormatCode}\nFPS\t{Fps}\nAudioType\t{AudioType}\nBitrate\t{AudioBitrate}\n");
         }
     }
 }

@@ -72,8 +72,6 @@ namespace VideoLibrary
             {
                 switch (Format)
                 {
-                    case VideoFormat.Flash: return ".flv";
-                    case VideoFormat.Mobile: return ".3gp";
                     case VideoFormat.Mp4: return ".mp4";
                     case VideoFormat.WebM: return ".webm";
                     case VideoFormat.Unknown: return string.Empty;

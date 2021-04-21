@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace YoutubeExtractor
+﻿namespace YoutubeExtractor
 {
     public enum AudioType
     {
-        Aac, Mp3, Vorbis, Unknown
+        Aac, Mp3, Vorbis, Opus, Unknown
     }
 }
