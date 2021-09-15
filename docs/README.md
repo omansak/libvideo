@@ -179,6 +179,11 @@ class Program
         }
     }
 ```
+
+### Custom Downlaoder with Chunks (Fast)
+
+[Sample Code](https://github.com/omansak/libvideo/blob/master/src/libvideo.debug/CustomYoutubeClient.cs)
+
 ---
 
 That's it, enjoy! If you're looking for more features, feel free to raise an issue and we can discuss it with you.
