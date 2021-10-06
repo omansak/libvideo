@@ -9,8 +9,8 @@
 
 libvideo (aka VideoLibrary) is a modern .NET library for downloading YouTube videos. It is portable to most platforms and is very lightweight.
 
-## Documentaion
-- [Documentaion](docs/README.md)
+## Documentation
+- [Documentation](docs/README.md)
 - [Example Application](samples/Valks/Valks/Program.cs)
 - [Fast Downloader with Chunks](/src/libvideo.debug/CustomYoutubeClient.cs)
 ## Installation
