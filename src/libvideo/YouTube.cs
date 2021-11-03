@@ -21,8 +21,7 @@ namespace VideoLibrary
         public static YouTube Default { get; } = new YouTube();
         public const string YoutubeUrl = "https://youtube.com/";
 
-        internal override async Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(
-            string videoUri, Func<string, Task<string>> sourceFactory)
+        internal override async Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(string videoUri, Func<string, Task<string>> sourceFactory)
         {
             if (!TryNormalize(videoUri, out videoUri))
                 throw new ArgumentException("URL is not a valid YouTube URL!");
@@ -120,7 +119,7 @@ namespace VideoLibrary
                             yield return new YouTubeVideo(videoInfo, query, jsPlayer);
                             continue;
                         }
-                        var cipherValue = (item.SelectToken("cipher") ?? item.SelectToken("signatureCipher")).Value<string>();
+                        var cipherValue = ((item.SelectToken("cipher") ?? item.SelectToken("signatureCipher")) ?? string.Empty).Value<string>();
                         if (!string.IsNullOrEmpty(cipherValue))
                         {
                             yield return new YouTubeVideo(videoInfo, Unscramble(cipherValue), jsPlayer);

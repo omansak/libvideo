@@ -1,7 +1,4 @@
 using System;
-using System.Net.Http;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VideoLibrary.Helpers;
 
@@ -9,20 +6,22 @@ namespace VideoLibrary
 {
     public partial class YouTubeVideo : Video
     {
-        private readonly string jsPlayer;
-
+        private readonly string jsPlayerUrl;
+        private string jsPlayer;
         private string uri;
-        private Query uriQuery;
-        private bool encrypted;
-        internal YouTubeVideo(VideoInfo info, UnscrambledQuery query, string jsPlayer)
+        private readonly Query _uriQuery;
+        private bool _encrypted;
+        private bool _needNDescramble;
+        internal YouTubeVideo(VideoInfo info, UnscrambledQuery query, string jsPlayerUrl)
         {
             this.Info = info;
             this.Title = info?.Title;
             this.uri = query.Uri;
-            this.uriQuery = new Query(uri);
-            this.jsPlayer = jsPlayer;
-            this.encrypted = query.IsEncrypted;
-            this.FormatCode = int.Parse(uriQuery["itag"]);
+            this._uriQuery = new Query(uri);
+            this.jsPlayerUrl = jsPlayerUrl;
+            this._encrypted = query.IsEncrypted;
+            this._needNDescramble = _uriQuery.ContainsKey("n");
+            this.FormatCode = int.Parse(_uriQuery["itag"]);
         }
 
         public override string Title { get; }
@@ -39,12 +38,16 @@ namespace VideoLibrary
 
         public async Task<string> GetUriAsync(Func<DelegatingClient> makeClient)
         {
-            if (encrypted)
+            if (_encrypted)
             {
-                uri = await
-                    DecryptAsync(uri, makeClient)
-                    .ConfigureAwait(false);
-                encrypted = false;
+                uri = await DecryptAsync(uri, makeClient).ConfigureAwait(false);
+                _encrypted = false;
+            }
+
+            if (_needNDescramble)
+            {
+                uri = await NDescrambleAsync(uri, makeClient).ConfigureAwait(false);
+                _needNDescramble = false;
             }
 
             return uri;
@@ -58,12 +61,12 @@ namespace VideoLibrary
             {
                 if (_contentLength.HasValue)
                     return _contentLength;
-                _contentLength = this.GetContentLength(uriQuery).Result;
+                _contentLength = this.GetContentLength(_uriQuery).Result;
                 return _contentLength;
             }
         }
 
-        public bool IsEncrypted => encrypted;
+        public bool IsEncrypted => _encrypted;
 
         // Private's
         private long? _contentLength { get; set; }

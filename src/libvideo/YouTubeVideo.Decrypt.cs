@@ -21,12 +21,14 @@ namespace VideoLibrary
             if (string.IsNullOrWhiteSpace(signature))
                 throw new Exception("Signature not found.");
 
-            string js =
-                await makeClient()
-                .GetStringAsync(jsPlayer)
-                .ConfigureAwait(false);
+            if (jsPlayer == null)
+            {
+                jsPlayer = await makeClient()
+                    .GetStringAsync(jsPlayerUrl)
+                    .ConfigureAwait(false);
+            }
 
-            query[YouTube.GetSignatureKey()] = DecryptSignature(js, signature);
+            query[YouTube.GetSignatureKey()] = DecryptSignature(jsPlayer, signature);
             return query.ToString();
         }
         private string DecryptSignature(string js, string signature)
@@ -75,7 +77,6 @@ namespace VideoLibrary
             var decipherFuncName = Regex.Match(js, @"(\w+)=function\(\w+\){(\w+)=\2\.split\(\x22{2}\);.*?return\s+\2\.join\(\x22{2}\)}");
             return decipherFuncName.Success ? decipherFuncName.Groups[0].Value.Split(';') : null;
         }
-
         private class Decryptor
         {
             private static readonly Regex ParametersRegex = new Regex(@"\(\w+,(\d+)\)");
