@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Jint;
 using VideoLibrary.Helpers;
+using NiL.JS.BaseLibrary;
+using NiL.JS.Core;
+using NiL.JS.Extensions;
 
 namespace VideoLibrary
 {
@@ -39,10 +41,9 @@ namespace VideoLibrary
                 var descrambleFunction = GetDescrambleFunctionLines(descrambleFunctionName, js);
                 if (!string.IsNullOrWhiteSpace(descrambleFunction))
                 {
-                    return new Engine()
-                        .Execute("var " + descrambleFunction)
-                        .Invoke(descrambleFunctionName, signature)
-                        .ToString();
+                    var context = new Context();
+                    context.Eval("var " + descrambleFunction);
+                    return context.GetVariable(descrambleFunctionName).As<Function>().Call(new Arguments { signature }).Value.ToString();
                 }
             }
             return signature;
