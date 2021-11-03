@@ -2,6 +2,6 @@
 {
     public enum AudioType
     {
-        Aac, Mp3, Vorbis, Opus, Unknown
+        Aac, Vorbis, Opus, Unknown
     }
 }

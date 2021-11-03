@@ -2,10 +2,9 @@
 {
     public enum AudioFormat
     {
-        Mp3 = 0,
-        Aac = 1,
-        Vorbis = 2,
-        Opus = 3,
-        Unknown = 4,
+        Aac = 0,
+        Vorbis = 1,
+        Opus = 2,
+        Unknown = 3
     }
 }

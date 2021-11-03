@@ -44,7 +44,6 @@ namespace YoutubeExtractor
                 switch (video.AudioFormat)
                 {
                     case AudioFormat.Aac: return ".aac";
-                    case AudioFormat.Mp3: return ".mp3";
                     case AudioFormat.Vorbis: return ".ogg";
                     case AudioFormat.Opus: return ".ogg";
                     case AudioFormat.Unknown: return String.Empty;
@@ -62,8 +61,6 @@ namespace YoutubeExtractor
                 {
                     case AudioFormat.Aac:
                         return AudioType.Aac;
-                    case AudioFormat.Mp3:
-                        return AudioType.Mp3;
                     case AudioFormat.Vorbis:
                         return AudioType.Vorbis;
                     case AudioFormat.Opus:
