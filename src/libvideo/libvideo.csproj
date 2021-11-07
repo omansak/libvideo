@@ -16,7 +16,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
     <RootNamespace>VideoLibrary</RootNamespace>
-    <Version>3.1.4-pre</Version>
+    <Version>3.1.4</Version>
     <TargetFramework>netstandard1.3</TargetFramework>
     <Title>libvideo</Title>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

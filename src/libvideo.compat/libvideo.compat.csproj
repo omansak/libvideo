@@ -16,7 +16,7 @@ Find us on GitHub at https://github.com/omansak/libvideo</Description>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
     <RootNamespace>YoutubeExtractor</RootNamespace>
-    <Version>3.1.4-pre</Version>
+    <Version>3.1.4</Version>
     <TargetFramework>netstandard1.3</TargetFramework>
     <Title>libvideo.compat</Title>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
