@@ -51,6 +51,7 @@ namespace YoutubeExtractor
                 .Replace("youtube.com/embed/", "youtube.com/watch?v=")
                 .Replace("/v/", "/watch?v=")
                 .Replace("/watch#", "/watch?")
+                .Replace("youtube.com/shorts/", "youtube.com/watch?v=")
                 .ToString();
 
             string value;
