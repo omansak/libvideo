@@ -199,7 +199,7 @@ namespace VideoLibrary
             {
                 throw new UnavailableStreamException("Player json has no found.");
             }
-            return playerResponseMap.Replace(@"\u0026", "&").Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty);
+            return playerResponseMap.Replace(@"\u0026", "&").Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty).Replace("\\&", "\\\\&");
         }
         private string ParseJsPlayer(string source)
         {
