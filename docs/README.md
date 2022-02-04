@@ -180,7 +180,7 @@ class Program
     }
 ```
 
-### Custom Downlaoder with Chunks (Fast)
+### Custom Downloader with Chunks (Fast)
 
 [Sample Code](https://github.com/omansak/libvideo/blob/master/src/libvideo.debug/CustomYoutubeClient.cs)
 
