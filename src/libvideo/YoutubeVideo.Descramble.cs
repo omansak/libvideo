@@ -1,4 +1,6 @@
-﻿using Jint;
+﻿using NiL.JS.BaseLibrary;
+using NiL.JS.Core;
+using NiL.JS.Extensions;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -34,10 +36,9 @@ namespace VideoLibrary
             var descrambleFunction = GetDescrambleFunctionLines(js);
             if (!string.IsNullOrWhiteSpace(descrambleFunction))
             {
-                return new Engine()
-                    .Execute("var " + descrambleFunction)
-                    .Invoke(descrambleFunction.Substring(0, descrambleFunction.IndexOf("=", StringComparison.Ordinal)), signature)
-                    .ToString();
+                var context = new Context();
+                context.Eval("var " + descrambleFunction);
+                return context.GetVariable(descrambleFunction.Substring(0, descrambleFunction.IndexOf("=", StringComparison.Ordinal))).As<Function>().Call(new Arguments { signature }).Value.ToString();
             }
             return signature;
         }
