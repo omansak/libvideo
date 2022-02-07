@@ -3,16 +3,16 @@
   <PropertyGroup>
     <Authors>Bar Arnon,OMANSAK</Authors>
     <Copyright>Copyright 2018 Bar Arnon | 2022 OMANSAK</Copyright>
-    <Description>libvideo is a fast, clean way to download YouTube videos. It is fully portable and has no dependencies.
+    <Description>libvideo (aka VideoLibrary) is a modern .NET library for downloading YouTube videos. It is portable to most platforms and is very lightweight.
 
-    Find us on GitHub at https://github.com/omansak/libvideo</Description>
+Find us on GitHub at https://github.com/omansak/libvideo</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl></PackageIconUrl>
     <PackageId>VideoLibrary</PackageId>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
     <PackageReleaseNotes>n signature fix regex &amp; changed NiL. -&gt; Jint</PackageReleaseNotes>
-    <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
+    <PackageTags>youtube youtubeexplode downloader libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
     <RootNamespace>VideoLibrary</RootNamespace>
