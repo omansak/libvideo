@@ -1,45 +1,50 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <Authors>Bar Arnon,OMANSAK</Authors>
-    <Copyright>Copyright 2018 Bar Arnon | 2022 OMANSAK</Copyright>
-    <Description>libvideo (aka VideoLibrary) is a modern .NET library for downloading YouTube videos. It is portable to most platforms and is very lightweight.
+	<PropertyGroup>
+		<Authors>Bar Arnon,OMANSAK</Authors>
+		<Copyright>Copyright 2018 Bar Arnon | 2022 OMANSAK</Copyright>
+		<Description>libvideo (aka VideoLibrary) is a modern .NET library for downloading YouTube videos. It is portable to most platforms and is very lightweight.
 
 Find us on GitHub at https://github.com/omansak/libvideo</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageIconUrl></PackageIconUrl>
-    <PackageId>VideoLibrary</PackageId>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-    <PackageReleaseNotes>n signature fix regex &amp; changed NiL. -&gt; Jint</PackageReleaseNotes>
-    <PackageTags>youtube youtubeexplode downloader libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
-    <RootNamespace>VideoLibrary</RootNamespace>
-    <Version>3.1.7</Version>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <Title>libvideo</Title>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AssemblyVersion>3.1.7.0</AssemblyVersion>
-    <FileVersion>3.1.7.0</FileVersion>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageIcon>icon_586.png</PackageIcon>
-  </PropertyGroup>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageIconUrl></PackageIconUrl>
+		<PackageId>VideoLibrary</PackageId>
+		<PackageLicenseUrl></PackageLicenseUrl>
+		<PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
+		<PackageReleaseNotes>n signature fix regex &amp; changed NiL. -&gt; Jint</PackageReleaseNotes>
+		<PackageTags>youtube youtubeexplode downloader libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
+		<RootNamespace>VideoLibrary</RootNamespace>
+		<Version>3.1.8</Version>
+		<TargetFramework>netstandard1.3</TargetFramework>
+		<Title>libvideo</Title>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<AssemblyVersion>3.1.8.0</AssemblyVersion>
+		<FileVersion>3.1.8.0</FileVersion>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageIcon>icon_586.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Jint" Version="2.11.58" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Jint" Version="2.11.58" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\icons\icon_586.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-    <None Include="..\..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\icons\icon_586.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>
