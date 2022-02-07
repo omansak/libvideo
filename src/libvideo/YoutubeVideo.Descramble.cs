@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Jint;
+using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VideoLibrary.Helpers;
-using NiL.JS.BaseLibrary;
-using NiL.JS.Core;
-using NiL.JS.Extensions;
 
 namespace VideoLibrary
 {
@@ -33,30 +31,29 @@ namespace VideoLibrary
 
         private string DescrambleNSignature(string js, string signature)
         {
-            var functionNameRegex = new Regex(@"\.get\(\""n\""\)\)&&\(\w=([a-zA-Z0-9$]{3})\([a-zA-Z0-9]\)");
-            var functionNameRegexMatch = functionNameRegex.Match(js);
-            if (functionNameRegexMatch.Success)
+            var descrambleFunction = GetDescrambleFunctionLines(js);
+            if (!string.IsNullOrWhiteSpace(descrambleFunction))
             {
-                var descrambleFunctionName = functionNameRegexMatch.Groups[1].Value;
-                var descrambleFunction = GetDescrambleFunctionLines(descrambleFunctionName, js);
-                if (!string.IsNullOrWhiteSpace(descrambleFunction))
-                {
-                    var context = new Context();
-                    context.Eval("var " + descrambleFunction);
-                    return context.GetVariable(descrambleFunctionName).As<Function>().Call(new Arguments { signature }).Value.ToString();
-                }
+                return new Engine()
+                    .Execute("var " + descrambleFunction)
+                    .Invoke(descrambleFunction.Substring(0, descrambleFunction.IndexOf("=", StringComparison.Ordinal)), signature)
+                    .ToString();
             }
             return signature;
         }
 
-        private string GetDescrambleFunctionLines(string functionName, string js)
+        private string GetDescrambleFunctionLines(string js)
         {
-            var functionRegexMatchStart = Regex.Match(js, functionName + @"=function\((\w)\){var\s+\w=\1.split\(\x22{2}\),\w=");
+            var functionRegexMatchStart = Regex.Match(js, @"\w+=function\((\w)\){var\s+\w=\1.split\(\x22{2}\),\w=");
             var functionRegexMatchEnd = Regex.Match(js, @"\+a}return\s\w.join\(\x22{2}\)};");
 
             if (functionRegexMatchStart.Success && functionRegexMatchEnd.Success)
             {
-                return js.Substring(functionRegexMatchStart.Index, (functionRegexMatchEnd.Index + functionRegexMatchEnd.Length) - functionRegexMatchStart.Index);
+                var block = js.Substring(functionRegexMatchStart.Index, (functionRegexMatchEnd.Index + functionRegexMatchEnd.Length) - functionRegexMatchStart.Index);
+                if (block.Contains("enhanced_except"))
+                {
+                    return block;
+                }
             }
             return null;
         }

@@ -11,24 +11,24 @@
     <PackageId>VideoLibrary</PackageId>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-    <PackageReleaseNotes>escaped \&amp; char</PackageReleaseNotes>
+    <PackageReleaseNotes>n signature fix regex &amp; changed NiL. -&gt; Jint</PackageReleaseNotes>
     <PackageTags>youtube youtubeextractor libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
     <RootNamespace>VideoLibrary</RootNamespace>
-    <Version>3.1.6</Version>
+    <Version>3.1.7</Version>
     <TargetFramework>netstandard1.3</TargetFramework>
     <Title>libvideo</Title>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AssemblyVersion>3.1.6.0</AssemblyVersion>
-    <FileVersion>3.1.6.0</FileVersion>
+    <AssemblyVersion>3.1.7.0</AssemblyVersion>
+    <FileVersion>3.1.7.0</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>icon_586.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NiL.JS" Version="2.5.1514" />
+    <PackageReference Include="Jint" Version="2.11.58" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
