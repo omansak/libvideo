@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Text;
 
@@ -25,13 +25,23 @@ namespace VideoLibrary.Helpers
             StringBuilder sb = new StringBuilder();
             int depth = 0;
             char lastChar = '\u0000';
+            bool isString = false;
             foreach (var ch in source)
             {
                 sb.Append(ch);
-                if (ch == '{' && lastChar != '\\')
-                    depth++;
-                else if (ch == '}' && lastChar != '\\')
-                    depth--;
+                if (ch == '"' && lastChar != '\\')
+                {
+                    isString = !isString;
+                }
+
+                if (!isString)
+                {
+                    if (ch == '{' && lastChar != '\\')
+                        depth++;
+                    else if (ch == '}' && lastChar != '\\')
+                        depth--;
+                }
+
                 if (depth == 0)
                     break;
                 lastChar = ch;
