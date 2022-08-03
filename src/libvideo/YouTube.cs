@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -73,7 +73,9 @@ namespace VideoLibrary
             var playerResponseJson = JToken.Parse(Json.Extract(ParsePlayerJson(source)));
 
             string status = playerResponseJson.SelectToken("playabilityStatus.status")?.Value<string>();
-            if (status == "AGE_VERIFICATION_REQUIRED" || status == "AGE_CHECK_REQUIRED" || status == "LOGIN_REQUIRED")
+            if (string.Equals(status, "AGE_VERIFICATION_REQUIRED", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(status, "AGE_CHECK_REQUIRED", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(status, "LOGIN_REQUIRED", StringComparison.OrdinalIgnoreCase))
             {
                 var videoId = playerResponseJson.SelectToken("videoDetails.videoId")?.Value<string>();
                 string postData = "{context:{client:{clientName:\"TVHTML5_SIMPLY_EMBEDDED_PLAYER\",clientVersion:\"2.0\",clientScreen:\"EMBED\"},thirdParty:{embedUrl:\"https://www.youtube.com/\"}},playbackContext:{contentPlaybackContext:{signatureTimestamp:18865}},videoId:\"" + videoId + "\"}";
