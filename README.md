@@ -24,6 +24,7 @@ Alternatively, you can try building the repo if you like your assemblies extra-f
 ## Supported Platforms
 - .NET Core Web/Console/ClassLibrary
 - .NET Framework 4.5+
+- .NET Standart 2.1+
 - Windows 10 Universal apps
 - Portable Class Libraries
 - Xamarin.iOS

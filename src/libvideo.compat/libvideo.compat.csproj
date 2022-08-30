@@ -11,19 +11,17 @@ Find us on GitHub at https://github.com/omansak/libvideo</Description>
 		<PackageId>VideoLibrary.Compat</PackageId>
 		<PackageLicenseUrl></PackageLicenseUrl>
 		<PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-		<PackageReleaseNotes>- Bump to .NET Standart 2.1
-- n signature fix regex
-- JS Engine Changed.</PackageReleaseNotes>
+		<PackageReleaseNotes>fix json parse bug</PackageReleaseNotes>
 		<PackageTags>youtube youtubeexplode downloader libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
 		<RootNamespace>YoutubeExtractor</RootNamespace>
-		<Version>3.2.0</Version>
+		<Version>3.2.1</Version>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Title>libvideo.compat</Title>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<AssemblyVersion>3.2.0.0</AssemblyVersion>
-		<FileVersion>3.2.0.0</FileVersion>
+		<AssemblyVersion>3.2.1.0</AssemblyVersion>
+		<FileVersion>3.2.1.0</FileVersion>
 		<PackageIcon>icon_586.png</PackageIcon>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageLicenseExpression></PackageLicenseExpression>

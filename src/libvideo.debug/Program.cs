@@ -9,8 +9,9 @@ namespace VideoLibrary.Debug
         {
             string[] queries =
             {
-                //"https://www.youtube.com/watch?v=jfobiCq0YUc&ab_channel=EminemMusic"//1080
-                "https://www.youtube.com/watch?v=LXb3EKWsInQ&ab_channel=Jacob%2BKatieSchwarz",//2060
+                "https://www.youtube.com/watch?v=jfobiCq0YUc&ab_channel=EminemMusic",                   //1080
+                "https://www.youtube.com/watch?v=LXb3EKWsInQ&ab_channel=Jacob%2BKatieSchwarz",          //2060
+                "https://www.youtube.com/watch?v=U2XK_TJZ3PI",                                          //JSON Parse Error
             };
 
             TestVideoLib(queries);
@@ -20,6 +21,8 @@ namespace VideoLibrary.Debug
 
         public static void TestVideoLib(string[] queries)
         {
+            // new Test.Run();
+
             using (var cli = Client.For(YouTube.Default))
             {
                 Console.WriteLine("Downloading...");
