@@ -11,24 +11,27 @@ Find us on GitHub at https://github.com/omansak/libvideo</Description>
 		<PackageId>VideoLibrary</PackageId>
 		<PackageLicenseUrl></PackageLicenseUrl>
 		<PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-		<PackageReleaseNotes>n signature fix regex</PackageReleaseNotes>
+		<PackageReleaseNotes>- Bump to .NET Standart 2.1
+- n signature fix regex
+- JS Engine Changed.</PackageReleaseNotes>
 		<PackageTags>youtube youtubeexplode downloader libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
 		<RootNamespace>VideoLibrary</RootNamespace>
-		<Version>3.1.9</Version>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<Version>3.2.0</Version>
+		<TargetFramework>netstandard2.1</TargetFramework>
 		<Title>libvideo</Title>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<AssemblyVersion>3.1.9.0</AssemblyVersion>
-		<FileVersion>3.1.9.0</FileVersion>
+		<AssemblyVersion>3.2.0.0</AssemblyVersion>
+		<FileVersion>3.2.0.0</FileVersion>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageIcon>icon_586.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NiL.JS" Version="2.5.1514" />
+		<PackageReference Include="JavaScriptEngineSwitcher.Core" Version="3.19.0" />
+		<PackageReference Include="JavaScriptEngineSwitcher.Jurassic" Version="3.19.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>
 

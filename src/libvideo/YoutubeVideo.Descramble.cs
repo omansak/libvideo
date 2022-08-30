@@ -1,6 +1,5 @@
-﻿using NiL.JS.BaseLibrary;
-using NiL.JS.Core;
-using NiL.JS.Extensions;
+﻿using JavaScriptEngineSwitcher.Core;
+using JavaScriptEngineSwitcher.Jurassic;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -34,29 +33,48 @@ namespace VideoLibrary
         private string DescrambleNSignature(string js, string signature)
         {
             var descrambleFunction = GetDescrambleFunctionLines(js);
-            if (!string.IsNullOrWhiteSpace(descrambleFunction))
+            using (IJsEngine engine = new JurassicJsEngine())
             {
-                var context = new Context();
-                context.Eval("var " + descrambleFunction);
-                return context.GetVariable(descrambleFunction.Substring(0, descrambleFunction.IndexOf("=", StringComparison.Ordinal))).As<Function>().Call(new Arguments { signature }).Value.ToString();
+                engine.Execute($"var {descrambleFunction.FunctionBody}");
+                var sign = engine.CallFunction<string>(descrambleFunction.FunctionName, signature);
+                signature = sign;
             }
+
             return signature;
         }
 
-        private string GetDescrambleFunctionLines(string js)
+        private (string FunctionName, string FunctionBody) GetDescrambleFunctionLines(string js)
         {
-            var functionRegexMatchStart = Regex.Match(js, @"\w+=function\((\w)\){var\s+\w=\1.split\(\x22{2}\),\w=");
-            var functionRegexMatchEnd = Regex.Match(js, @"\+a}return\s\w.join\(\x22{2}\)};");
+            string functionName = null;
+            var functionLine = Regex.Match(js, @"\.get\(""n""\)\)&&\(b=([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)");
 
-            if (functionRegexMatchStart.Success && functionRegexMatchEnd.Success)
+            if (functionLine.Success && !functionLine.Groups[2].Success)
             {
-                var block = js.Substring(functionRegexMatchStart.Index, (functionRegexMatchEnd.Index + functionRegexMatchEnd.Length) - functionRegexMatchStart.Index);
-                if (block.Contains("enhanced_except"))
+                functionName = functionLine.Groups[1].Value;
+            }
+            else
+            {
+                var fname = Regex.Match(js, $@"var {functionLine.Groups[1]}\s*=\s*(\[.+?\]);");
+                if (fname.Success && fname.Groups[1].Success)
                 {
-                    return block;
+                    functionName = fname.Groups[1].Value
+                        .Replace("[", string.Empty)
+                        .Replace("]", string.Empty)
+                        .Split(',')[int.Parse(functionLine.Groups[2].Value)];
                 }
             }
-            return null;
+
+            if (!string.IsNullOrWhiteSpace(functionName))
+            {
+                var decipherDefinitionBody = Regex.Match(js, $@"{Regex.Escape(functionName)}=function\(\w+(,\w+)?\)\{{(?s:.*?)\}};", RegexOptions.Singleline);
+
+                if (decipherDefinitionBody.Success)
+                {
+                    return (functionName, decipherDefinitionBody.Groups[0].Value);
+                }
+            }
+
+            return (functionName, null);
         }
     }
 }

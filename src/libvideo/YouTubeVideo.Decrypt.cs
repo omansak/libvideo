@@ -31,6 +31,7 @@ namespace VideoLibrary
             query[YouTube.GetSignatureKey()] = DecryptSignature(jsPlayer, signature);
             return query.ToString();
         }
+
         private string DecryptSignature(string js, string signature)
         {
             var functionNameRegex = new Regex(@"\w+(?:.|\[)(\""?\w+(?:\"")?)\]?\(");
@@ -72,11 +73,13 @@ namespace VideoLibrary
 
             return signature;
         }
+
         private string[] GetDecryptionFunctionLines(string js)
         {
             var decipherFuncName = Regex.Match(js, @"(\w+)=function\(\w+\){(\w+)=\2\.split\(\x22{2}\);.*?return\s+\2\.join\(\x22{2}\)}");
             return decipherFuncName.Success ? decipherFuncName.Groups[0].Value.Split(';') : null;
         }
+
         private class Decryptor
         {
             private static readonly Regex ParametersRegex = new Regex(@"\(\w+,(\d+)\)");
@@ -148,8 +151,7 @@ namespace VideoLibrary
                 return _stringBuilder.ToString();
             }
 
-            private string Slice(string signature, int index) =>
-                signature.Substring(index);
+            private string Slice(string signature, int index) => signature.Substring(index);
 
             private string Swap(string signature, int index)
             {
