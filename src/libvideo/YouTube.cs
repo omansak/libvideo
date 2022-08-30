@@ -74,6 +74,7 @@ namespace VideoLibrary
             {
                 throw new UnavailableStreamException($"Video has unavailable stream.");
             }
+
             var errorReason = playerResponseJson.SelectToken("playabilityStatus.reason")?.Value<string>();
             if (string.IsNullOrWhiteSpace(errorReason))
             {
@@ -87,6 +88,7 @@ namespace VideoLibrary
                 {
                     throw new UnavailableStreamException($"This is live stream so unavailable stream.");
                 }
+
                 // url_encoded_fmt_stream_map
                 string map = Json.GetKey("url_encoded_fmt_stream_map", source);
                 if (!string.IsNullOrWhiteSpace(map))
@@ -201,6 +203,7 @@ namespace VideoLibrary
             }
             return playerResponseMap.Replace(@"\u0026", "&").Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty).Replace("\\&", "\\\\&");
         }
+
         private string ParseJsPlayer(string source)
         {
             if (Json.TryGetKey("jsUrl", source, out var jsPlayer) || Json.TryGetKey("PLAYER_JS_URL", source, out jsPlayer))
