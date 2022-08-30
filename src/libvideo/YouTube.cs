@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -71,37 +70,11 @@ namespace VideoLibrary
             }
 
             var playerResponseJson = JToken.Parse(Json.Extract(ParsePlayerJson(source)));
-
-            string status = playerResponseJson.SelectToken("playabilityStatus.status")?.Value<string>();
-            if (string.Equals(status, "AGE_VERIFICATION_REQUIRED", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(status, "AGE_CHECK_REQUIRED", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(status, "LOGIN_REQUIRED", StringComparison.OrdinalIgnoreCase))
-            {
-                var videoId = playerResponseJson.SelectToken("videoDetails.videoId")?.Value<string>();
-                string postData = "{context:{client:{clientName:\"TVHTML5_SIMPLY_EMBEDDED_PLAYER\",clientVersion:\"2.0\",clientScreen:\"EMBED\"},thirdParty:{embedUrl:\"https://www.youtube.com/\"}},playbackContext:{contentPlaybackContext:{signatureTimestamp:18865}},videoId:\"" + videoId + "\"}";
-                
-                var data = Encoding.ASCII.GetBytes(postData);
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.youtube.com/youtubei/v1/player?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8");
-                request.Method = "POST";
-                request.ContentLength = data.Length;
-
-                using (var stream = request.GetRequestStream())
-                {
-                    stream.Write(data, 0, data.Length);
-                }
-
-                var response = (HttpWebResponse)request.GetResponse();
-                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-                Console.WriteLine(responseString);
-
-                playerResponseJson = JToken.Parse(Json.Extract(responseString));
-            }
-
-            if (string.Equals(status, "error", StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(playerResponseJson.SelectToken("playabilityStatus.status")?.Value<string>(), "error", StringComparison.OrdinalIgnoreCase))
             {
                 throw new UnavailableStreamException($"Video has unavailable stream.");
             }
+
             var errorReason = playerResponseJson.SelectToken("playabilityStatus.reason")?.Value<string>();
             if (string.IsNullOrWhiteSpace(errorReason))
             {
@@ -115,6 +88,7 @@ namespace VideoLibrary
                 {
                     throw new UnavailableStreamException($"This is live stream so unavailable stream.");
                 }
+
                 // url_encoded_fmt_stream_map
                 string map = Json.GetKey("url_encoded_fmt_stream_map", source);
                 if (!string.IsNullOrWhiteSpace(map))
@@ -229,6 +203,7 @@ namespace VideoLibrary
             }
             return playerResponseMap.Replace(@"\u0026", "&").Replace("\r\n", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty).Replace("\\&", "\\\\&");
         }
+
         private string ParseJsPlayer(string source)
         {
             if (Json.TryGetKey("jsUrl", source, out var jsPlayer) || Json.TryGetKey("PLAYER_JS_URL", source, out jsPlayer))
