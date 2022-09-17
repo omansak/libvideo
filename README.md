@@ -22,14 +22,14 @@ You can grab a copy of the library [on NuGet](https://www.nuget.org/packages/Vid
 Alternatively, you can try building the repo if you like your assemblies extra-fresh.
 
 ## Supported Platforms
-NET ve .NET Core	            |   2.0, 2.1, 2.2, 3.0, 3.1, 5.0, 6.0
-.NET Framework  	            |   4.6.1, 4.6.2, 4.7, 4.7.1, 4.7.2, 4.8
-Mono	                        |   5.4, 6.4
-Xamarin.iOS	                    |   10.14, 12.16
-Xamarin.Mac	                    |   3.8, 5.16
-Xamarin.Android	                |   8.0, 10.0
-Universal Windows Platform	    |   10.0.16299, TBD
-Unity	                        |   2018,1
+- NET ve .NET Core	            |   2.0, 2.1, 2.2, 3.0, 3.1, 5.0, 6.0
+- .NET Framework  	            |   4.6.1, 4.6.2, 4.7, 4.7.1, 4.7.2, 4.8
+- Mono	                        |   5.4, 6.4
+- Xamarin.iOS	                    |   10.14, 12.16
+- Xamarin.Mac	                    |   3.8, 5.16
+- Xamarin.Android	                |   8.0, 10.0
+- Universal Windows Platform	    |   10.0.16299, TBD
+- Unity	                        |   2018,
 
 ## Getting Started
 
