@@ -1,6 +1,4 @@
-﻿using JavaScriptEngineSwitcher.Core;
-using JavaScriptEngineSwitcher.Jurassic;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VideoLibrary.Helpers;
@@ -33,17 +31,20 @@ namespace VideoLibrary
         private string DescrambleNSignature(string js, string signature)
         {
             var descrambleFunction = GetDescrambleFunctionLines(js);
-            using (IJsEngine engine = new JurassicJsEngine())
+
+            if (descrambleFunction?.Item1 != null && descrambleFunction?.Item2 != null)
             {
-                engine.Execute($"var {descrambleFunction.FunctionBody}");
-                var sign = engine.CallFunction<string>(descrambleFunction.FunctionName, signature);
+                var engine = new Jurassic.ScriptEngine();
+                engine.Evaluate($"var {descrambleFunction.Item2};");
+                var sign = engine.CallGlobalFunction<string>(descrambleFunction.Item1, signature);
+
                 signature = sign;
             }
 
             return signature;
         }
 
-        private (string FunctionName, string FunctionBody) GetDescrambleFunctionLines(string js)
+        private Tuple<string, string> GetDescrambleFunctionLines(string js)
         {
             string functionName = null;
             var functionLine = Regex.Match(js, @"\.get\(""n""\)\)&&\(b=([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)");
@@ -70,11 +71,11 @@ namespace VideoLibrary
 
                 if (decipherDefinitionBody.Success)
                 {
-                    return (functionName, decipherDefinitionBody.Groups[0].Value);
+                    return new Tuple<string, string>(functionName, decipherDefinitionBody.Groups[0].Value);
                 }
             }
 
-            return (functionName, null);
+            return new Tuple<string, string>(functionName, null);
         }
     }
 }
