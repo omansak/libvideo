@@ -25,11 +25,12 @@ namespace VideoLibrary.Helpers
             StringBuilder sb = new StringBuilder();
             int depth = 0;
             char lastChar = '\u0000';
+            char beforeLastChar = '\u0000';
             bool isString = false;
             foreach (var ch in source)
             {
                 sb.Append(ch);
-                if (ch == '"' && lastChar != '\\')
+                if (ch == '"' && (lastChar != '\\' || beforeLastChar == '\\'))
                 {
                     isString = !isString;
                 }
@@ -44,6 +45,7 @@ namespace VideoLibrary.Helpers
 
                 if (depth == 0)
                     break;
+                beforeLastChar = lastChar;
                 lastChar = ch;
             }
             return sb.ToString();
