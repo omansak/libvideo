@@ -24,13 +24,22 @@ namespace VideoLibrary.Helpers
         {
             StringBuilder sb = new StringBuilder();
             int depth = 0;
+            int backSlashesCounter = 0;
             char lastChar = '\u0000';
-            char beforeLastChar = '\u0000';
             bool isString = false;
             foreach (var ch in source)
             {
                 sb.Append(ch);
-                if (ch == '"' && (lastChar != '\\' || beforeLastChar == '\\'))
+                
+                if (ch == '\\')
+                {
+                    backSlashesCounter++;
+                } else
+                {
+                    backSlashesCounter = 0;
+                }
+                
+                if (ch == '"' && lastChar != '\\' && backSlashesCounter%2 == 1)
                 {
                     isString = !isString;
                 }
@@ -45,7 +54,6 @@ namespace VideoLibrary.Helpers
 
                 if (depth == 0)
                     break;
-                beforeLastChar = lastChar;
                 lastChar = ch;
             }
             return sb.ToString();
