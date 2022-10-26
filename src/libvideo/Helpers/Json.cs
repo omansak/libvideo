@@ -41,7 +41,18 @@ namespace VideoLibrary.Helpers
                 
                 if (ch == '"' && lastChar != '\\' && backSlashesCounter%2 == 1)
                 {
-                    isString = !isString;
+                    backSlashesCounter++;
+                }
+                else if (ch == '"')
+                {
+                    if (lastChar != '\\' || backSlashesCounter%2 == 0)
+                    {
+                        isString = !isString;
+                    }
+                }
+                else
+                {
+                    backSlashesCounter = 0;
                 }
 
                 if (!isString)
