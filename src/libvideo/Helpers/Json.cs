@@ -34,6 +34,14 @@ namespace VideoLibrary.Helpers
                 if (ch == '\\')
                 {
                     backSlashesCounter++;
+                } else
+                {
+                    backSlashesCounter = 0;
+                }
+                
+                if (ch == '"' && lastChar != '\\' && backSlashesCounter%2 == 1)
+                {
+                    backSlashesCounter++;
                 }
                 else if (ch == '"')
                 {
