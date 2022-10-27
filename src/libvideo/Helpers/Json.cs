@@ -33,18 +33,12 @@ namespace VideoLibrary.Helpers
                 
                 if (ch == '\\')
                 {
-                    backSlashesCounter++;
-                } else
-                {
-                    backSlashesCounter = 0;
-                }
-                
-                if (ch == '"' && lastChar != '\\' && backSlashesCounter%2 == 1)
-                {
+                    // count backslashes
                     backSlashesCounter++;
                 }
                 else if (ch == '"')
                 {
+                    // if current char is quote check last char and count of backslashes to be sure it is not doubled backslashes
                     if (lastChar != '\\' || backSlashesCounter%2 == 0)
                     {
                         isString = !isString;
@@ -52,6 +46,7 @@ namespace VideoLibrary.Helpers
                 }
                 else
                 {
+                    // reset backslashes count if its any other char
                     backSlashesCounter = 0;
                 }
 
