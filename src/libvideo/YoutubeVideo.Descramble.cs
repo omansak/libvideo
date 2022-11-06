@@ -34,11 +34,11 @@ namespace VideoLibrary
 
             if (descrambleFunction?.Item1 != null && descrambleFunction?.Item2 != null)
             {
-                var engine = new Jurassic.ScriptEngine();
-                engine.Evaluate($"var {descrambleFunction.Item2};");
-                var sign = engine.CallGlobalFunction<string>(descrambleFunction.Item1, signature);
+                var engine = new Jint.Engine();
+                engine.Execute($"var {descrambleFunction.Item2};");
+                var sign = engine.Invoke(descrambleFunction.Item1, signature);
 
-                signature = sign;
+                signature = sign.AsString();
             }
 
             return signature;
