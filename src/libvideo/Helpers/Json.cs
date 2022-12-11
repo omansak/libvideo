@@ -24,30 +24,16 @@ namespace VideoLibrary.Helpers
         {
             StringBuilder sb = new StringBuilder();
             int depth = 0;
-            int backSlashesCounter = 0;
             char lastChar = '\u0000';
             bool isString = false;
             foreach (var ch in source)
             {
                 sb.Append(ch);
-                
-                if (ch == '\\')
+
+                // Note double backslashes only if they are not in the string  
+                if (ch == '"' && (lastChar != '\\' || isString))
                 {
-                    // count backslashes
-                    backSlashesCounter++;
-                }
-                else if (ch == '"')
-                {
-                    // if current char is quote check last char and count of backslashes to be sure it is not doubled backslashes
-                    if (lastChar != '\\' || backSlashesCounter%2 == 0)
-                    {
-                        isString = !isString;
-                    }
-                }
-                else
-                {
-                    // reset backslashes count if its any other char
-                    backSlashesCounter = 0;
+                    isString = !isString;
                 }
 
                 if (!isString)
