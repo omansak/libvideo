@@ -11,24 +11,23 @@ Find us on GitHub at https://github.com/omansak/libvideo</Description>
 		<PackageId>VideoLibrary</PackageId>
 		<PackageLicenseUrl></PackageLicenseUrl>
 		<PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-		<PackageReleaseNotes>used .net standart 2.0</PackageReleaseNotes>
+		<PackageReleaseNotes>Removed JS Engine</PackageReleaseNotes>
 		<PackageTags>youtube youtubeexplode downloader libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
 		<RootNamespace>VideoLibrary</RootNamespace>
-		<Version>3.2.2</Version>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<Version>3.2.3</Version>
+		<TargetFramework>netstandard1.1</TargetFramework>
 		<Title>libvideo</Title>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<AssemblyVersion>3.2.2.0</AssemblyVersion>
-		<FileVersion>3.2.2.0</FileVersion>
+		<AssemblyVersion>3.2.3.0</AssemblyVersion>
+		<FileVersion>3.2.3.0</FileVersion>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageIcon>icon_586.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Jurassic" Version="3.2.6" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>
 
