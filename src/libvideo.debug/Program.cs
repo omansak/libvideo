@@ -21,7 +21,7 @@ namespace VideoLibrary.Debug
 
         public static void TestVideoLib(string[] queries)
         {
-            // new Test.Run();
+            new Test().Run();
 
             using (var cli = Client.For(YouTube.Default))
             {
