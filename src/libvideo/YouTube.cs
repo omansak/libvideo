@@ -206,6 +206,8 @@ namespace VideoLibrary
 
         private string ParseJsPlayer(string source)
         {
+            var asd = Regex.Match(source, "\"jsUrl\":\"(.*?)\"");
+            var qwe = Regex.Match(source, "\"js\": *\"(.*?)\"");
             if (Json.TryGetKey("jsUrl", source, out var jsPlayer) || Json.TryGetKey("PLAYER_JS_URL", source, out jsPlayer))
             {
                 jsPlayer = jsPlayer.Replace(@"\/", "/");

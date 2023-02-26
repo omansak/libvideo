@@ -1,12 +1,9 @@
-﻿using NiL.JS.BaseLibrary;
-using NiL.JS.Core;
+﻿using Jint.Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Jint.Parser;
-using NiL.JS.Extensions;
 using VideoLibrary.Helpers;
 
 namespace VideoLibrary
@@ -54,7 +51,10 @@ namespace VideoLibrary
 
             if (descrambleFunction?.Item1 != null && descrambleFunction?.Item2 != null)
             {
+
                 var content = descrambleFunction.Item2.Replace("\n", "");
+                Foo(content, signature);
+
                 var array_start_pattern = ",c=[";
                 var array_start_index = content.IndexOf(array_start_pattern);
                 array_start_index += array_start_pattern.Length;
@@ -128,9 +128,14 @@ namespace VideoLibrary
                         arg2 = converted_array[step.Item3.Value];
                     }
 
+                    if (step.Item2 == 29)
+                    {
+
+                    }
+
                     if (arg1 == null)
                     {
-                      continue;
+                        continue;
                     }
 
                     switch (func)
@@ -185,39 +190,147 @@ namespace VideoLibrary
                     }
                 }
 
-                content = Regex.Replace(content, "finally\\{([\\w\\W\\d\\D><\\[\\]&&||;,\\(\\)]*)\\}try", "finally{try{$1}catch(d){}}try");
-                content = content.Replace("+a", "+d");
-
-                var context = new Context(false);
-                context.Eval(content);
-
-                var fn = context.GetVariable(descrambleFunction.Item1).As<Function>();
-                var sign = fn.Call(new Arguments { signature }).Value.ToString();
-
-                var engine = new Jint.Engine();
-                engine.Execute(content);
-                sign = engine.Invoke(descrambleFunction.Item1, signature).ToString();
             }
 
             return signature;
         }
 
+
+        private string Foo(string content, string signature)
+        {
+            var mappingFuncPatterns = new List<(string Func, string Pattern)>
+            {
+                ("reverse", "^function\\(d\\)"),
+                ("append", "^function\\(d,e\\){d\\.push\\(e\\)},"),
+                ("remove", "^[^}]*?;d\\.splice\\(e,1\\)},"),
+                ("swap", "^[^}]*?;var f=d\\[0\\];d\\[0\\]=d\\[e\\];d\\[e\\]=f},"),
+                ("swap", "^[^}]*?;d\\.splice\\(0,1,d\\.splice\\(e,1,d\\[0\\]\\)\\[0\\]\\)},"),
+                ("rotate", "^[^}]*?d\\.unshift\\(d.pop\\(\\)\\)},"),
+                ("rotate", "^[^}]*?d\\.unshift\\(f\\)}\\)},,"),
+                ("alphabet1", "^function\\(\\){[^}]*?case 58:d-=14;"),
+                ("alphabet2", "^function\\(\\){[^}]*?case 58:d=96;"),
+                ("alphabet2", "^function\\(\\){[^}]*?case 58:d=44;"),
+                ("compound", "^function\\(d,e,f\\)"),
+                ("compound1", "^function\\(d,e\\){[^}]*?case 58:f=96;"),
+                ("compound2", "^function\\(d,e\\){[^}]*?case 58:f-=14;"),
+                ("compound2", "^function\\(d,e\\){[^}]*?case 58:f=44;"),
+            };
+            var list = new List<object>();
+            var regex = Regex.Match(content, "c=\\[(.*)\\];.*?;try{(.*)}catch\\(");
+
+            if (!regex.Success)
+            {
+                Console.WriteLine("Couldn't extract YouTube video throttling parameter descrambling rules");
+                return signature;
+            }
+
+            var arrayCode = regex.Groups[1].Value + ",";
+
+            while (!string.IsNullOrWhiteSpace(arrayCode))
+            {
+                if (Regex.Match(arrayCode, "^function\\(").Success)
+                {
+                    string func = null;
+                    foreach (var item in mappingFuncPatterns)
+                    {
+                        var regexResult = Regex.Match(arrayCode, item.Pattern);
+                        if (regexResult.Success)
+                        {
+                            func = item.Func;
+                            break;
+                        }
+                    }
+
+                    if (func == "compound1" || func == "compound2" || func == "compound3")
+                    {
+                        var regexResult = Regex.Match(arrayCode, "^.*?},e\\.split\\(\"\"\\)\\)},(.*)$");
+                        if (regexResult.Success)
+                        {
+                            arrayCode = regexResult.Groups[1].Value;
+                            
+                        }
+                        else
+                        {
+                            regexResult = Regex.Match(arrayCode, "^.*?},(.*)$");
+                            arrayCode = regexResult.Groups[1].Value;
+                        }
+                    }
+                    else
+                    {
+                        var regexResult = Regex.Match(arrayCode, "^.*?},(.*)$");
+                        arrayCode = regexResult.Groups[1].Value;
+                    }
+                }
+                else if(Regex.Match(arrayCode, "^\"[^\"]*\",").Success)
+                {
+                    var regexResult = Regex.Match(arrayCode, "^\"([^\"]*)\",(.*)$");
+                    list.Add(regexResult.Groups[1].Value);
+                    arrayCode = regexResult.Groups[2].Value;
+                }
+                else if (Regex.Match(arrayCode, "^-?\\d+,").Success || Regex.Match(arrayCode, "^-?\\d+[eE]-?\\d+,").Success)
+                {
+                    var regexResult = Regex.Match(arrayCode, "^(.*?),(.*)$");
+                    list.Add(Convert.ToDecimal(regexResult.Groups[1].Value));
+                    arrayCode = regexResult.Groups[2].Value;
+                }
+                else if (Regex.Match(arrayCode, "^b,").Success )
+                {
+                    list.Add(signature);
+                    var regexResult = Regex.Match(arrayCode, "^b,(.*)$");
+                    arrayCode = regexResult.Groups[1].Value;
+                }
+                else if (Regex.Match(arrayCode, "^null,").Success)
+                {
+                    list.Add(list);
+                    var regexResult = Regex.Match(arrayCode, "^null,(.*)$");
+                    arrayCode = regexResult.Groups[1].Value;
+                }
+                else
+                {
+                    list.Add(null);
+                    var regexResult = Regex.Match(arrayCode, "^[^,]*?,(.*)$");
+                    arrayCode = regexResult.Groups[1].Value;
+                }
+            }
+
+            if (Regex.Match(regex.Groups[2].Value, "c\\[(\\d+)\\]\\(c\\[(\\d+)\\]([^)]*?)\\)").Success)
+            {
+
+            }
+
+
+
+            foreach (var piece in content.Split(','))
+            {
+
+            }
+
+            return null;
+        }
+
         private IEnumerable<string> array_split_gen(string array_code)
         {
             string accumulator = null;
-
+            char? startChar = null;
             foreach (var piece in array_code.Split(',').Reverse())
             {
+                if (startChar == null)
+                {
+                    startChar = piece[0];
+                }
+
                 if (piece.StartsWith("function") || piece[0] == '"' || piece[0] == '\'')
                 {
                     if (accumulator != null)
                     {
                         yield return piece + "," + accumulator;
                         accumulator = null;
+                        startChar = null;
                     }
                     else
                     {
                         yield return piece;
+                        startChar = null;
                     }
                 }
                 else if (piece.EndsWith("}") || piece.Last() == '"' || piece.Last() == '\'')
@@ -233,6 +346,7 @@ namespace VideoLibrary
                     else
                     {
                         yield return piece;
+                        startChar = null;
                     }
                 }
             }
@@ -241,7 +355,7 @@ namespace VideoLibrary
         private IEnumerable<(int, int, int?)> get_throttling_plan_gen(string raw_code)
         {
             var list = new List<(int, int, int?)>();
-            var matches = Regex.Matches(raw_code, "\\(0,\\s*c\\[(\\d+)\\]\\)?\\(c\\[(\\d+)\\](,\\s*c(\\[(\\d+)\\]))?\\)");
+            var matches = Regex.Matches(raw_code, "c\\[(\\d+)\\]\\)?\\(c\\[(\\d+)\\](,\\s*c(\\[(\\d+)\\]))?\\)");
             foreach (Match match in matches)
             {
                 if (match.Success && match.Groups[5].Success)
@@ -300,7 +414,7 @@ namespace VideoLibrary
             index = throttling_mod_func(list, index);
             for (var i = index; 0 < i; i--)
             {
-                var last = list[list.Count-1];
+                var last = list[list.Count - 1];
                 list.RemoveAt(list.Count - 1);
                 list.Insert(0, last);
             }
