@@ -18,9 +18,18 @@ namespace VideoLibrary
     {
         private const string Playback = "videoplayback";
         private static string _signatureKey;
+        private readonly HttpClient _httpClient;
+        
         public static YouTube Default { get; } = new YouTube();
         public const string YoutubeUrl = "https://youtube.com/";
+        
+        public YouTube() {}
 
+        public YouTube(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+        
         internal override async Task<IEnumerable<YouTubeVideo>> GetAllVideosAsync(string videoUri, Func<string, Task<string>> sourceFactory)
         {
             if (!TryNormalize(videoUri, out videoUri))
@@ -143,33 +152,30 @@ namespace VideoLibrary
                     string dashmpdMap = Json.GetKey("dashmpd", source);
                     if (!string.IsNullOrWhiteSpace(adaptiveMap))
                     {
-                        using (HttpClient hc = new HttpClient())
+                        IEnumerable<string> uris = null;
+                        try
                         {
-                            IEnumerable<string> uris = null;
-                            try
+
+                            dashmpdMap = WebUtility.UrlDecode(dashmpdMap).Replace(@"\/", "/");
+
+                            var manifest = _httpClient.GetStringAsync(dashmpdMap)
+                                .GetAwaiter().GetResult()
+                                .Replace(@"\/", "/");
+
+                            uris = Html.GetUrisFromManifest(manifest);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new UnavailableStreamException(e.Message);
+                        }
+
+                        if (uris != null)
+                        {
+                            foreach (var v in uris)
                             {
-
-                                dashmpdMap = WebUtility.UrlDecode(dashmpdMap).Replace(@"\/", "/");
-
-                                var manifest = hc.GetStringAsync(dashmpdMap)
-                                    .GetAwaiter().GetResult()
-                                    .Replace(@"\/", "/");
-
-                                uris = Html.GetUrisFromManifest(manifest);
-                            }
-                            catch (Exception e)
-                            {
-                                throw new UnavailableStreamException(e.Message);
-                            }
-
-                            if (uris != null)
-                            {
-                                foreach (var v in uris)
-                                {
-                                    yield return new YouTubeVideo(videoInfo,
-                                        UnscrambleManifestUri(v),
-                                        jsPlayer);
-                                }
+                                yield return new YouTubeVideo(videoInfo,
+                                    UnscrambleManifestUri(v),
+                                    jsPlayer);
                             }
                         }
                     }

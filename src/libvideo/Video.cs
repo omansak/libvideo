@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,15 +14,18 @@ namespace VideoLibrary
             this.LengthSeconds = second;
             this.Author = author;
         }
+        
         public string Title { get; }
         public int? LengthSeconds { get; }
         public string Author { get; }
     }
+    
     public abstract class Video
     {
         internal Video()
         {
         }
+        
         public abstract string Uri { get; }
         public abstract string Title { get; }
         public abstract VideoInfo Info { get; }
@@ -44,6 +48,19 @@ namespace VideoLibrary
                     .ConfigureAwait(false);
             }
         }
+        
+        public byte[] GetBytes(HttpClient httpClient) =>
+            GetBytesAsync(httpClient).GetAwaiter().GetResult();
+
+        public async Task<byte[]> GetBytesAsync(HttpClient httpClient)
+        {
+            using (var client = new VideoClient(httpClient))
+            {
+                return await client
+                    .GetBytesAsync(this)
+                    .ConfigureAwait(false);
+            }
+        }
 
         public Stream Stream() => StreamAsync().GetAwaiter().GetResult();
 
@@ -56,7 +73,21 @@ namespace VideoLibrary
                     .ConfigureAwait(false);
             }
         }
+        
+        public Stream Stream(HttpClient httpClient) => StreamAsync(httpClient).GetAwaiter().GetResult();
+
+        public async Task<Stream> StreamAsync(HttpClient httpClient)
+        {
+            using (var client = new VideoClient(httpClient))
+            {
+                return await client
+                    .StreamAsync(this)
+                    .ConfigureAwait(false);
+            }
+        }
+        
         public Stream Head() => HeadAsync().GetAwaiter().GetResult();
+        
         public async Task<Stream> HeadAsync()
         {
             using (var client = new VideoClient())
@@ -66,6 +97,17 @@ namespace VideoLibrary
                     .ConfigureAwait(false);
             }
         }
+        public Stream Head(HttpClient httpClient) => HeadAsync(httpClient).GetAwaiter().GetResult();
+        public async Task<Stream> HeadAsync(HttpClient httpClient)
+        {
+            using (var client = new VideoClient(httpClient))
+            {
+                return await client
+                    .StreamAsync(this)
+                    .ConfigureAwait(false);
+            }
+        }
+        
         public virtual string FileExtension
         {
             get

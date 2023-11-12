@@ -17,6 +17,11 @@ namespace VideoLibrary
         {
             this.client = MakeClient();
         }
+        
+        public VideoClient(HttpClient httpClient)
+        {
+            this.client = httpClient;
+        }
 
         #region IDisposable
 
@@ -40,8 +45,8 @@ namespace VideoLibrary
 
             if (disposing)
             {
-                if (client != null)
-                    client.Dispose();
+                // if (client != null)
+                //     client.Dispose();
             }
         }
 
