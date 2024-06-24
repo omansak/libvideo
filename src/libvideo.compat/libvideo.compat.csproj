@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<Authors>Bar Arnon,OMANSAK</Authors>
-		<Copyright>Copyright 2018 Bar Arnon | 2022 OMANSAK</Copyright>
+		<Copyright>Copyright 2018 Bar Arnon | 2024 OMANSAK</Copyright>
 		<Description>libvideo (aka VideoLibrary) is a modern .NET library for downloading YouTube videos. It is portable to most platforms and is very lightweight.
 
 Find us on GitHub at https://github.com/omansak/libvideo</Description>
@@ -11,17 +11,17 @@ Find us on GitHub at https://github.com/omansak/libvideo</Description>
 		<PackageId>VideoLibrary.Compat</PackageId>
 		<PackageLicenseUrl></PackageLicenseUrl>
 		<PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-		<PackageReleaseNotes>used .net standart 2.0</PackageReleaseNotes>
-		<PackageTags>youtube youtubeexplode downloader libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android</PackageTags>
+		<PackageReleaseNotes>Fix 403 Forbidden.</PackageReleaseNotes>
+		<PackageTags>youtube youtubeexplode downloader libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android youtubedownloader</PackageTags>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
 		<RootNamespace>YoutubeExtractor</RootNamespace>
-		<Version>3.2.2</Version>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<Version>3.2.4</Version>
+		<TargetFramework>netstandard1.1</TargetFramework>
 		<Title>libvideo.compat</Title>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<AssemblyVersion>3.2.2.0</AssemblyVersion>
-		<FileVersion>3.2.2.0</FileVersion>
+		<AssemblyVersion>3.2.4.0</AssemblyVersion>
+		<FileVersion>3.2.4.0</FileVersion>
 		<PackageIcon>icon_586.png</PackageIcon>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageLicenseExpression></PackageLicenseExpression>

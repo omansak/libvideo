@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -26,11 +27,13 @@ namespace VideoLibrary
             if (!TryNormalize(videoUri, out videoUri))
                 throw new ArgumentException("URL is not a valid YouTube URL!");
 
-            string source = await
-                sourceFactory(videoUri)
-                .ConfigureAwait(false);
+            string source = await sourceFactory(videoUri).ConfigureAwait(false);
 
             return ParseVideos(source);
+        }
+        public static string GetSignatureKey()
+        {
+            return string.IsNullOrWhiteSpace(_signatureKey) ? "signature" : _signatureKey;
         }
 
         private bool TryNormalize(string videoUri, out string normalized)
@@ -70,6 +73,18 @@ namespace VideoLibrary
             }
 
             var playerResponseJson = JToken.Parse(Json.Extract(ParsePlayerJson(source)));
+
+            // PlayerJson from android content
+            var data = GetPlayerResponseAndroidAsync(playerResponseJson.SelectToken("videoDetails.videoId")?.Value<string>())
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+
+            if (data != null)
+            {
+                playerResponseJson = JToken.Parse(data);
+            }
+
             if (string.Equals(playerResponseJson.SelectToken("playabilityStatus.status")?.Value<string>(), "error", StringComparison.OrdinalIgnoreCase))
             {
                 throw new UnavailableStreamException($"Video has unavailable stream.");
@@ -89,7 +104,6 @@ namespace VideoLibrary
                     throw new UnavailableStreamException($"This is live stream so unavailable stream.");
                 }
 
-                // url_encoded_fmt_stream_map
                 string map = Json.GetKey("url_encoded_fmt_stream_map", source);
                 if (!string.IsNullOrWhiteSpace(map))
                 {
@@ -100,12 +114,14 @@ namespace VideoLibrary
                 else // player_response
                 {
                     List<JToken> streamObjects = new List<JToken>();
+
                     // Extract Muxed streams
                     var streamFormat = playerResponseJson.SelectToken("streamingData.formats");
                     if (streamFormat != null)
                     {
                         streamObjects.AddRange(streamFormat.ToArray());
                     }
+
                     // Extract AdaptiveFormat streams
                     var streamAdaptiveFormats = playerResponseJson.SelectToken("streamingData.adaptiveFormats");
                     if (streamAdaptiveFormats != null)
@@ -129,6 +145,7 @@ namespace VideoLibrary
                         }
                     }
                 }
+
                 // adaptive_fmts
                 string adaptiveMap = Json.GetKey("adaptive_fmts", source);
                 if (!string.IsNullOrWhiteSpace(adaptiveMap))
@@ -151,8 +168,10 @@ namespace VideoLibrary
 
                                 dashmpdMap = WebUtility.UrlDecode(dashmpdMap).Replace(@"\/", "/");
 
-                                var manifest = hc.GetStringAsync(dashmpdMap)
-                                    .GetAwaiter().GetResult()
+                                var manifest = hc
+                                    .GetStringAsync(dashmpdMap)
+                                    .GetAwaiter()
+                                    .GetResult()
                                     .Replace(@"\/", "/");
 
                                 uris = Html.GetUrisFromManifest(manifest);
@@ -166,9 +185,7 @@ namespace VideoLibrary
                             {
                                 foreach (var v in uris)
                                 {
-                                    yield return new YouTubeVideo(videoInfo,
-                                        UnscrambleManifestUri(v),
-                                        jsPlayer);
+                                    yield return new YouTubeVideo(videoInfo, UnscrambleManifestUri(v), jsPlayer);
                                 }
                             }
                         }
@@ -305,9 +322,44 @@ namespace VideoLibrary
             return new UnscrambledQuery(builder.ToString(), false);
         }
 
-        public static string GetSignatureKey()
+        private async Task<string> GetPlayerResponseAndroidAsync(string id)
         {
-            return string.IsNullOrWhiteSpace(_signatureKey) ? "signature" : _signatureKey;
+            var androidClient = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://www.youtube.com/youtubei/v1/player");
+
+            var content = new
+            {
+                videoId = id,
+                context = new
+                {
+                    client = new
+                    {
+                        clientName = "ANDROID_TESTSUITE",
+                        clientVersion = "1.9",
+                        androidSdkVersion = 30,
+                        hl = "en",
+                        gl = "US",
+                        utcOffsetMinutes = 0
+                    }
+                }
+            };
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(content));
+            request.Headers.Add("User-Agent", "com.google.android.youtube/17.36.4 (Linux; U; Android 12; GB) gzip");
+            var response = await androidClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                androidClient.Dispose();
+                request.Dispose();
+                request.Dispose();
+
+                return responseContent;
+            }
+
+            return null;
         }
     }
 }
