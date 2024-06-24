@@ -46,7 +46,7 @@ namespace VideoLibrary
 
             if (_needNDescramble)
             {
-                uri = await NDescrambleAsync(uri, makeClient).ConfigureAwait(false);
+                uri = await DescrambleNAsync(uri, makeClient).ConfigureAwait(false);
                 _needNDescramble = false;
             }
 
