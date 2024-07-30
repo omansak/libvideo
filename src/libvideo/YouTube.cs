@@ -29,7 +29,7 @@ namespace VideoLibrary
 
             string source = await sourceFactory(videoUri).ConfigureAwait(false);
 
-            return ParseVideos(source);
+            return await ParseVideos(source);
         }
         public static string GetSignatureKey()
         {
@@ -63,22 +63,21 @@ namespace VideoLibrary
             return true;
         }
 
-        private IEnumerable<YouTubeVideo> ParseVideos(string source)
+        private async Task<IEnumerable<YouTubeVideo>> ParseVideos(string source)
         {
-            IEnumerable<UnscrambledQuery> queries;
+            var videos = new List<YouTubeVideo>();
+
             string jsPlayer = ParseJsPlayer(source);
             if (jsPlayer == null)
             {
-                yield break;
+                return videos; // Return an empty list instead of using yield break
             }
 
             var playerResponseJson = JToken.Parse(Json.Extract(ParsePlayerJson(source)));
 
             // PlayerJson from android content
-            var data = GetPlayerResponseAndroidAsync(playerResponseJson.SelectToken("videoDetails.videoId")?.Value<string>())
-                .ConfigureAwait(false)
-                .GetAwaiter()
-                .GetResult();
+            var videoId = playerResponseJson.SelectToken("videoDetails.videoId")?.Value<string>();
+            var data = videoId != null ? await GetPlayerResponseAndroidAsync(videoId) : null;
 
             if (data != null)
             {
@@ -87,62 +86,63 @@ namespace VideoLibrary
 
             if (string.Equals(playerResponseJson.SelectToken("playabilityStatus.status")?.Value<string>(), "error", StringComparison.OrdinalIgnoreCase))
             {
-                throw new UnavailableStreamException($"Video has unavailable stream.");
+                throw new UnavailableStreamException("Video has unavailable stream.");
             }
 
             var errorReason = playerResponseJson.SelectToken("playabilityStatus.reason")?.Value<string>();
-            if (string.IsNullOrWhiteSpace(errorReason))
+            if (!string.IsNullOrWhiteSpace(errorReason))
             {
-                var isLiveStream = playerResponseJson.SelectToken("videoDetails.isLive")?.Value<bool>() == true;
-                var videoInfo = new VideoInfo(
-                    playerResponseJson.SelectToken("videoDetails.title")?.Value<string>(),
-                    playerResponseJson.SelectToken("videoDetails.lengthSeconds")?.Value<int>(),
-                    playerResponseJson.SelectToken("videoDetails.author")?.Value<string>());
+                throw new UnavailableStreamException($"Error caused by Youtube. ({errorReason})");
+            }
 
-                if (isLiveStream)
+            var isLiveStream = playerResponseJson.SelectToken("videoDetails.isLive")?.Value<bool>() == true;
+            var videoInfo = new VideoInfo(
+                playerResponseJson.SelectToken("videoDetails.title")?.Value<string>(),
+                playerResponseJson.SelectToken("videoDetails.lengthSeconds")?.Value<int>(),
+                playerResponseJson.SelectToken("videoDetails.author")?.Value<string>());
+
+            if (isLiveStream)
+            {
+                throw new UnavailableStreamException("This is a live stream, so the stream is unavailable.");
+            }
+
+            string map = Json.GetKey("url_encoded_fmt_stream_map", source);
+            if (!string.IsNullOrWhiteSpace(map))
+            {
+                var queries = map.Split(',').Select(Unscramble);
+                videos.AddRange(queries.Select(query => new YouTubeVideo(videoInfo, query, jsPlayer)));
+            }
+            else
+            {
+                List<JToken> streamObjects = new List<JToken>();
+
+                // Extract Muxed streams
+                var streamFormat = playerResponseJson.SelectToken("streamingData.formats");
+                if (streamFormat != null)
                 {
-                    throw new UnavailableStreamException($"This is live stream so unavailable stream.");
+                    streamObjects.AddRange(streamFormat.ToArray());
                 }
 
-                string map = Json.GetKey("url_encoded_fmt_stream_map", source);
-                if (!string.IsNullOrWhiteSpace(map))
+                // Extract AdaptiveFormat streams
+                var streamAdaptiveFormats = playerResponseJson.SelectToken("streamingData.adaptiveFormats");
+                if (streamAdaptiveFormats != null)
                 {
-                    queries = map.Split(',').Select(Unscramble);
-                    foreach (var query in queries)
-                        yield return new YouTubeVideo(videoInfo, query, jsPlayer);
+                    streamObjects.AddRange(streamAdaptiveFormats.ToArray());
                 }
-                else // player_response
+
+                foreach (var item in streamObjects)
                 {
-                    List<JToken> streamObjects = new List<JToken>();
-
-                    // Extract Muxed streams
-                    var streamFormat = playerResponseJson.SelectToken("streamingData.formats");
-                    if (streamFormat != null)
+                    var urlValue = item.SelectToken("url")?.Value<string>();
+                    if (!string.IsNullOrEmpty(urlValue))
                     {
-                        streamObjects.AddRange(streamFormat.ToArray());
+                        var query = new UnscrambledQuery(urlValue, false);
+                        videos.Add(new YouTubeVideo(videoInfo, query, jsPlayer));
+                        continue;
                     }
-
-                    // Extract AdaptiveFormat streams
-                    var streamAdaptiveFormats = playerResponseJson.SelectToken("streamingData.adaptiveFormats");
-                    if (streamAdaptiveFormats != null)
+                    var cipherValue = ((item.SelectToken("cipher") ?? item.SelectToken("signatureCipher")) ?? string.Empty).Value<string>();
+                    if (!string.IsNullOrEmpty(cipherValue))
                     {
-                        streamObjects.AddRange(streamAdaptiveFormats.ToArray());
-                    }
-
-                    foreach (var item in streamObjects)
-                    {
-                        var urlValue = item.SelectToken("url")?.Value<string>();
-                        if (!string.IsNullOrEmpty(urlValue))
-                        {
-                            var query = new UnscrambledQuery(urlValue, false);
-                            yield return new YouTubeVideo(videoInfo, query, jsPlayer);
-                            continue;
-                        }
-                        var cipherValue = ((item.SelectToken("cipher") ?? item.SelectToken("signatureCipher")) ?? string.Empty).Value<string>();
-                        if (!string.IsNullOrEmpty(cipherValue))
-                        {
-                            yield return new YouTubeVideo(videoInfo, Unscramble(cipherValue), jsPlayer);
-                        }
+                        videos.Add(new YouTubeVideo(videoInfo, Unscramble(cipherValue), jsPlayer));
                     }
                 }
 
@@ -150,53 +150,44 @@ namespace VideoLibrary
                 string adaptiveMap = Json.GetKey("adaptive_fmts", source);
                 if (!string.IsNullOrWhiteSpace(adaptiveMap))
                 {
-                    queries = adaptiveMap.Split(',').Select(Unscramble);
-                    foreach (var query in queries)
-                        yield return new YouTubeVideo(videoInfo, query, jsPlayer);
+                    var adaptiveQueries = adaptiveMap.Split(',').Select(Unscramble);
+                    videos.AddRange(adaptiveQueries.Select(query => new YouTubeVideo(videoInfo, query, jsPlayer)));
                 }
                 else
                 {
                     // dashmpd
                     string dashmpdMap = Json.GetKey("dashmpd", source);
-                    if (!string.IsNullOrWhiteSpace(adaptiveMap))
+                    if (!string.IsNullOrWhiteSpace(dashmpdMap))
                     {
                         using (HttpClient hc = new HttpClient())
                         {
-                            IEnumerable<string> uris = null;
                             try
                             {
-
                                 dashmpdMap = WebUtility.UrlDecode(dashmpdMap).Replace(@"\/", "/");
+                                var manifest = await hc.GetStringAsync(dashmpdMap);
+                                manifest = manifest.Replace(@"\/", "/");
+                                var uris = Html.GetUrisFromManifest(manifest);
 
-                                var manifest = hc
-                                    .GetStringAsync(dashmpdMap)
-                                    .GetAwaiter()
-                                    .GetResult()
-                                    .Replace(@"\/", "/");
-
-                                uris = Html.GetUrisFromManifest(manifest);
+                                if (uris != null)
+                                {
+                                    foreach (var v in uris)
+                                    {
+                                        videos.Add(new YouTubeVideo(videoInfo, UnscrambleManifestUri(v), jsPlayer));
+                                    }
+                                }
                             }
                             catch (Exception e)
                             {
                                 throw new UnavailableStreamException(e.Message);
                             }
-
-                            if (uris != null)
-                            {
-                                foreach (var v in uris)
-                                {
-                                    yield return new YouTubeVideo(videoInfo, UnscrambleManifestUri(v), jsPlayer);
-                                }
-                            }
                         }
                     }
                 }
             }
-            else
-            {
-                throw new UnavailableStreamException($"Error caused by Youtube.({errorReason}))");
-            }
+
+            return videos;
         }
+
 
         private string ParsePlayerJson(string source)
         {
