@@ -27,9 +27,29 @@ namespace VideoLibrary
             if (!TryNormalize(videoUri, out videoUri))
                 throw new ArgumentException("URL is not a valid YouTube URL!");
 
+            // TODO Remove
             string source = await sourceFactory(videoUri).ConfigureAwait(false);
 
-            return ParseVideos(source);
+            // TODO Remove
+            string jsPlayer = ParseJsPlayer(source);
+
+            if (jsPlayer == null)
+            {
+                throw new UnavailableStreamException($"JS Player is not found");
+            }
+
+            var playerResponseJson = JToken.Parse(Json.Extract(ParsePlayerJson(source)));
+
+            // PlayerJson from android content
+            var data = await GetPlayerResponseAndroidAsync(playerResponseJson.SelectToken("videoDetails.videoId")?.Value<string>())
+                .ConfigureAwait(false);
+
+            if (data != null)
+            {
+                playerResponseJson = JToken.Parse(data);
+            }
+
+            return ParseVideos(source, jsPlayer, playerResponseJson);
         }
         public static string GetSignatureKey()
         {
@@ -63,27 +83,9 @@ namespace VideoLibrary
             return true;
         }
 
-        private IEnumerable<YouTubeVideo> ParseVideos(string source)
+        private IEnumerable<YouTubeVideo> ParseVideos(string source, string jsPlayer, JToken playerResponseJson)
         {
             IEnumerable<UnscrambledQuery> queries;
-            string jsPlayer = ParseJsPlayer(source);
-            if (jsPlayer == null)
-            {
-                yield break;
-            }
-
-            var playerResponseJson = JToken.Parse(Json.Extract(ParsePlayerJson(source)));
-
-            // PlayerJson from android content
-            var data = GetPlayerResponseAndroidAsync(playerResponseJson.SelectToken("videoDetails.videoId")?.Value<string>())
-                .ConfigureAwait(false)
-                .GetAwaiter()
-                .GetResult();
-
-            if (data != null)
-            {
-                playerResponseJson = JToken.Parse(data);
-            }
 
             if (string.Equals(playerResponseJson.SelectToken("playabilityStatus.status")?.Value<string>(), "error", StringComparison.OrdinalIgnoreCase))
             {
