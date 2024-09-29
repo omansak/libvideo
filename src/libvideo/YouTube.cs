@@ -41,7 +41,7 @@ namespace VideoLibrary
             var playerResponseJson = JToken.Parse(Json.Extract(ParsePlayerJson(source)));
 
             // PlayerJson from android content
-            var data = await GetPlayerResponseAndroidAsync(playerResponseJson.SelectToken("videoDetails.videoId")?.Value<string>())
+            var data = await GetPlayerResponseIOSAsync(playerResponseJson.SelectToken("videoDetails.videoId")?.Value<string>())
                 .ConfigureAwait(false);
 
             if (data != null)
@@ -320,6 +320,51 @@ namespace VideoLibrary
             }
 
             return new UnscrambledQuery(builder.ToString(), false);
+        }
+
+        private async Task<string> GetPlayerResponseIOSAsync(string id)
+        {
+            var androidClient = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://www.youtube.com/youtubei/v1/player");
+
+            var content = new
+            {
+                videoId = id,
+                context = new
+                {
+                    client = new
+                    {
+                        clientName = "IOS",
+                        clientVersion = "19.29.1",
+                        deviceMake = "Apple",
+                        deviceModel = "iPhone16,2",
+                        hl = "en",
+                        osName = "iPhone",
+                        osVersion = "17.5.1.21F90",
+                        timeZone = "UTC",
+                        userAgent = "com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)",
+                        gl = "US",
+                        utcOffsetMinutes = 0
+                    }
+                }
+            };
+
+            request.Content = new StringContent(JsonConvert.SerializeObject(content));
+            request.Headers.Add("User-Agent", "com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X)");
+            var response = await androidClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                androidClient.Dispose();
+                request.Dispose();
+                request.Dispose();
+
+                return responseContent;
+            }
+
+            return null;
         }
 
         private async Task<string> GetPlayerResponseAndroidAsync(string id)
