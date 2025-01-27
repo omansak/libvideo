@@ -1,6 +1,6 @@
 using System;
-using System.Globalization;
 using System.Text;
+using System.Text.Json;
 
 namespace VideoLibrary.Helpers
 {
@@ -18,6 +18,16 @@ namespace VideoLibrary.Helpers
         public static bool TryGetKey(string key, string source, out string target)
         {
             return GetKey(key, source, out target);
+        }
+
+        public static JsonElement? GetNullableProperty(this JsonElement jsonElement, string propertyName)
+        {
+            if (jsonElement.TryGetProperty(propertyName, out JsonElement returnElement))
+            {
+                return returnElement;
+            }
+
+            return null;
         }
 
         public static string Extract(string source)

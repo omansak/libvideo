@@ -7,14 +7,14 @@ namespace VideoLibrary
 {
     public class VideoInfo
     {
-        public VideoInfo(string title, int? second, string author)
+        public VideoInfo(string title, int second, string author)
         {
             this.Title = title;
             this.LengthSeconds = second;
             this.Author = author;
         }
         public string Title { get; }
-        public int? LengthSeconds { get; }
+        public int LengthSeconds { get; }
         public string Author { get; }
     }
     public abstract class Video

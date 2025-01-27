@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<Authors>Bar Arnon,OMANSAK</Authors>
-		<Copyright>Copyright 2018 Bar Arnon | 2024 OMANSAK</Copyright>
+		<Copyright>Copyright 2018 Bar Arnon | 2025 OMANSAK</Copyright>
 		<Description>libvideo (aka VideoLibrary) is a modern .NET library for downloading YouTube videos. It is portable to most platforms and is very lightweight.
 
 Find us on GitHub at https://github.com/omansak/libvideo</Description>
@@ -11,25 +11,23 @@ Find us on GitHub at https://github.com/omansak/libvideo</Description>
 		<PackageId>VideoLibrary</PackageId>
 		<PackageLicenseUrl></PackageLicenseUrl>
 		<PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-		<PackageReleaseNotes>Change agent suite</PackageReleaseNotes>
+		<PackageReleaseNotes>- Add visitorData to IOS agent
+- Upgrade .NET 2.0
+- Remove JsonNewtonSoft</PackageReleaseNotes>
 		<PackageTags>youtube youtubeexplode downloader libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android youtubedownloader c# .net standart</PackageTags>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
 		<RootNamespace>VideoLibrary</RootNamespace>
-		<Version>3.2.6</Version>
-		<TargetFramework>netstandard1.1</TargetFramework>
+		<Version>3.2.7</Version>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<Title>libvideo</Title>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<AssemblyVersion>3.2.6.0</AssemblyVersion>
-		<FileVersion>3.2.6.0</FileVersion>
+		<AssemblyVersion>3.2.7.0</AssemblyVersion>
+		<FileVersion>3.2.7.0</FileVersion>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageIcon>icon_586.png</PackageIcon>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\..\icons\icon_586.png">
@@ -44,6 +42,10 @@ Find us on GitHub at https://github.com/omansak/libvideo</Description>
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="System.Text.Json" Version="9.0.1" />
 	</ItemGroup>
 
 </Project>

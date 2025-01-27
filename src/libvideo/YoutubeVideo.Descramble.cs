@@ -30,14 +30,22 @@ namespace VideoLibrary
 
         private string DescrambleNSignature(string js, string signature)
         {
-            // TODO Add Native Descramble for "N" Signature
             return signature;
+            //var func = GetDescrambleFunctionBody(js);
+            //var asd = "var " + func.Item2.Replace("===\"undefined\"", "!=='undefined'");
+            //var result = new Engine()
+            //    .Execute(asd)
+            //    .Invoke(func.Item1, signature); // -> 3
+
+            //File.WriteAllText("C:\\Users\\OMANSAK\\Desktop\\asd.txt", js);
+            //// TODO Add Native Descramble for "N" Signature
+            //return result.ToString();
         }
 
-        private Tuple<string, string> GetDescrambleFunctionLines(string js)
+        private Tuple<string, string> GetDescrambleFunctionBody(string js)
         {
             string functionName = null;
-            var functionLine = Regex.Match(js, @"\.get\(""n""\)\)&&\(b=([a-zA-Z0-9$]+)(?:\[(\d+)\])?\([a-zA-Z0-9]\)");
+            var functionLine = Regex.Match(js, @"([\w\d]*)=function\(\w+?\){var \w+=\w+.split\(\w+\.slice\(0,0\)\),Z=\[");
 
             if (functionLine.Success && !functionLine.Groups[2].Success)
             {
