@@ -19,7 +19,6 @@ namespace VideoLibrary
     {
         private const string Playback = "videoplayback";
         private static string _signatureKey;
-        private static string _visitorData;
         public static YouTube Default { get; } = new YouTube();
         public const string YoutubeUrl = "https://youtube.com/";
 
@@ -328,13 +327,8 @@ namespace VideoLibrary
 
         private async Task<string> GetPlayerResponseIOSAsync(string id)
         {
-            var androidClient = new HttpClient();
+            var httpClient = new HttpClient();
             var request = new HttpRequestMessage(HttpMethod.Post, "https://www.youtube.com/youtubei/v1/player");
-
-            if (_visitorData is null)
-            {
-                _visitorData = await VisitorDataTokenGenerator.GetVisitorDataFromYouTube(androidClient);
-            }
 
             var content = new
             {
@@ -345,29 +339,29 @@ namespace VideoLibrary
                     client = new
                     {
                         clientName = "IOS",
-                        clientVersion = "19.45.4",
+                        clientVersion = "20.03.02",
                         deviceMake = "Apple",
                         deviceModel = "iPhone16,2",
                         platform = "MOBILE",
                         osName = "IOS",
-                        osVersion = "18.1.0.22B83",
+                        osVersion = "18.2.1.22C161",
                         hl = "en",
                         gl = "US",
                         utcOffsetMinutes = 0,
-                        visitorData = _visitorData,
+                        visitorData = await VisitorDataTokenGenerator.GetVisitorDataFromYouTube(httpClient),
                     }
                 }
             };
 
             request.Content = new StringContent(JsonSerializer.Serialize(content));
-            request.Headers.Add("User-Agent", "com.google.ios.youtube/19.45.4 (iPhone16,2; U; CPU iOS 18_1_0 like Mac OS X; US)");
-            var response = await androidClient.SendAsync(request);
+            request.Headers.Add("User-Agent", "com.google.ios.youtube/20.03.02 (iPhone16,2; U; CPU iOS 18_2_1 like Mac OS X; US)");
+            var response = await httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
             {
 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                androidClient.Dispose();
+                httpClient.Dispose();
                 request.Dispose();
                 request.Dispose();
 
