@@ -333,7 +333,7 @@ namespace VideoLibrary
 
             if (_visitorData is null)
             {
-                _visitorData = VisitorDataTokenGenerator.Generate();
+                _visitorData = await VisitorDataTokenGenerator.GetVisitorDataFromYouTube(androidClient);
             }
 
             var content = new
