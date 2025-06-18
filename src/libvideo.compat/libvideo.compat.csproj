@@ -11,19 +11,17 @@ Find us on GitHub at https://github.com/omansak/libvideo</Description>
 		<PackageId>VideoLibrary.Compat</PackageId>
 		<PackageLicenseUrl></PackageLicenseUrl>
 		<PackageProjectUrl>https://github.com/omansak/libvideo</PackageProjectUrl>
-		<PackageReleaseNotes>- Add visitorData to IOS agent
-- Upgrade .NET 2.0
-- Remove JsonNewtonSoft</PackageReleaseNotes>
+		<PackageReleaseNotes>- Fix visitorData to IOS agent</PackageReleaseNotes>
 		<PackageTags>youtube youtubeexplode downloader libvideo lib libs video videos library libraries download extract get vimeo scrape scraping downloader extractor getter scraper youtubeextract videolibrary library winrt wp windows phone pcl portable class library .net framework core compat compatibility api apis layer layers emulator emulators emulation emulations xamarin mono monotouch xamarin.ios ios xamarin.android android youtubedownloader</PackageTags>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/omansak/libvideo</RepositoryUrl>
 		<RootNamespace>YoutubeExtractor</RootNamespace>
-		<Version>3.2.7</Version>
+		<Version>3.2.8</Version>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Title>libvideo.compat</Title>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<AssemblyVersion>3.2.7.0</AssemblyVersion>
-		<FileVersion>3.2.7.0</FileVersion>
+		<AssemblyVersion>3.2.8.0</AssemblyVersion>
+		<FileVersion>3.2.8.0</FileVersion>
 		<PackageIcon>icon_586.png</PackageIcon>
 		<NeutralLanguage>en</NeutralLanguage>
 		<PackageLicenseExpression></PackageLicenseExpression>
