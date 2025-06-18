@@ -122,6 +122,15 @@
                     case 401:
                     case 402:
                     case 571:
+                    case 278:
+                    case 694:
+                    case 695:
+                    case 696:
+                    case 697:
+                    case 698:
+                    case 699:
+                    case 700:
+                    case 701:
                         return AdaptiveKind.Video;
                     case 139:
                     case 140:
@@ -151,6 +160,8 @@
                     case 139:
                     case 249:
                     case 250:
+                    case 599:
+                    case 600:
                         return 48;
                     case 18:
                         return 96;
@@ -167,11 +178,17 @@
                     case 141:
                     case 172:
                     case 327:
+                    case 774:
                         return 256;
                     case 258:
+                    case 325: 
+                    case 328: 
+                    case 380:
                         return 384;
                     case 338:
                         return 480;
+                    case 773:
+                        return 960;
                     default:
                         return -1;
                 }
@@ -188,11 +205,15 @@
                     case 330:
                     case 278:
                     case 160:
+                    case 694:
+                    case 597:
+                    case 598:
                         return 144;
                     case 395:
                     case 331:
                     case 242:
                     case 133:
+                    case 695:
                         return 240;
                     case 18:
                     case 43:
@@ -200,12 +221,16 @@
                     case 332:
                     case 243:
                     case 134:
+                    case 696:
+                    case 167:
                         return 360;
                     case 59:
                     case 397:
                     case 333:
                     case 244:
                     case 135:
+                    case 697:
+                    case 168:
                         return 480;
                     case 22:
                     case 398:
@@ -214,6 +239,9 @@
                     case 247:
                     case 298:
                     case 136:
+                    case 698:
+                    case 169:
+                    case 612:
                         return 720;
                     case 37:
                     case 399:
@@ -222,6 +250,11 @@
                     case 248:
                     case 299:
                     case 137:
+                    case 699:
+                    case 170:
+                    case 216:
+                    case 616:
+                    case 721:
                         return 1080;
                     case 400:
                     case 336:
@@ -229,6 +262,7 @@
                     case 271:
                     case 304:
                     case 264:
+                    case 700:
                         return 1440;
                     case 401:
                     case 337:
@@ -236,11 +270,13 @@
                     case 313:
                     case 305:
                     case 266:
+                    case 701:
                         return 2160;
                     case 138:
                     case 272:
                     case 402:
                     case 571:
+                    case 702:
                         return 4320;
                     default:
                         return -1;
@@ -281,6 +317,21 @@
                     case 401:
                     case 402:
                     case 571:
+                    case 168:
+                    case 169:
+                    case 170:
+                    case 216:
+                    case 278:
+                    case 694:
+                    case 695:
+                    case 696:
+                    case 697:
+                    case 698:
+                    case 699:
+                    case 700:
+                    case 701:
+                    case 702:
+                    case 721:
                         return VideoFormat.Mp4;
                     case 43:
                     case 242:
@@ -294,15 +345,10 @@
                     case 303:
                     case 308:
                     case 313:
-                    case 315:
-                    case 330:
-                    case 331:
-                    case 332:
-                    case 333:
-                    case 334:
-                    case 335:
-                    case 336:
-                    case 337:
+                    case 598:
+                    case 597:
+                    case 612:
+                    case 616:
                         return VideoFormat.WebM;
                     default:
                         return VideoFormat.Unknown;
@@ -326,6 +372,10 @@
                     case 256:
                     case 258:
                     case 327:
+                    case 325: 
+                    case 328: 
+                    case 380: 
+                    case 599:
                         return AudioFormat.Aac;
                     case 171:
                     case 172:
@@ -335,6 +385,9 @@
                     case 250:
                     case 251:
                     case 338:
+                    case 600:
+                    case 773:
+                    case 774:
                         return AudioFormat.Opus;
                     default:
                         return AudioFormat.Unknown;
