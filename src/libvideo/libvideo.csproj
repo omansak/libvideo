@@ -43,7 +43,7 @@ Find us on GitHub at https://github.com/omansak/libvideo</Description>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="System.Text.Json" Version="9.0.1" />
+	  <PackageReference Include="System.Text.Json" Version="9.0.9" />
 	</ItemGroup>
 
 </Project>
