@@ -27,6 +27,7 @@ Alternatively, you can try building the repo if you like your assemblies extra-f
 | **.NET / .NET Core**                    | .NET Core 2.0+ / .NET 5+  | Fully supports .NET Standard 2.0 libraries. |
 | **.NET Framework**                      | 4.6.1+                    | Supports .NET Standard 2.0 (does NOT support 2.1). |
 | **Mono**                                | 5.4+                      | Official support for .NET Standard 2.0. |
+| **Unity**                               | 2018.1+                   | Requires scripting runtime set to .NET 4.x Equivalent. |
 | **Xamarin.iOS**                         | 10.14+                    | Supports .NET Standard 2.0 libraries. |
 | **Xamarin.Android**                     | 8.0+                      | Supports .NET Standard 2.0 libraries. |
 | **Xamarin.Mac**                         | 3.8+                      | Supports .NET Standard 2.0 libraries. |
