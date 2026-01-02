@@ -142,7 +142,6 @@ namespace VideoLibrary
                             continue;
                         }
 
-                        var asd = item.ToString();
                         var cipherValue = (item.GetNullableProperty("cipher") ?? item.GetNullableProperty("signatureCipher"))?.GetString();
                         if (!string.IsNullOrEmpty(cipherValue))
                         {
@@ -338,13 +337,11 @@ namespace VideoLibrary
                 {
                     client = new
                     {
-                        clientName = "IOS",
-                        clientVersion = "20.03.02",
-                        deviceMake = "Apple",
-                        deviceModel = "iPhone16,2",
+                        clientName = "ANDROID",
+                        clientVersion = "20.10.38",
+                        osName = "Android",
+                        osVersion = "11",
                         platform = "MOBILE",
-                        osName = "IOS",
-                        osVersion = "18.2.1.22C161",
                         hl = "en",
                         gl = "US",
                         utcOffsetMinutes = 0,
@@ -354,7 +351,7 @@ namespace VideoLibrary
             };
 
             request.Content = new StringContent(JsonSerializer.Serialize(content));
-            request.Headers.Add("User-Agent", "com.google.ios.youtube/20.03.02 (iPhone16,2; U; CPU iOS 18_2_1 like Mac OS X; US)");
+            request.Headers.Add("User-Agent", "com.google.android.youtube/20.10.38 (Linux; U; ANDROID 11) gzip");
             var response = await httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
